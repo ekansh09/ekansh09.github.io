@@ -1,10 +1,10 @@
 # Site settings
-title:       Aditya Agarwal
-email:       skymanaditya1@gmail.com
-author:      Aditya Agarwal
-description: "Aditya Agarwal's personal academic website"
+title:       Ekansh Chauhan
+email:       echauhan09@gmail.com
+author:      Ekansh Chauhan
+description: "Ekansh Chauhan's personal academic website"
 baseurl:     ""
-url:         "http://skymanaditya1.github.io"
+url:         "http://ekanshchauhan.github.io"
 date_format: "%b %-d, %Y"
 
 # Google services
@@ -42,14 +42,14 @@ facebook_appid:
 facebook_comments_number: 10
 
 # Social icons
-github_username: skymanaditya1
+github_username: ekansh09
 bitbucket_username:
 stackoverflow_id:
-twitter_username: skymanaditya1
+twitter_username: echauhan09
 skype_username:
 steam_nickname:
 google_plus_id: fa
-linkedin_username: skymanaditya1
+linkedin_username: ekanshchauhan
 angellist_username:
 medium_id:
 bitcoin_url:
@@ -86,7 +86,7 @@ text:
   index:
     coming_soon: 'Coming soon...'
   contact:
-    email:    'skymanaditya1@gmail.com'
+    email:    'echauhan09@gmail.com'
     content:  'What would you like to say?'
     subject:  'New submission!'
     submit:   'Say Hello'
