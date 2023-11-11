@@ -1,6 +1,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- increase header space -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
     <title>{% if page.title %}{{ page.title | strip_html }} &#8211; {% endif %}{{ site.title | strip_html }}</title>
     <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -55,7 +57,7 @@
     <meta property="og:description" content="{% if page.description %}{{ page.description | xml_escape }}{% else %}{{ site.description | xml_escape }}{% endif %}">
     <meta property="og:url" content="{{ site.url }}{{ page.url }}">
     <meta property="og:site_name" content="{{ site.title | xml_escape }}">
-
+    
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary" />
     {% if site.twitter_username %}
