@@ -18,6 +18,11 @@
       <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url={{ site.url }}{{ page.url }}&title={{ page.title }}" rel="nofollow" target="_blank" title="{{ site.text.share_buttons.linkedin }}"></a>
     {% endif %}
 
+    {% if site.share_scholar %}
+      <a class="fa-brands fa-google-scholar" href="https://scholar.google.com/citations?user={{ site.url }}{{ page.url }}&title={{ page.title }}" rel="nofollow" target="_blank" title="{{ site.text.share_buttons.scholar}}"></a>
+    {% endif %}
+
+
     {% if site.share_digg %}
       <a class="fa fa-digg" href="http://digg.com/submit?url={{ site.url }}{{ page.url }}&title={{ page.title }}" rel="nofollow" target="_blank" title="{{ site.text.share_buttons.digg }}"></a>
     {% endif %}
