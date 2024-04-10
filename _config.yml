@@ -46,6 +46,7 @@ github_username: ekansh09
 bitbucket_username:
 stackoverflow_id:
 twitter_username: echauhan09
+scholar_username: sRA8oqIAAAAJ
 skype_username:
 steam_nickname:
 google_plus_id: fa
@@ -61,11 +62,12 @@ show_sharing_icons: false
 # Change to 'true' to enable individual icons
 share_facebook: false
 share_twitter: true
+share_scholar: false
 share_googleplus: false
 share_linkedin: false
 share_digg: false
 share_tumblr: false
-share_reddit: false
+share_reddit: true
 share_stumbleupon: false
 share_hackernews: false
 paginate_path: '/blog/page:num'
@@ -77,6 +79,7 @@ text:
     text:         'Share this post!'
     facebook:     'Share on Facebook'
     twitter:      'Share on Twitter'
+    scholar:      'Share on Google Scholar'
     googleplus:   'Share on Google+'
     linkedin:     'Share on LinkedIn'
   post:
