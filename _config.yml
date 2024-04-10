@@ -62,7 +62,7 @@ show_sharing_icons: false
 # Change to 'true' to enable individual icons
 share_facebook: false
 share_twitter: true
-share_scholar: true
+share_scholar: false
 share_googleplus: false
 share_linkedin: false
 share_digg: false
