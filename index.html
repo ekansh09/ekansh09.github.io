@@ -1,217 +1,789 @@
----
-layout: default
-tags: about
----
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script type="text/javascript">
-function readMore() {
-    $('#readMore').hide();
-    $('#more').show();
-}
-function readLess() {
-    $('#readMore').show();
-    $('#more').hide();
-}
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-180102748-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-180102748-1');
+    </script> -->
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+
+    <script src="https://kit.fontawesome.com/cf1c3caa39.js" crossorigin="anonymous"></script>
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css"> -->
+    <link rel="stylesheet" href="./css/academicons.min.css" />
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Ekansh Chauhan">
+    <meta name="description" content="M.S by Research student at IIIT Hyderabad">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="ekansh09.github.io">
+    <meta property="og:title" content="Ekansh Chauhan">
+    <meta property="og:description" content="M.S by Research student at IIIT Hyderabad">
+    <meta property="og:image" content="https://ekansh09.github.io/images/profile/ekansh_profile.jpg">
+
+    <meta name="theme-color" content="#222222">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="images/nicons/Icon-180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/nicons/Icon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/nicons/Icon-16.png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400&display=swap" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+
+    <title>Ekansh Chauhan</title>
+</head>
+
+<body>
+    <!-- <h1>Hello, world!</h1> -->
+    <div class="container pt-5 allstuffp">
+        <div class="row pt-5 allstuff">
+            <div class="col-md-4 pt-5">
+                <div class="fixed-posi">
+                    <!-- <p class="name">Ekansh Chauhan</p> -->
+                    <p class="name"><span style="font-weight: 700;">Ekansh</span> Chauhan</p>
+                    <img lsrc="images/profile/ekansh_profile.jpg" class="profilepic mt-3 rounded shadow mb-3">
+                    <div class="pt-5 menur"><a class="menulink" target="_blank" href="assets/Ekansh_Resume.pdf"><i
+                                class="had fas fa-file-alt"></i>&nbsp; resume</a></div>
+                    <div class=""><a class="menulink" target="_blank"
+                            href="https://scholar.google.com/citations?user=sRA8oqIAAAAJ&hl=en"><i
+                                class="fab fa-google"></i>&nbsp; scholar</a></div>
+                    <div class=""><a class="menulink" target="_blank"
+                            href="https://www.linkedin.com/in/ekanshchauhan/"><i class="fab fa-linkedin-in"></i>&nbsp;
+                            linkedin</a></div>
+                    <div class=""><a class="menulink" target="_blank" href="https://github.com/ekansh09"><i
+                                class="had fab fa-github"></i>&nbsp; github</a></div>
+                    <div class=""><a class="menulink" target="_blank" href="mailto:ekansh.chauhan@research.iiit.ac.in"><i
+                                class="fas fa-envelope"></i>&nbsp; email</a></div>
+                </div>
+            </div>
+            <div class="col-md-8 pt-5 about text-justify">
+                I am Ekansh Chauhan, currently pursuing a Master's by Research at the <a href="https://iiit.ac.in/" class="uline-special">International Institute of Information Technology, Hyderabad, </a> affiliated with the <a href="https://hai.iiit.ac.in/diag.html" class="uline-special">Cancer Diagnostics (DIAG)</a>, <a href="https://cvit.iiit.ac.in/" class="uline-special">Centre for Visual Information Technology (CVIT)</a> lab. Under the guidance of professors <a href="https://scholar.google.co.in/citations?user=c_V3bGgAAAAJ&hl=en" class="uline-special">Vinod P.K.</a> and <a href="https://scholar.google.com/citations?user=U9dH-DoAAAAJ&hl=en" class="uline-special">C.V. Jawahar</a>, my research focuses on the automated classification of tumors using histopathology images. In this project, my work involves collecting data from <a href="https://hai.iiit.ac.in/ipd/" class="uline-special">affiliated institutions</a> and employ deep learning methods to detect cancer tumors.
+                <br><br>
+
+                Before I joined IIIT Hyderabad, I was a Research Fellow at <a href="https://ihub-data.iiit.ac.in/" class="uline-special">iHub Data</a>, where I worked with <a href="https://scholar.google.co.in/citations?user=bbSYyiAAAAAJ&hl=en" class="uline-special">Prof. Bapi Raju S</a> on developing a low-parameter model, LRH-Net, designed to detect multiple fatal cardiovascular diseases at once in resource-constrained environments. Also, through proposed multi-level knowledge distillation, I was able to reduce the required input leads to two or three (generally twelve), enhancing its user-friendliness and suitability for edge devices.
+
+                <br><br>
+
+                I completed my Bachelors from <a href="http://www.ipu.ac.in/" class="uline-special">GGSIPU University</a> Delhi in Information Technology. I worked in the areas of evolutionary algorithms, detection and prediction of COVID-19 using deep learning, and interned at The <a href="https://iitbhu.ac.in/" class="uline-special">IIT-BHU - Indian Institute of Technology (BHU) Varanasi</a> with <a href="https://scholar.google.co.in/citations?user=-JrVzUQAAAAJ&hl=en" class="uline-special">Prof. Hari Prabhat Gupta</a> on quality assessment of River Ganga using machine learning.
+
+
+                <!-- RESEARCH SECTION -->
+
+                <div id="research">
+                    <h2>
+                      <a name="research">Selected Publications</a>
+                    </h2>
+                    <br/>
+                    
+                    <table width="100%" align="center" valign="middle" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+                        <tbody>
+                          <tr>
+                            <td width="30%">
+                              <div class="one">
+                                  <img src="images/projects/brain_histo/image.png" style="max-height: 400px; text-align: center; ">
+                                  <!-- <a href="https://www.timeisnephrons.com/" style="font-size: 10px; text-align: left;">* Gif Source</a> -->
+                              </div>
+                            </td>
+                            <td valign="top" width="70%">
+                              <h5>
+                                Multiple Instance Learning for Glioma Subtype, Grading and IHC biomarkers using H&E Stained WSIs: An Indian Cohort Study
+                              </h5>
+                              <p class="self" style="display:inline">Ekansh Chauhan*</p>, <p class="authors" style="display:inline">Amit Sharma, Megha S Uppin, C.V. Jawahar & P.K. Vinod</p>
+                            </p>
+                               <p>
+                                <!-- <i><span style="color:gray"></span>Under Review</i>, <a href="https://www.icra2023.org/" class="uline-special"><span style="color:red">ICRA 2023</span></a> -->
+                                <a href="https://ekansh09.github.io/#research" class="uline-special"><span style="color:red">MIDL'24</span></a>
+                              </p>
+                              <p>
+                                <!-- <a href="https://arxiv.org/pdf/2301.07213.pdf">Paper / </a> -->
+                                <a href="images/projects/brain_histo/paper.pdf">Paper / </a>
+                                <!-- <a href="https://concept-graphs.github.io/">Project Page / </a> -->
+                                <!-- <a href="https://bipashasen.github.io/scarp/">Project Page / </a> -->
+                                <!-- <a href="https://www.youtube.com/watch?v=o2PuRVZ3jJA">Short Video / </a> -->
+                                <a href="https://github.com/ekansh09/">Code</a>
+                                <!-- <a href="">Video (Coming Soon)</a> -->
+                                <!-- <a href="images/projects/scarp_icra2023/poster.pdf">Poster / </a> -->
+                                <!-- <a href="https://youtu.be/lyEc991wyTI">Long Video</a> -->
+                              </p>
+                              <!-- &nbsp;<p style="color:red">More details coming soon!</p> -->
+                              <p>
+                                This study introduces advancements in brain tumor (glioma) management through multiple-instance learning, ResNet-50 for feature extraction, and the DTFD feature aggregator for histopathology analysis. It sets new performance benchmarks for glioma subtype classification, achieving AUCs of 88.08 on the Indian demographic dataset (IPD-Brain: in-house) and 95.81 on the TCGA-Brain dataset. Additionally, it establishes benchmarks for grading and identifying immunohistochemical molecular biomarkers in gliomas using H&E stained slides. The research demonstrates a significant alignment between the model's decisions and pathologists' diagnostic methods, showcasing its potential to replicate professional diagnostic procedures.
+                              </p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td width="30%">
+                              <div class="one">
+                                  <img src="images/projects/lupus_nephritis/Animated_Kidney.gif" style="max-height: 500px; text-align: center; ">
+                                  <a href="https://www.timeisnephrons.com/" style="font-size: 10px; text-align: left;">* Gif Source</a>
+                              </div>
+                            </td>
+                            <td valign="top" width="70%">
+                              <h5>
+                                Lupus Nephritis Subtype Classification with only Slide Level Labels
+                              </h5>
+                              <p class="authors" style="display:inline">Amit Sharma</p>, <p class="self" style="display:inline">Ekansh Chauhan*</p>, <p class="authors" style="display:inline">Megha S Uppin, Liza Rajasekhar, C.V. Jawahar & P.K. Vinod</p>
+                            </p>
+                               <p>
+                                <!-- <i><span style="color:gray"></span>Under Review</i>, <a href="https://www.icra2023.org/" class="uline-special"><span style="color:red">ICRA 2023</span></a> -->
+                                <a href="https://ekansh09.github.io/#research" class="uline-special"><span style="color:red">Submitted</span></a>
+                              </p>
+                              <p>
+                                <!-- <a href="https://openreview.net/forum?id=c1AfNZoSyQ">Paper / </a> -->
+                                <a href="images/projects/lupus_nephritis/paper.pdf">Paper / </a>
+                                <!-- <a href="https://concept-graphs.github.io/">Project Page / </a> -->
+                                <!-- <a href="https://bipashasen.github.io/scarp/">Project Page / </a> -->
+                                <!-- <a href="https://www.youtube.com/watch?v=o2PuRVZ3jJA">Short Video / </a> -->
+                                <a href="https://github.com/ekansh09/">Code</a>
+                                <!-- <a href="">Video (Coming Soon)</a> -->
+                                <!-- <a href="images/projects/scarp_icra2023/poster.pdf">Poster / </a> -->
+                                <!-- <a href="https://youtu.be/lyEc991wyTI">Long Video</a> -->
+                              </p>
+                              <!-- &nbsp;<p style="color:red">More details coming soon!</p> -->
+                              <p>
+                                Our research introduces LupusNet, a novel deep learning model designed for lupus nephritis classification using only slide-level labels, avoiding the need for detailed glomerular-level labeling. We created the largest multi-stained digital histopathology dataset for lupus nephritis from the Indian population. LupusNet leverages a multiple instance learning approach and has demonstrated high effectiveness, with an AUC score of 91.0%, F1-score of 77.3%, and accuracy of 81.1% in identifying membranous and diffused lupus nephritis subtypes.          </p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td width="30%">
+                              <div class="one" style="text-align:center;">
+                                  <img src="images/projects/lrh-net_miccai_workshop_2022/ecg_gif.gif" style="max-height: 400px;">
+                              </div>
+                            </td>
+                            <td valign="top" width="70%">
+                              <h5>
+                                LRH-Net: A Multi-level Knowledge Distillation Approach for Low-Resource Heart Network
+                              </h5>
+                              <p class="self" style="display:inline">Ekansh Chauhan*</p>, <p class="authors" style="display:inline">Swathi Guptha, Likith Reddy & Bapi Raju </p>
+                            </p>
+                               <p>
+                                <!-- <i><span style="color:gray"></span>Under Review</i>, <a href="https://www.icra2023.org/" class="uline-special"><span style="color:red">ICRA 2023</span></a> -->
+                                <a href="https://fair-workshop.github.io/" class="uline-special"><span style="color:red">MICCAI Workshop</span></a>
+                              </p>
+                              <p>
+                                <!-- <a href="https://arxiv.org/pdf/2301.07213.pdf">Paper / </a> -->
+                                <a href="images/projects/lrh-net_miccai_workshop_2022/paper.pdf">Paper / </a>
+                                <!-- <a href="https://concept-graphs.github.io/">Project Page / </a> -->
+                                <!-- <a href="https://bipashasen.github.io/scarp/">Project Page / </a> -->
+                                <!-- <a href="https://www.youtube.com/watch?v=o2PuRVZ3jJA">Short Video / </a> -->
+                                <a href="https://github.com/ekansh09/LRH-Net/">Code / </a>
+                                <a href="">Video (Coming Soon)</a>
+                                <!-- <a href="images/projects/scarp_icra2023/poster.pdf">Poster / </a> -->
+                                <!-- <a href="https://youtu.be/lyEc991wyTI">Long Video</a> -->
+                              </p>
+                              <!-- &nbsp;<p style="color:red">More details coming soon!</p> -->
+                              <p>
+                                We introduce LRH-Net, a low-parameter model for ECG anomaly detection in resource-constrained settings. Leveraging multi-level knowledge distillation (MLKD), LRH-Net benefits from insights distilled from higher-parameter teacher models trained on diverse lead configurations. With 106 fewer parameters and 76% faster inference than the teacher model, LRH-Net achieves efficient detection of cardiovascular diseases, exhibiting a scaled performance of 3.25% on reduced lead data, making it well-suited for deployment on edge devices.
+                              </p>
+                            </td>
+                          </tr>
+                      </tbody>
+                    </table>
+                    </div>
+                    
+                    <br/>
+                    <hr/>
+                    
+                    
+                <!-- EXPERIENCE SECTION -->
+
+                <div class="header-1 pt-4">Experience</div>
+
+                <div class="row">
+                    <div class="col-lg-2 my-auto">
+                        <img class="sideimg" lsrc="images/iiit-logo.png">
+                    </div>
+                    <div class="col-lg-10">
+                        <p class="paper my-2 pl-2">
+                            <span class="papertitle">International Institute of Information Technology</span><br>
+                            <i>Research Fellow, Healthcare & Artificial Intelligence (HAI)</i><br>
+                            <ul>
+                                <li>Worked on improving the interpretability of classification models for disease diagnostics using self-supervision within the
+                                    purview of Chest X-rays</li>
+                                <li>Achieved downstream multi-label classification scores comparable to current supervised SoTA and superior performance
+                                    in terms of Grad-CAM localization</li>
+                                <li>Ranked 3rd in the <a class="in-text" href="https://grand-challenge.org/forums/forum/xray-projectomic-reconstruction-extracting-segment-with-skeleton-686/topic/isbi-2023-xpress-winners-1386/" target="_blank">X-ray Projectomic Reconstruction Challenge</a> hosted by Harvard Medical School. Developed an
+                                    Attention-inspired U-Net to predict axon trajectories in volumetric XNH images.
+                                     Presented at <a class="in-text" href="https://2023.biomedicalimaging.org/en/" target="_blank">ISBI'23</a></li>
+                            </ul>
+                            <!-- <a class="tag" href="https://github.com/" target="_blank">Github</a> -->
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-2 my-auto">
+                        <img class="sideimg" lsrc="images/BLK.png">
+                    </div>
+                    <div class="col-lg-10">
+                        <p class="paper my-2 pl-2">
+                            <span class="papertitle">Data Engineering Intern</span><br>
+                            <ul>
+                                <li>Developed a real-time ML pipeline to predict trade settlement failure using large, imbalanced, and distributed datasets</li>
+                                <li>Worked with financial and regulatory teams to perform EDA and pre-process datasets</li>
+                                <li>Experimented with models like XGBoost and SVM and achieved a fail-capture rate of 84%</li>
+                            </ul>
+                            <!-- <a class="tag" href="https://github.com/" target="_blank">Github</a> -->
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-2 my-auto">
+                        <img class="sideimg" lsrc="images/iop-logo.png">
+                    </div>
+                    <div class="col-lg-10">
+                        <p class="paper my-2 pl-2">
+                            <span class="papertitle">Machine Learning Intern</span><br>
+                            <ul>
+                                <li>Trained and integrated an Automatic Speech Recognition model for a video-conferencing platform</li>
+                                <li>Improved word error rate by 30% over benchmark with custom fine-tuned models for better generalization to the Indian
+                                    Accent using Indic Speech data</li>
+                                <li>Implemented RESTful APIs as Linux <i>systemd</i> processes, improving TAT by 50%</li>
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- EDUCATION SECTION -->
+
+                <div class="header-1 pt-4">Education</div>
+                <br>
+
+                <div class="row">
+                    <div class="col-lg-2 my-auto">
+                        <img class="sideimg" lsrc="images/iiit-logo.png">
+                    </div>
+                    <div class="col-lg-10">
+                        <p class="paper my-2 pl-2">
+                            <span class="papertitle">International Institute of Information Technology, Hyderabad</span><br>
+                            <i>Master of Science by Research in CSE</i>&nbsp | CGPA: 9.2 |&nbsp July'22 – Present<br>
+                            
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-2 my-auto">
+                        <img class="sideimg" lsrc="images/manipal-logo.png">
+                    </div>
+                    <div class="col-lg-10">
+                        <p class="paper my-2 pl-2">
+                            <span class="papertitle">Manipal Institute of Technology, Manipal</span><br>
+                            <i>Bachelor of Technology in CSE</i>&nbsp | July'17 – July'21<br>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- PROJECTS SECTION -->
+
+                <div class="header-1 pt-4">Projects</div>
+
+                <div class="row">
+                    <div class="col-lg-2 my-auto">
+                        <img class="sideimg" lsrc="images/stt.png">
+                    </div>
+                    <div class="col-lg-10">
+                        <p class="paper my-2 pl-2">
+                            <span class="papertitle">AutoSub</span><br>
+                            <ul>
+                                <li>Developed a CLI application to generate subtitles for video files on-device automatically</li>
+                                <li>Implemented MFCC features to segment audio on non-speech segments and perform speech recognition</li>
+                                <li>Improved performance using an external scorer (language model) and added support for GPU-based inference</li>
+                            </ul><br>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-2 my-auto">
+                        <img class="sideimg" lsrc="images/nn.gif">
+                    </div>
+                    <div class="col-lg-10">
+                        <p class="paper my-2 pl-2">
+                            <span class="papertitle">from scratch</span><br>
+                            minimal implementations from scratch of the following:
+                            <ul>
+                                <li>baby86: a minimal x86 "bootloader" to print stuff on screen</li>
+                                <li>nn: dense neural network with multiple layers and activation functions</li>
+                                <li>cnn: NumPy-only CNN with Conv and MaxPool layers</li>
+                                <li>torch: not-so-minimal implementation of the torch API</li>
+                            </ul><br>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-2 my-auto">
+                        <img class="sideimg" lsrc="images/pic.png">
+                    </div>
+                    <div class="col-lg-10">
+                        <p class="paper my-2 pl-2">
+                            <span class="papertitle">Bioactivity Prediction</span><br>
+                            <ul>
+                                <li>Used regression models to predict biological activity (pIC50 values) of protein targets from ChEMBL database</li>
+                                <li>Calculated Lipinski and PaDEL descriptors using Acetylcholinesterase (AChE) as the target protein</li>
+                                <li>The best Decision Tree Regressor model achieved an R-squared value of 0.86</li>
+                            </ul><br>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-2 my-auto">
+                        <img class="sideimg" lsrc="images/ars.gif">
+                    </div>
+                    <div class="col-lg-10">
+                        <p class="paper my-2 pl-2">
+                            <span class="papertitle">Augmented Random Search for Data Augmentation</span><br>
+                            <ul>
+                                <li>Improved AutoAugment by replacing the discrete search space with continuous space for augmentation policies</li>
+                                <li>Used Augmented Random Search method to improve performance and maintain diversities between sub-policies</li>
+                            </ul><br>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-2 my-auto">
+                        <img class="sideimg" lsrc="images/antenatal.png">
+                    </div>
+                    <div class="col-lg-10">
+                        <p class="paper my-2 pl-2">
+                            <span class="papertitle">Antenatal Care (iOS App)</span><br>
+                            <ul>
+                                <li>Created an iOS application using Swift and XCode to provide antenatal care for rural populations</li>
+                                <li>Implemented NFC to store electronic health records like test results, scans, prescription details on an NFC-enabled card</li>
+                                <li>Used Firebase as a back-end database for storage and retrieval of patient details</li>
+                            </ul><br>
+                        </p>
+                    </div>
+                </div>
+
+                <br><br>    
+
+                <!-- <a class="menulink" target="_blank" href="https://sebastinsanty.com/" style="font-size: 0.9rem;"><i
+                        class="fa fa-external-link" aria-hidden="true"></i>&nbsp; Template: Sebastin</a>
+                
+                <br><br> -->
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+</body>
+<style>
+    body {
+        /* font-family: 'Quicksand', sans-serif; */
+        font-family: 'Roboto', sans-serif;
+        font-weight: 300;
+        color: #444;
+        /* font-size: 17px; */
+        font-size: 0.9rem;
+        background-color: #fbfbfb;
+        /* background-image: url('images/subtle-old.jpg');; */
+        /* background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 800 800'%3E%3Cg fill='none' stroke='%23ffe0cf' stroke-width='1'%3E%3Cpath d='M769 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63'/%3E%3Cpath d='M-31 229L237 261 390 382 603 493 308.5 537.5 101.5 381.5M370 905L295 764'/%3E%3Cpath d='M520 660L578 842 731 737 840 599 603 493 520 660 295 764 309 538 390 382 539 269 769 229 577.5 41.5 370 105 295 -36 126.5 79.5 237 261 102 382 40 599 -69 737 127 880'/%3E%3Cpath d='M520-140L578.5 42.5 731-63M603 493L539 269 237 261 370 105M902 382L539 269M390 382L102 382'/%3E%3Cpath d='M-222 42L126.5 79.5 370 105 539 269 577.5 41.5 927 80 769 229 902 382 603 493 731 737M295-36L577.5 41.5M578 842L295 764M40-201L127 80M102 382L-261 269'/%3E%3C/g%3E%3Cg fill='%23ffffff'%3E%3Ccircle cx='769' cy='229' r='5'/%3E%3Ccircle cx='539' cy='269' r='5'/%3E%3Ccircle cx='603' cy='493' r='5'/%3E%3Ccircle cx='731' cy='737' r='5'/%3E%3Ccircle cx='520' cy='660' r='5'/%3E%3Ccircle cx='309' cy='538' r='5'/%3E%3Ccircle cx='295' cy='764' r='5'/%3E%3Ccircle cx='40' cy='599' r='5'/%3E%3Ccircle cx='102' cy='382' r='5'/%3E%3Ccircle cx='127' cy='80' r='5'/%3E%3Ccircle cx='370' cy='105' r='5'/%3E%3Ccircle cx='578' cy='42' r='5'/%3E%3Ccircle cx='237' cy='261' r='5'/%3E%3Ccircle cx='390' cy='382' r='5'/%3E%3C/g%3E%3C/svg%3E"); */
+    }
+
+    /* ol { padding-left: 1rem, padding-top: } */
+
+    .name {
+        font-size: 1.70rem;
+        color: #333;
+    }
+
+    .sideimg {
+        width: 110%;
+        /* border: 1px solid #ccc; */
+    }
+
+    /* .in-text {
+        font-weight: 400;
+    } */
+    .institution {
+        font-size: 12px;
+        color: #444;
+    }
+
+    .years {
+        font-size: 11px;
+        color: #888;
+    }
+
+    .instilogo {
+        height: 50px;
+        /* filter: grayscale(20%); */
+        /* opacity: 0.9; */
+    }
+
+    a {
+        /* color: #444; */
+        /* text-decoration: underline; */
+        /* color: #303f9f; */
+        color: #003d83;
+        /* color: #002147; */
+        font-weight: 400;
+    }
+
+    a:hover {
+        /* font-weight: 400; */
+        /* text-decoration: none;
+      transition-duration: 0.3s;
+      transition-timing-function: linear; */
+        text-decoration: none;
+        color: #1f62cc;
+        transition: 0.2s;
+        /* color: #444; */
+    }
+
+    .about {
+        font-size: 1rem;
+    }
+
+    .header-1 {
+        font-size: 1.8rem;
+        color: #444;
+    }
+
+
+
+    .thisauthor {
+        /* color: #111; */
+        text-decoration: underline;
+    }
+
+    .noter {
+        font-size: 9pt;
+    }
+
+    .tagsep {
+        padding: 4px;
+    }
+
+    .tag {
+        color: #444;
+        border: 1px solid rgb(155, 155, 155);
+        padding: 2px 4px;
+        border-radius: 3px;
+        margin: 0px 1px;
+        font-size: 90%;
+        background-color: rgba(88, 88, 88, 0.05);
+        /* margin-right:2px; */
+    }
+
+    /* .headtag {
+        color: #1f62cc;
+    }
+
+    .headtag:hover {
+        color: #1f62cc;
+    } */
+
+    .confshort {
+        font-weight: 300;
+    }
+
+    .conf {
+        display: inline-block;
+        padding-bottom: 4px;
+    }
+
+    .paper {
+        /* border-left: 1px solid #ddd; */
+        /* border-radius: 10px; */
+    }
+
+    .talk {
+        border-left: 2px solid #ddd;
+        /* color: #444; */
+        /* font-size: 0.95rem; */
+        /* border-radius: 10px; */
+    }
+
+    .papertitle {
+        /* color: #111; */
+        font-weight: 400;
+        /* font-size: 1rem; */
+    }
+
+    /* .talk:not(.papertitle) {
+        font-size: 0.5rem
+    } */
+
+    .menulink {
+        /* color: #444; */
+        color: #002147;
+        font-size: 1.1rem;
+        font-weight: 300;
+        /* text-decoration: underline;
+        text-decoration-color: #1f62cc; */
+    }
+
+    .menulink:hover {
+        color: #1f62cc;
+        transition: 0.2s;
+    }
+
+    .profilepic {
+        width: 235px;
+
+        /* border-radius:7%; */
+    }
+
+    @media (min-width: 768px) {
+        .fixed-posi {
+            /* width: 50%;
+          margin-left: 50%;
+          min-height:100%; */
+            position: fixed;
+        }
+    }
+
+    @media only screen and (max-width: 900px) {
+        .allstuff {
+            padding-top: 0px !important;
+        }
+
+        .allstuffp {
+            padding-top: 0px !important;
+        }
+
+        .profilepic {
+            width: 300px;
+            padding-top: 0px !important;
+            padding-bottom: 0px !important;
+        }
+
+        .menur {
+            padding-top: 18px !important;
+        }
+
+        .sideimg {
+            display: none;
+        }
+
+        .paper {
+            border-left: 1px solid #ddd;
+            /* border-radius: 10px; */
+        }
+
+    }
+</style>
+
+<script>
+    if (window.matchMedia('(max-width: 767px)').matches) {
+        $(".sideimg").remove();
+    }
+    $(function () {
+        $.each(document.images, function () {
+            var this_image = this;
+            var src = $(this_image).attr('src') || '';
+            if (!src.length > 0) {
+                //this_image.src = options.loading; // show loading
+                var lsrc = $(this_image).attr('lsrc') || '';
+                if (lsrc.length > 0) {
+                    var img = new Image();
+                    img.src = lsrc;
+                    $(img).on('load', function () {
+                        this_image.src = this.src;
+                    });
+                }
+            }
+        });
+    });
 </script>
 
-<img src="images/profile/ekansh_profile.jpg" alt="Ekansh Chauhan" width="240" style="float: right; padding: 20px; border-radius: 50%;" />
+</html>
 
-<div class="bio" style="text-align:justify">
 
-<p>
-  I am Ekansh Chauhan, currently pursuing a Master's by Research at the <a href="https://iiit.ac.in/" class="uline-special">International Institute of Information Technology, Hyderabad, </a> affiliated with the <a href="https://hai.iiit.ac.in/diag.html" class="uline-special">Cancer Diagnostics (DIAG)</a>, <a href="https://cvit.iiit.ac.in/" class="uline-special">Centre for Visual Information Technology (CVIT)</a> lab. Under the guidance of professors <a href="https://scholar.google.co.in/citations?user=c_V3bGgAAAAJ&hl=en" class="uline-special">Vinod P.K.</a> and <a href="https://scholar.google.com/citations?user=U9dH-DoAAAAJ&hl=en" class="uline-special">C.V. Jawahar</a>, my research focuses on the automated classification of tumors using histopathology images. In this project, my work involves collecting data from <a href="https://hai.iiit.ac.in/ipd/" class="uline-special">affiliated institutions</a> and employ deep learning methods to detect cancer tumors.
-</p>
+<!-- 
 
-<p>
-  Before I joined IIIT Hyderabad, I was a Research Fellow at <a href="https://ihub-data.iiit.ac.in/" class="uline-special">iHub Data</a>, where I worked with <a href="https://scholar.google.co.in/citations?user=bbSYyiAAAAAJ&hl=en" class="uline-special">Prof. Bapi Raju S</a> on developing a low-parameter model, LRH-Net, designed to detect multiple fatal cardiovascular diseases at once in resource-constrained environments. Also, through proposed multi-level knowledge distillation, I was able to reduce the required input leads to two or three (generally twelve), enhancing its user-friendliness and suitability for edge devices.
-</p>
-<br>
-<p>
-  I completed my Bachelors from <a href="http://www.ipu.ac.in/" class="uline-special">GGSIPU University</a> Delhi in Information Technology. I worked in the areas of evolutionary algorithms, detection and prediction of COVID-19 using deep learning, and interned at The <a href="https://iitbhu.ac.in/" class="uline-special">IIT-BHU - Indian Institute of Technology (BHU) Varanasi</a> with <a href="https://scholar.google.co.in/citations?user=-JrVzUQAAAAJ&hl=en" class="uline-special">Prof. Hari Prabhat Gupta</a> on quality assessment of River Ganga using machine learning.
-</p>
+<style>
+    body {
+        /* font-family: 'Quicksand', sans-serif; */
+        font-family: 'Barlow', sans-serif;
+        font-weight: 300;
+        color: #333;
+        font-size: 17px;
+        background-color:rgb(255, 255, 255);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 800 800'%3E%3Cg fill='none' stroke='%23d9e0ed' stroke-width='1.1'%3E%3Cpath d='M769 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63'/%3E%3Cpath d='M-31 229L237 261 390 382 603 493 308.5 537.5 101.5 381.5M370 905L295 764'/%3E%3Cpath d='M520 660L578 842 731 737 840 599 603 493 520 660 295 764 309 538 390 382 539 269 769 229 577.5 41.5 370 105 295 -36 126.5 79.5 237 261 102 382 40 599 -69 737 127 880'/%3E%3Cpath d='M520-140L578.5 42.5 731-63M603 493L539 269 237 261 370 105M902 382L539 269M390 382L102 382'/%3E%3Cpath d='M-222 42L126.5 79.5 370 105 539 269 577.5 41.5 927 80 769 229 902 382 603 493 731 737M295-36L577.5 41.5M578 842L295 764M40-201L127 80M102 382L-261 269'/%3E%3C/g%3E%3Cg fill='%23ffffff'%3E%3Ccircle cx='769' cy='229' r='5'/%3E%3Ccircle cx='539' cy='269' r='5'/%3E%3Ccircle cx='603' cy='493' r='5'/%3E%3Ccircle cx='731' cy='737' r='5'/%3E%3Ccircle cx='520' cy='660' r='5'/%3E%3Ccircle cx='309' cy='538' r='5'/%3E%3Ccircle cx='295' cy='764' r='5'/%3E%3Ccircle cx='40' cy='599' r='5'/%3E%3Ccircle cx='102' cy='382' r='5'/%3E%3Ccircle cx='127' cy='80' r='5'/%3E%3Ccircle cx='370' cy='105' r='5'/%3E%3Ccircle cx='578' cy='42' r='5'/%3E%3Ccircle cx='237' cy='261' r='5'/%3E%3Ccircle cx='390' cy='382' r='5'/%3E%3C/g%3E%3C/svg%3E");
+      }
+    .name {
+        font-size: 23pt;
+        color: #111;
+        
+    }
 
-<p><strong>Research Interests: </strong><span style="color:gray">My research interests lie broadly at the intersection of computer vision and healthcare. My goal is developing autonomous healthcare diagnosis systems which integrate diverse modalities and enhance patient outcomes, including predicting disease progression and identifying treatments, with a focus on explainability and edge device applicability.</span></p>
-<br/>
+    .sideimg {
+        width: 100%;
+        border: 1px solid #ccc;
+    }
+    .institution {
+        font-size: 13px;
+        color: #222;
+    }
+    .years {
+        font-size: 12px;
+        color: #666666;
+    }
 
-<div class="container">
-  <div class="row" style="text-align:center;">
-        <div class="col">
-          <a href="https://www.iiit.ac.in/"><img src="images/affiliations/resized/iiith.png" style="width:60%;max-height:80px"></a>
-        </div>
-        <div class="col" style="text-align:center;">
-          <a href="https://www.gametheory.in/"><img src="images/affiliations/game_theory.png" style="width:60%;max-height:80px"></a>
-        </div>
-        <div class="col" style="text-align:center;">
-          <a href="https://ihub-data.iiit.ac.in/"><img src="images/affiliations/resized/ihub_r.png" style="width:60%;max-height:80px"></a>
-        </div>
-        <div class="col" style="text-align:center;">
-          <a href="https://www.ui-educon.com/"><img src="images/affiliations/ui_ed.png" style="max-height:80px;width:60%"></a>
-        </div>
-        <div class="col" style="text-align:center;">
-          <a href="https://iitbhu.ac.in/"><img src="images/affiliations/resized/iit_logo_original_r.png" style="max-height:80px;width:60%"></a>
-        </div>
-        <div class="col">
-          <a href="http://www.ipu.ac.in/"><img src="images/affiliations/resized/GGSIU_logo.png" style="max-height:80px;width:60%"></a>
-        </div>
-  </div>
-  <div class="row" style="text-align:center;">
-        <div class="col">
-          <div style="padding:10px"><h6>2022 - Current</h6></div>
-        </div>
-        <div class="col">
-          <div style="padding:10px"><h6>2023 - 2024</h6></div>
-        </div>
-        <div class="col">
-          <div style="padding:10px"><h6>2021 - 2022</h6></div>
-        </div>
-        <div class="col">
-          <div style="padding:10px"><h6>2019 - 2023</h6></div>
-        </div>
-        <div class="col">
-          <div style="padding:10px"><h6>2020</h6></div>
-        </div>
-        <div class="col">
-          <div style="padding:10px"><h6>2017-2021</h6></div>
-        </div>
-  </div>
-</div>
+    .instilogo {
+        height: 50px;
+        filter: grayscale(20%);
+    }
 
-<hr/>
-<br/>
+    a {
+        /* color: #555; */
+        /* text-decoration: underline; */
+        color: #a00000;
+        /* font-weight: 400; */
+    }
 
-<div id="research">
-<h2>
-  <a name="research">Selected Publications</a>
-</h2>
-<br/>
+    a:hover {
+      /* font-weight: 400; */
+      /* text-decoration: none;
+      transition-duration: 0.3s;
+      transition-timing-function: linear; */
+      text-decoration: none;
+      color: #a00000;
+      /* color: #444; */
+    }
 
-<table width="100%" align="center" valign="middle" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
-    <tbody>
-      <tr>
-        <td width="30%">
-          <div class="one">
-              <img src="images/projects/brain_histo/image.png" style="max-height: 400px; text-align: center; ">
-              <!-- <a href="https://www.timeisnephrons.com/" style="font-size: 10px; text-align: left;">* Gif Source</a> -->
-          </div>
-        </td>
-        <td valign="top" width="70%">
-          <h5>
-            Multiple Instance Learning for Glioma Subtype, Grading and IHC biomarkers using H&E Stained WSIs: An Indian Cohort Study
-          </h5>
-          <p class="self" style="display:inline">Ekansh Chauhan*</p>, <p class="authors" style="display:inline">Amit Sharma, Megha S Uppin, C.V. Jawahar & P.K. Vinod</p>
-        </p>
-           <p>
-            <!-- <i><span style="color:gray"></span>Under Review</i>, <a href="https://www.icra2023.org/" class="uline-special"><span style="color:red">ICRA 2023</span></a> -->
-            <a href="https://ekansh09.github.io/#research" class="uline-special"><span style="color:red">MIDL'24</span></a>
-          </p>
-          <p>
-            <!-- <a href="https://arxiv.org/pdf/2301.07213.pdf">Paper / </a> -->
-            <a href="images/projects/brain_histo/paper.pdf">Paper / </a>
-            <!-- <a href="https://concept-graphs.github.io/">Project Page / </a> -->
-            <!-- <a href="https://bipashasen.github.io/scarp/">Project Page / </a> -->
-            <!-- <a href="https://www.youtube.com/watch?v=o2PuRVZ3jJA">Short Video / </a> -->
-            <a href="https://github.com/ekansh09/">Code</a>
-            <!-- <a href="">Video (Coming Soon)</a> -->
-            <!-- <a href="images/projects/scarp_icra2023/poster.pdf">Poster / </a> -->
-            <!-- <a href="https://youtu.be/lyEc991wyTI">Long Video</a> -->
-          </p>
-          <!-- &nbsp;<p style="color:red">More details coming soon!</p> -->
-          <p>
-            This study introduces advancements in brain tumor (glioma) management through multiple-instance learning, ResNet-50 for feature extraction, and the DTFD feature aggregator for histopathology analysis. It sets new performance benchmarks for glioma subtype classification, achieving AUCs of 88.08 on the Indian demographic dataset (IPD-Brain: in-house) and 95.81 on the TCGA-Brain dataset. Additionally, it establishes benchmarks for grading and identifying immunohistochemical molecular biomarkers in gliomas using H&E stained slides. The research demonstrates a significant alignment between the model's decisions and pathologists' diagnostic methods, showcasing its potential to replicate professional diagnostic procedures.
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td width="30%">
-          <div class="one">
-              <img src="images/projects/lupus_nephritis/Animated_Kidney.gif" style="max-height: 500px; text-align: center; ">
-              <a href="https://www.timeisnephrons.com/" style="font-size: 10px; text-align: left;">* Gif Source</a>
-          </div>
-        </td>
-        <td valign="top" width="70%">
-          <h5>
-            Lupus Nephritis Subtype Classification with only Slide Level Labels
-          </h5>
-          <p class="authors" style="display:inline">Amit Sharma</p>, <p class="self" style="display:inline">Ekansh Chauhan*</p>, <p class="authors" style="display:inline">Megha S Uppin, Liza Rajasekhar, C.V. Jawahar & P.K. Vinod</p>
-        </p>
-           <p>
-            <!-- <i><span style="color:gray"></span>Under Review</i>, <a href="https://www.icra2023.org/" class="uline-special"><span style="color:red">ICRA 2023</span></a> -->
-            <a href="https://ekansh09.github.io/#research" class="uline-special"><span style="color:red">Submitted</span></a>
-          </p>
-          <p>
-            <!-- <a href="https://openreview.net/forum?id=c1AfNZoSyQ">Paper / </a> -->
-            <a href="images/projects/lupus_nephritis/paper.pdf">Paper / </a>
-            <!-- <a href="https://concept-graphs.github.io/">Project Page / </a> -->
-            <!-- <a href="https://bipashasen.github.io/scarp/">Project Page / </a> -->
-            <!-- <a href="https://www.youtube.com/watch?v=o2PuRVZ3jJA">Short Video / </a> -->
-            <a href="https://github.com/ekansh09/">Code</a>
-            <!-- <a href="">Video (Coming Soon)</a> -->
-            <!-- <a href="images/projects/scarp_icra2023/poster.pdf">Poster / </a> -->
-            <!-- <a href="https://youtu.be/lyEc991wyTI">Long Video</a> -->
-          </p>
-          <!-- &nbsp;<p style="color:red">More details coming soon!</p> -->
-          <p>
-            Our research introduces LupusNet, a novel deep learning model designed for lupus nephritis classification using only slide-level labels, avoiding the need for detailed glomerular-level labeling. We created the largest multi-stained digital histopathology dataset for lupus nephritis from the Indian population. LupusNet leverages a multiple instance learning approach and has demonstrated high effectiveness, with an AUC score of 91.0%, F1-score of 77.3%, and accuracy of 81.1% in identifying membranous and diffused lupus nephritis subtypes.          </p>
-        </td>
-      </tr>
-      <tr>
-        <td width="30%">
-          <div class="one" style="text-align:center;">
-              <img src="images/projects/lrh-net_miccai_workshop_2022/ecg_gif.gif" style="max-height: 400px;">
-          </div>
-        </td>
-        <td valign="top" width="70%">
-          <h5>
-            LRH-Net: A Multi-level Knowledge Distillation Approach for Low-Resource Heart Network
-          </h5>
-          <p class="self" style="display:inline">Ekansh Chauhan*</p>, <p class="authors" style="display:inline">Swathi Guptha, Likith Reddy & Bapi Raju </p>
-        </p>
-           <p>
-            <!-- <i><span style="color:gray"></span>Under Review</i>, <a href="https://www.icra2023.org/" class="uline-special"><span style="color:red">ICRA 2023</span></a> -->
-            <a href="https://fair-workshop.github.io/" class="uline-special"><span style="color:red">MICCAI Workshop</span></a>
-          </p>
-          <p>
-            <!-- <a href="https://arxiv.org/pdf/2301.07213.pdf">Paper / </a> -->
-            <a href="images/projects/lrh-net_miccai_workshop_2022/paper.pdf">Paper / </a>
-            <!-- <a href="https://concept-graphs.github.io/">Project Page / </a> -->
-            <!-- <a href="https://bipashasen.github.io/scarp/">Project Page / </a> -->
-            <!-- <a href="https://www.youtube.com/watch?v=o2PuRVZ3jJA">Short Video / </a> -->
-            <a href="https://github.com/ekansh09/LRH-Net/">Code / </a>
-            <a href="">Video (Coming Soon)</a>
-            <!-- <a href="images/projects/scarp_icra2023/poster.pdf">Poster / </a> -->
-            <!-- <a href="https://youtu.be/lyEc991wyTI">Long Video</a> -->
-          </p>
-          <!-- &nbsp;<p style="color:red">More details coming soon!</p> -->
-          <p>
-            We introduce LRH-Net, a low-parameter model for ECG anomaly detection in resource-constrained settings. Leveraging multi-level knowledge distillation (MLKD), LRH-Net benefits from insights distilled from higher-parameter teacher models trained on diverse lead configurations. With 106 fewer parameters and 76% faster inference than the teacher model, LRH-Net achieves efficient detection of cardiovascular diseases, exhibiting a scaled performance of 3.25% on reduced lead data, making it well-suited for deployment on edge devices.
-          </p>
-        </td>
-      </tr>
-  </tbody>
-</table>
-</div>
+    .about {
+        font-size: 12pt;
+        text-align: justify;
+      text-justify: inter-word;
+    }
 
-<br/>
-<hr/>
+    .header {
+        font-size: 18pt;
+        color: #111;
+    }
 
-<div id="news">
-  <h2>News & Announcements</h2>
-  <br />
-  <ul>
-  <li>
-      <p>
-        [Apr '24] <a href="https://openreview.net/forum?id=c1AfNZoSyQ" class="uline">Lupus Nephritis: </a> Paper accepted in MIDL'24.</a>.
-      </p>
-  </li>
-  <li>
-    <p>
-      [Oct '23] Participated in <a href="https://megathon.in/" class="uline">Megathon</a> at IIIT-H</a>.
-    </p>
-</li>
+    .papertitle {
+        color: #111;
+        font-weight: 400;
+    }
 
-  </ul>
-</div>
+    .thisauthor {
+        color: #000000;
+        text-decoration: underline dotted;
+        font-weight: 500;
+    }
+    .noter {
+        font-size: 9pt;
+    }
+    .tagsep {
+        padding: 4px;
+    }
+    /* .tag {
+        padding-right:2px;
+    }
+     */
+  .tag {
+      border: 1px solid rgb(143, 0, 0);
+      padding: 2px 4px;
+      border-radius: 3px;
+      margin: 0px 1px;
+      font-size: 90%;
+      background-color: rgb(143, 0, 0, 0.05);
+      /* margin-right:2px; */
+  }
 
-<div hidden="hidden">
-<script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=HlPcyrzc7e8yFyrAN5zVRB4Q6oQOU5EwTtuv9SXJE7Y&cl=ffffff&w=a"></script>
-</div>
+    .confshort {
+        font-weight: 300;
+    }
+
+    .conf {
+        display: inline-block;
+        padding-bottom: 4px;
+    }
+
+    .paper {
+        /* border-left: 1px solid #ddd; */
+        /* border-radius: 10px; */
+    }
+
+    .menulink {
+        color: #a00000;
+    }
+
+    .menulink:hover {
+        color: #111;
+    }
+
+    .profilepic {
+    width:240px;
+    /* padding-left:10px; */
+    
+    /* border-radius: 10%/20%; */
+    }
+
+    @media (min-width: 768px) {
+          .fixed-posi {
+          /* width: 50%;
+          margin-left: 50%;
+          min-height:100%; */
+          position:fixed;
+    }
+    }
+
+    @media only screen and (max-width: 900px) {
+    .allstuff {
+        padding-top:0px !important;
+    }
+
+    .allstuffp {
+        padding-top:0px !important;
+    }
+
+    .profilepic {
+          width:150px;
+          padding-top:0px !important;
+          padding-bottom: 0px !important;
+    }
+
+    .menur {
+        padding-top:18px !important;
+    }
+
+    .sideimg {
+        display: none;
+    }
+
+    .paper {
+        border-left: 1px solid #ddd;
+        /* border-radius: 10px; */
+    }
+
+    }
+    
+</style> -->
