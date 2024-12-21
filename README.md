@@ -61,6 +61,7 @@ You can visit the live website at [ekansh09.github.io](https://ekansh09.github.i
 ## Credits
 
 - Designed and developed by **Ekansh Chauhan**.
+- Special thanks to my friends for their valuable input and for making the process fun and memorable.
 - Inspiration from various academic and personal portfolio designs.
 
 ## License
@@ -69,4 +70,4 @@ This project is licensed under the MIT License. Feel free to use and modify the 
 
 ---
 
-Thank you for visiting my website! If you have any questions, feel free to [reach out](mailto:ekansh.chauhan@research.iiit.ac.in).
+Thank you for visiting my website! If you have any questions, feel free to [reach out](mailto:echauhan09@gmail.com).
