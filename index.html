@@ -1,744 +1,517 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-180102748-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'UA-180102748-1');
-    </script> -->
-
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Ekansh Chauhan</title>
 
-
-
-    <script src="https://kit.fontawesome.com/cf1c3caa39.js" crossorigin="anonymous"></script>
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css"> -->
-    <link rel="stylesheet" href="./css/academicons.min.css" />
-
-    <!-- Primary Meta Tags -->
+    <!-- Meta Tags -->
     <meta name="title" content="Ekansh Chauhan">
     <meta name="description" content="M.S by Research student at IIIT Hyderabad">
-
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="ekansh09.github.io">
     <meta property="og:title" content="Ekansh Chauhan">
     <meta property="og:description" content="M.S by Research student at IIIT Hyderabad">
     <meta property="og:image" content="https://ekansh09.github.io/images/profile/ekansh_profile.jpg">
-
     <meta name="theme-color" content="#222222">
 
+    <!-- Icons -->
     <link rel="apple-touch-icon" sizes="180x180" href="images/nicons/Icon-180.png">
     <link rel="icon" type="image/png" sizes="32x32" href="images/nicons/Icon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/nicons/Icon-16.png">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400&display=swap" rel="stylesheet"> -->
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/academicons.min.css" />
+    <script src="https://kit.fontawesome.com/cf1c3caa39.js" crossorigin="anonymous"></script>
 
+    <style>
+        :root {
+            --primary-color: #003d83;
+            --hover-color: #1f62cc;
+            --text-color: #444;
+            --light-border: #d3d3d3;
+            --background: #fbfbfb;
+            --card-background: #ffffff;
+        }
 
-    <title>Ekansh Chauhan</title>
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 300;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            background-color: var(--background);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            padding: 2rem 1rem;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: sticky;
+            top: 2rem;
+            padding: 2rem;
+        }
+
+        .profile-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .profile-img {
+            width: 235px;
+            margin-bottom: 1.5rem;
+            border-radius: 10%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .name {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .social-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            border-radius: 5px;
+        }
+
+        .social-link:hover {
+            color: var(--hover-color);
+            background-color: rgba(0,0,0,0.05);
+            text-decoration: none;
+            transform: translateX(5px);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light-border);
+            font-weight: 500;
+        }
+
+        /* About Section */
+        .about-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            text-align: justify;
+        }
+
+        .about-text a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .about-text a:hover {
+            color: var(--hover-color);
+        }
+
+        /* Grid Layout for Cards */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .grid-item {
+            background: var(--card-background);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .grid-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .grid-item-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .grid-item-content {
+            flex: 1;
+        }
+
+        .item-title {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .item-subtitle {
+            color: var(--text-color);
+            font-style: italic;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .item-period {
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 0.75rem;
+        }
+
+        /* Research Item Styles */
+        .research-item {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .research-image {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .research-content {
+            flex: 1;
+        }
+
+        .research-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .research-authors {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .research-venue {
+            color: red;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .research-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-right: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .research-links a:hover {
+            color: var(--hover-color);
+        }
+
+        /* Teaching Experience Styles */
+        .teaching-courses {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0.75rem 0 0 0;
+        }
+
+        .teaching-courses li {
+            margin-bottom: 0.5rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .teaching-courses li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .sidebar {
+                position: static;
+                padding: 1rem;
+            }
+
+            .profile-img {
+                width: 150px;
+                height: auto;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-item-logo {
+                width: 40px;
+                height: 40px;
+            }
+
+            .research-item {
+                flex-direction: column;
+            }
+
+            .research-image {
+                width: 100%;
+                height: 200px;
+            }
+        }
+
+        /* Animation for page load */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section {
+            animation: fadeIn 0.8s ease forwards;
+        }
+    </style>
 </head>
-
 <body>
-    <!-- <h1>Hello, world!</h1> -->
-    <div class="container pt-5 allstuffp">
-        <div class="row pt-5 allstuff">
-            <div class="col-md-4 pt-5">
-                <div class="fixed-posi">
-                    <!-- <p class="name">Ekansh Chauhan</p> -->
-                    <p class="name"><span style="font-weight: 700;">Ekansh</span> Chauhan</p>
-                    <img lsrc="images/profile/ekansh_profile.jpg" class="profilepic mt-3 rounded shadow mb-3">
-                    <div class="pt-5 menur"><a class="menulink" target="_blank" href="assets/Ekansh_Resume.pdf"><i
-                                class="had fas fa-file-alt"></i>&nbsp; resume</a></div>
-                    <div class=""><a class="menulink" target="_blank"
-                            href="https://scholar.google.com/citations?user=sRA8oqIAAAAJ&hl=en"><i
-                                class="fab fa-google"></i>&nbsp; scholar</a></div>
-                    <div class=""><a class="menulink" target="_blank"
-                            href="https://www.linkedin.com/in/ekanshchauhan/"><i class="fab fa-linkedin-in"></i>&nbsp;
-                            linkedin</a></div>
-                    <div class=""><a class="menulink" target="_blank" href="https://github.com/ekansh09"><i
-                                class="had fab fa-github"></i>&nbsp; github</a></div>
-                    <div class=""><a class="menulink" target="_blank" href="mailto:ekansh.chauhan@research.iiit.ac.in"><i
-                                class="fas fa-envelope"></i>&nbsp; email</a></div>
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-4">
+                <div class="sidebar">
+                    <div class="profile-section">
+                        <h1 class="name"><span style="font-weight: 700;">Ekansh</span> Chauhan</h1>
+                        <img src="images/profile/ekansh_profile.jpg" alt="Ekansh Chauhan" class="profile-img">
+                        <div class="social-links">
+                            <a href="assets/Ekansh_Resume.pdf" target="_blank" class="social-link">
+                                <i class="fas fa-file-alt"></i> Resume
+                            </a>
+                            <a href="https://scholar.google.com/citations?user=sRA8oqIAAAAJ&hl=en" target="_blank" class="social-link">
+                                <i class="fab fa-google"></i> Scholar
+                            </a>
+                            <a href="https://www.linkedin.com/in/ekanshchauhan/" target="_blank" class="social-link">
+                                <i class="fab fa-linkedin-in"></i> LinkedIn
+                            </a>
+                            <a href="https://github.com/ekansh09" target="_blank" class="social-link">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                            <a href="mailto:ekansh.chauhan@research.iiit.ac.in" class="social-link">
+                                <i class="fas fa-envelope"></i> Email
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-8 pt-5 about text-justify">
-                I am Ekansh Chauhan, currently pursuing a Master's by Research at the <a href="https://iiit.ac.in/" class="uline-special">International Institute of Information Technology, Hyderabad, </a> affiliated with the <a href="https://hai.iiit.ac.in/diag.html" class="uline-special">Cancer Diagnostics (DIAG)</a>, <a href="https://cvit.iiit.ac.in/" class="uline-special">Centre for Visual Information Technology (CVIT)</a> lab. Under the guidance of professors <a href="https://scholar.google.co.in/citations?user=c_V3bGgAAAAJ&hl=en" class="uline-special">Vinod P.K.</a> and <a href="https://scholar.google.com/citations?user=U9dH-DoAAAAJ&hl=en" class="uline-special">C.V. Jawahar</a>, my research focuses on the automated classification of tumors using histopathology images. In this project, my work involves collecting data from <a href="https://hai.iiit.ac.in/ipd/" class="uline-special">affiliated institutions</a> and employ deep learning methods to detect cancer tumors.
-                <br><br>
 
-                Before I joined IIIT Hyderabad, I was a Research Fellow at <a href="https://ihub-data.iiit.ac.in/" class="uline-special">iHub Data</a>, where I worked with <a href="https://scholar.google.co.in/citations?user=bbSYyiAAAAAJ&hl=en" class="uline-special">Prof. Bapi Raju S</a> on developing a low-parameter model, LRH-Net, designed to detect multiple fatal cardiovascular diseases at once in resource-constrained environments. Also, through proposed multi-level knowledge distillation, I was able to reduce the required input leads to two or three (generally twelve), enhancing its user-friendliness and suitability for edge devices.
-
-                <br><br>
-
-                I completed my Bachelors from <a href="http://www.ipu.ac.in/" class="uline-special">GGSIPU University</a> Delhi in Information Technology. I worked in the areas of evolutionary algorithms, detection and prediction of COVID-19 using deep learning, and interned at The <a href="https://iitbhu.ac.in/" class="uline-special">IIT-BHU - Indian Institute of Technology (BHU) Varanasi</a> with <a href="https://scholar.google.co.in/citations?user=-JrVzUQAAAAJ&hl=en" class="uline-special">Prof. Hari Prabhat Gupta</a> on quality assessment of River Ganga using machine learning.
-
-                <hr style="border: 1px solid #d3d3d3; margin: 20px 0 0 0; width: 100%;" />
-
-
-
-                <!-- RESEARCH SECTION -->
-
-                <div class="header-1 pt-4" style="font-weight: 500;">Research</div>
-
-                <div class="row">
-                    <div class="col-md-2 my-auto">
-                        <img class="sideimg" lsrc="images/projects/brain_histo/image.png">
-                    </div>
-                    <div class="col-lg-10">
-                        <p class="paper my-2 pl-2">
-                            <!-- <b></b> <br> -->
-                            <span style="font-weight: 600;">Multiple Instance Learning for Glioma Subtype, Grading and IHC biomarkers using H&E Stained WSIs: An Indian Cohort Study</span><br>
-                            <span class="thisauthor">Ekansh Chauhan</span>, Amit Sharma, Megha S Uppin, C.V. Jawahar & P.K. Vinod<br>
-                            <span style="color:red">Nature Scientific Data'24</span><br>
-                            <a href="https://doi.org/10.1038/s41597-024-04225-9">Paper / </a>
-                            <a href="https://github.com/ekansh09/">Code</a>
+            <!-- Main Content -->
+            <div class="col-md-8">
+                <div class="main-content">
+                    <!-- About Section -->
+                    <section class="section">
+                        <p class="about-text">
+                            I am Ekansh Chauhan, currently pursuing a Master's by Research at the <a href="https://iiit.ac.in/">International Institute of Information Technology, Hyderabad</a>, affiliated with the <a href="https://hai.iiit.ac.in/diag.html">Cancer Diagnostics (DIAG)</a>, <a href="https://cvit.iiit.ac.in/">Centre for Visual Information Technology (CVIT)</a> lab. Under the guidance of professors <a href="https://scholar.google.co.in/citations?user=c_V3bGgAAAAJ&hl=en">Vinod P.K.</a> and <a href="https://scholar.google.com/citations?user=U9dH-DoAAAAJ&hl=en">C.V. Jawahar</a>, my research focuses on the automated classification of tumors using histopathology images.
                         </p>
-                    </div>
+                        <p class="about-text">
+                            Before I joined IIIT Hyderabad, I was a Research Fellow at <a href="https://ihub-data.iiit.ac.in/">iHub Data</a>, where I worked with <a href="https://scholar.google.co.in/citations?user=bbSYyiAAAAAJ&hl=en">Prof. Bapi Raju S</a> on developing a low-parameter model, LRH-Net, designed to detect multiple fatal cardiovascular diseases.
+                        </p>
+                        <p class="about-text">
+                            I completed my Bachelors from <a href="http://www.ipu.ac.in/">GGSIPU University</a> Delhi in Information Technology.
+                        </p>
+                    </section>
+
+                    <!-- Research Section -->
+                    <section class="section">
+                        <h2 class="section-title">Research</h2>
+                        <div class="research-item">
+                            <img src="images/projects/brain_histo/image.png" alt="Brain Histopathology" class="research-image">
+                            <div class="research-content">
+                                <h3 class="research-title">Multiple Instance Learning for Glioma Subtype, Grading and IHC biomarkers using H&E Stained WSIs: An Indian Cohort Study</h3>
+                                <p class="research-authors">
+                                    <span style="text-decoration: underline;">Ekansh Chauhan</span>, Amit Sharma, Megha S Uppin, C.V. Jawahar & P.K. Vinod
+                                </p>
+                                <p class="research-venue">Nature Scientific Data'24</p>
+                                <div class="research-links">
+                                    <a href="https://openreview.net/forum?id=c1AfNZoSyQ">Paper</a>
+                                    <a href="https://github.com/ekansh09/">Code</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="research-item">
+                            <img src="images/projects/lrh-net_miccai_workshop_2022/ecg_gif.gif" alt="LRH-Net" class="research-image">
+                            <div class="research-content">
+                                <h3 class="research-title">LRH-Net: A Multi-level Knowledge Distillation Approach for Low-Resource Heart Network</h3>
+                                <p class="research-authors">
+                                    <span style="text-decoration: underline;">Ekansh Chauhan</span>, Swathi Guptha, Likith Reddy & Bapi Raju
+                                </p>
+                                <p class="research-venue">MICCAI Workshop: FAIR'22</p>
+                                <div class="research-links">
+                                    <a href="https://link.springer.com/chapter/10.1007/978-3-031-18523-6_18">Paper</a>
+                                    <a href="https://github.com/ekansh09/">Code</a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Work Experience -->
+                    <section class="section">
+                        <h2 class="section-title">Work Experience</h2>
+                        <div class="grid-container">
+                            <div class="grid-item">
+                                <img src="images/affiliations/game_theory.png" alt="Game Theory Logo" class="grid-item-logo">
+                                <div class="grid-item-content">
+                                    <h3 class="item-title">Game Theory, Bangalore</h3>
+                                    <div class="item-subtitle">Intern</div>
+                                    <div class="item-subtitle">Computer Vision</div>
+                                    <div class="item-period">May 2021 - May 2022</div>
+                                </div>
+                            </div>
+                            <div class="grid-item">
+                                <img src="images/affiliations/ihub_data.png" alt="iHub-Data Logo" class="grid-item-logo">
+                                <div class="grid-item-content">
+                                    <h3 class="item-title">iHub-Data, Hyderabad</h3>
+                                    <div class="item-subtitle">Research Fellow</div>
+                                    <div class="item-subtitle">Healthcare & Artificial Intelligence (HAI)</div>
+                                    <div class="item-period">May 2021 - May 2022</div>
+                                </div>
+                            </div>
+                            <div class="grid-item">
+                                <img src="images/affiliations/ui_educon.png" alt="UI-Educon Logo" class="grid-item-logo">
+                                <div class="grid-item-content">
+                                    <h3 class="item-title">UI-Educon, Delhi</h3>
+                                    <div class="item-subtitle">Affiliated Member</div>
+                                    <div class="item-subtitle">Discussion/Ideation with Founders</div>
+                                    <div class="item-period">Feb 2019 - Jul 2023</div>
+                                </div>
+                            </div>
+                            <div class="grid-item">
+                                <img src="images/affiliations/iit_bhu.png" alt="IIT BHU Logo" class="grid-item-logo">
+                                <div class="grid-item-content">
+                                    <h3 class="item-title">Indian Institute of Technology (BHU), Varanasi</h3>
+                                    <div class="item-subtitle">Research Intern</div>
+                                    <div class="item-subtitle">IoT & Machine Learning</div>
+                                    <div class="item-period">Jun 2020 - Jul 2020</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Teaching Experience -->
+                    <section class="section">
+                        <h2 class="section-title">Teaching Experience</h2>
+                        <div class="grid-container">
+                            <div class="grid-item">
+                                <img src="images/iiit-logo.png" alt="IIIT Hyderabad Logo" class="grid-item-logo">
+                                <div class="grid-item-content">
+                                    <h3 class="item-title">Teaching Assistant @IIIT Hyderabad</h3>
+                                    <div class="item-subtitle">Responsibilities included conducting regular tutorials, grading assignments and exams, creating assignment questions, and assisting with evaluations for:</div>
+                                    <ul class="teaching-courses">
+                                        <li>Introduction to NLP</li>
+                                        <li>Advanced NLP</li>
+                                        <li>Cognitive Science and AI</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="grid-item">
+                                <img src="images/affiliations/kggs.png" alt="KGGS Logo" class="grid-item-logo">
+                                <div class="grid-item-content">
+                                    <h3 class="item-title">Visiting Senior Secondary Teacher @KGGS Surjannagar</h3>
+                                    <div class="item-subtitle">Subjects taught:</div>
+                                    <ul class="teaching-courses">
+                                        <li>Mathematics</li>
+                                        <li>Organic Chemistry</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Education Section -->
+                    <section class="section">
+                        <h2 class="section-title">Education</h2>
+                        <div class="grid-container">
+                            <div class="grid-item">
+                                <img src="images/affiliations/cruk.png" alt="CRUK Logo" class="grid-item-logo">
+                                <div class="grid-item-content">
+                                    <h3 class="item-title">Cancer Research UK, Scotland Institute & University of Glasgow</h3>
+                                    <div class="item-subtitle">Doctor of Philosophy</div>
+                                    <div class="item-subtitle">Cancer Sciences</div>
+                                    <div class="item-period">Nov 2024 - Current</div>
+                                </div>
+                            </div>
+                            <div class="grid-item">
+                                <img src="images/iiit-logo.png" alt="IIIT Hyderabad Logo" class="grid-item-logo">
+                                <div class="grid-item-content">
+                                    <h3 class="item-title">International Institute of Information Technology, Hyderabad</h3>
+                                    <div class="item-subtitle">Master of Science by Research  |  CGPA: 9.17</div>
+                                    <div class="item-subtitle">Computer Science and Engineering (Specialization: AI)</div>
+                                    <div class="item-subtitle">Thesis: Deep Learning for Cancer Subtype Classification from Histopathology Images: An Indian Cohort Study</div>
+                                    <div class="item-period">Jan 2022 - Dec 2024</div>
+                                </div>
+                            </div>
+                            <div class="grid-item">
+                                <img src="images/affiliations/mait.png" alt="MAIT Logo" class="grid-item-logo">
+                                <div class="grid-item-content">
+                                    <h3 class="item-title">Maharaja Agrasen Institute of Technology, Delhi</h3>
+                                    <div class="item-subtitle">Bachelor of Technology  |  CGPA: 8.66</div>
+                                    <div class="item-subtitle">Information Technology</div>
+                                    <div class="item-period">Aug 2017 - Jun 2021</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- News & Announcements Section -->
+                    <section class="section">
+                        <h2 class="section-title">News & Announcements</h2>
+                        <!-- Add news items here -->
+                    </section>
                 </div>
-
-                <div class="row">
-                    <div class="col-md-2 my-auto">
-                        <img class="sideimg" lsrc="images/projects/lupus_nephritis/Animated_Kidney.gif">
-                    </div>
-                    <div class="col-lg-10">
-                        <p class="paper my-2 pl-2">
-                            <span style="font-weight: 600;">Lupus Nephritis Subtype Classification with only Slide Level Labels</span><br>
-                            Amit Sharma, <span class="thisauthor">Ekansh Chauhan</span>, Megha S Uppin, Liza Rajasekhar, C.V. Jawahar & P.K. Vinod<br>
-                            <span style="color:red">MIDL'24</span><br>
-                            <a href="https://openreview.net/forum?id=c1AfNZoSyQ">Paper / </a>
-                            <a href="https://github.com/ekansh09/">Code</a>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-2 my-auto">
-                        <img class="sideimg" lsrc="images/projects/lrh-net_miccai_workshop_2022/ecg_gif.gif">
-                    </div>
-                    <div class="col-lg-10">
-                        <p class="paper my-2 pl-2">
-                            <span style="font-weight: 600;">LRH-Net: A Multi-level Knowledge Distillation Approach for Low-Resource Heart Network</span><br>
-                            <span class="thisauthor">Ekansh Chauhan</span>, Swathi Guptha, Likith Reddy & Bapi Raju<br>
-                            <span style="color:red">MICCAI Workshop: FAIR'22</span></a><br>
-                            <a href="https://link.springer.com/chapter/10.1007/978-3-031-18523-6_18">Paper / </a>
-                            <a href="https://github.com/ekansh09/">Code</a>
-                        </p>
-                    </div>
-
-
-                <hr style="border: 1px solid #d3d3d3; margin: 20px 0 0 0; width: 100%;" />
-                <!-- EXPERIENCE SECTION -->
-
-                    
-                <div class="header-1 pt-4" style="font-weight: 500;">Work Experience</div>
-
-                <br><br>
-
-
-                <div class="row">
-                    <div class="col-lg-2 my-auto">
-                        <img class="sideimg" lsrc="images/affiliations/game_theory.png">
-                    </div>
-                    <div class="col-lg-10">
-                        <p class="paper my-2 pl-2" style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
-                            <span>
-                                <span style="font-weight: 400;">Game Theory, Bangalore</span><br>
-                                <i style="margin-top: 10px;">Intern</i> <br>
-                                <i style="margin-top: 5;">Computer Vision</i>
-                            </span>
-                            <span style="text-align: right; font-weight: 400;">May 2021 - May 2022</span>
-                        </p>
-                    </div>
-                </div>
-
-
-                <div class="row">
-                    <div class="col-lg-2 my-auto">
-                        <img class="sideimg" lsrc="images/affiliations/ihub_data.png">
-                    </div>
-                    <div class="col-lg-10">
-                        <p class="paper my-2 pl-2" style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
-                            <span>
-                                <span style="font-weight: 400;">iHub-Data, Hyderabad</span><br>
-                                <i style="margin-top: 10px;">Research Fellow</i> <br>
-                                <i style="margin-top: 5;">Healthcare & Artificial Intelligence (HAI)</i>
-                            </span>
-                            <span style="text-align: right; font-weight: 400;">May 2021 - May 2022</span>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-2 my-auto">
-                        <img class="sideimg" lsrc="images/affiliations/ui_educon.png">
-                    </div>
-                    <div class="col-lg-10">
-                        <p class="paper my-2 pl-2" style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
-                            <span>
-                                <span style="font-weight: 400;">UI-Educon, Delhi</span><br>
-                                <i style="margin-top: 10px;">Affiliated Member</i> <br>
-                                <i style="margin-top: 5;">Discussion/Ideation with Founders</i>
-                            </span>
-                            <span style="text-align: right; font-weight: 400;">Feb 2019 - Jul 2023</span>
-                        </p>
-                    </div>
-                </div>
-
-                                                                                                                
-                <div class="row">
-                    <div class="col-lg-2 my-auto">
-                        <img class="sideimg" lsrc="images/affiliations/iit_bhu.png">
-                    </div>
-                    <div class="col-lg-10">
-                        <p class="paper my-2 pl-2" style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
-                            <span>
-                                <span style="font-weight: 400;">Indian Institute of Technology (BHU), Varanasi</span><br>
-                                <i style="margin-top: 10px;">Research Intern</i> <br>
-                                <i style="margin-top: 5;">IoT & Machine Learning</i>
-                            </span>
-                            <span style="text-align: right; font-weight: 400;">Jun 2020 - Jul 2020</span>
-                        </p>
-                    </div>
-                </div>
-
-
-                <!-- Teaching Experience -->
-
-                <hr style="border: 1px solid #d3d3d3; margin: 20px 0 0 0; width: 100%;" />
-                <div class="header-1 pt-4" style="font-weight: 500;">Teaching Experience</div>
-                
-                <br><br>
-
-                <div class="row">
-                    <div class="col-md-2 my-auto">
-                        <img class="sideimg" src="images/iiit-logo.png" alt="Animated Kidney">
-                    </div>
-                    <div class="col-lg-10">
-                        <p class="paper my-2 pl-2">
-                            <span>
-                                <span style="font-weight: 400;">
-                                    Teaching Assistant <a href="https://www.iiit.ac.in">@IIIT Hyderabad</a>
-                                </span><br>
-                                Responsibilities included conducting regular tutorials, grading assignments and exams, creating assignment questions, and assisting with evaluations for the courses listed below:<br>
-                                <ul style="margin-top: 5px; margin-bottom: 0; padding-left: 20px;">
-                                    <li>Introduction to NLP</li>
-                                    <li>Advanced NLP</li>
-                                    <li>Cognitive Science and AI</li>
-                                </ul>
-                            </span>
-                        </p>
-                    </div>
-                </div>
-                
-
-                <div class="row">
-                    <div class="col-md-2 my-auto">
-                        <img class="sideimg" src="images/affiliations/kggs.png" alt="KGGS Surjannagar Logo">
-                    </div>
-                    <div class="col-lg-10">
-                        <p class="paper my-2 pl-2">
-                            <span>
-                                <span style="font-weight: 400;">
-                                    Visiting Senior Secondary Teacher <a href="https://www.kggschool.com">@KGGS Surjannagar</a>
-                                </span><br>
-                                Subjects taught:
-                                <ul style="margin-top: 5px; margin-bottom: 0; padding-left: 20px;">
-                                    <li>Mathematics</li>
-                                    <li>Organic Chemistry</li>
-                                </ul>
-                            </span>
-                        </p>
-                    </div>
-                </div>
-                
-
-                <!-- EDUCATION SECTION -->
-                <hr style="border: 1px solid #d3d3d3; margin: 20px 0 0 0; width: 100%;" />
-
-                <div class="header-1 pt-4" style="font-weight: 500;">Education</div>
-
-                <br><br>
-
-
-                <div class="row">
-                    <div class="col-lg-2 my-auto">
-                        <img class="sideimg" lsrc="images/affiliations/cruk.png">
-                    </div>
-                    <div class="col-lg-10">
-                        <p class="paper my-2 pl-2" style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
-                            <span>
-                                <span style="font-weight: 550;">Cancer Research UK, Scotland Institute & University of Glasgow</span><br>
-                                <i style="margin-top: 10px;">Doctor of Philosophy</i> <br>
-                                <i style="margin-top: 5;">Cancer Sciences</i>                              
-                            </span>
-                            <span style="text-align: right; font-weight: 550;">Nov 2024 - Current</span>
-                        </p>
-                    </div>
-                </div>
-
-
-                <div class="row">
-                    <div class="col-lg-2 my-auto">
-                        <img class="sideimg" lsrc="images/iiit-logo.png">
-                    </div>
-                    <div class="col-lg-10">
-                        <p class="paper my-2 pl-2" style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
-                            <span>
-                                <span style="font-weight: 400;">International Institute of Information Technology, Hyderabad</span><br>
-                                <i style="margin-top: 10px;">Master of Science by Research</i>  |  <i>CGPA: 9.17</i><br>
-                                <i style="margin-top: 5;">Computer Science and Engineering (Specialization: AI)</i><br>
-                                <a href="" style="text-decoration: underline;">Thesis</a>: 
-                                <span style="text-decoration: underline;">
-                                    Deep Learning for Cancer Subtype Classification from Histopathology Images: An Indian Cohort Study
-                                </span>
-                                </span>
-                            <span style="text-align: right; font-weight: 400;">Jan 2022 - Dec 2024</span>
-                        </p>
-                    </div>
-                </div>
-
-
-                <div class="row">
-                    <div class="col-lg-2 my-auto">
-                        <img class="sideimg" lsrc="images/affiliations/mait.png">
-                    </div>
-                    <div class="col-lg-10">
-                        <p class="paper my-2 pl-2" style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
-                            <span>
-                                <span style="font-weight: 400;">Maharaja Agrasen Intitute of Technology, Delhi</span><br>
-                                <i style="margin-top: 10px;">Bachelor of Technology</i>  |  <i>CGPA: 8.66</i> <br>
-                                <i style="margin-top: 5;">Information Technology</i>
-                            </span>
-                            <span style="text-align: right; font-weight: 400;">Aug 2017 - Jun 2021</span>
-                        </p>
-                    </div>
-                </div>
-
-
-                <!-- News & Announcements -->
-
-                <hr style="border: 1px solid #d3d3d3; margin: 20px 0 0 0; width: 100%;" />
-                <div class="header-1 pt-4" style="font-weight: 500;">News & Announcements</div>
-
-
-                <br><br>    
-
-                <!-- <a class="menulink" target="_blank" href="https://sebastinsanty.com/" style="font-size: 0.9rem;"><i
-                        class="fa fa-external-link" aria-hidden="true"></i>&nbsp; Template: Sebastin</a>
-                
-                <br><br> -->
             </div>
-
         </div>
-
     </div>
 
-
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </body>
-<style>
-    body {
-        /* font-family: 'Quicksand', sans-serif; */
-        font-family: 'Roboto', sans-serif;
-        font-weight: 300;
-        color: #444;
-        /* font-size: 17px; */
-        font-size: 0.9rem;
-        background-color: #fbfbfb;
-        /* background-image: url('images/subtle-old.jpg');; */
-        /* background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 800 800'%3E%3Cg fill='none' stroke='%23ffe0cf' stroke-width='1'%3E%3Cpath d='M769 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63'/%3E%3Cpath d='M-31 229L237 261 390 382 603 493 308.5 537.5 101.5 381.5M370 905L295 764'/%3E%3Cpath d='M520 660L578 842 731 737 840 599 603 493 520 660 295 764 309 538 390 382 539 269 769 229 577.5 41.5 370 105 295 -36 126.5 79.5 237 261 102 382 40 599 -69 737 127 880'/%3E%3Cpath d='M520-140L578.5 42.5 731-63M603 493L539 269 237 261 370 105M902 382L539 269M390 382L102 382'/%3E%3Cpath d='M-222 42L126.5 79.5 370 105 539 269 577.5 41.5 927 80 769 229 902 382 603 493 731 737M295-36L577.5 41.5M578 842L295 764M40-201L127 80M102 382L-261 269'/%3E%3C/g%3E%3Cg fill='%23ffffff'%3E%3Ccircle cx='769' cy='229' r='5'/%3E%3Ccircle cx='539' cy='269' r='5'/%3E%3Ccircle cx='603' cy='493' r='5'/%3E%3Ccircle cx='731' cy='737' r='5'/%3E%3Ccircle cx='520' cy='660' r='5'/%3E%3Ccircle cx='309' cy='538' r='5'/%3E%3Ccircle cx='295' cy='764' r='5'/%3E%3Ccircle cx='40' cy='599' r='5'/%3E%3Ccircle cx='102' cy='382' r='5'/%3E%3Ccircle cx='127' cy='80' r='5'/%3E%3Ccircle cx='370' cy='105' r='5'/%3E%3Ccircle cx='578' cy='42' r='5'/%3E%3Ccircle cx='237' cy='261' r='5'/%3E%3Ccircle cx='390' cy='382' r='5'/%3E%3C/g%3E%3C/svg%3E"); */
-    }
-
-    /* ol { padding-left: 1rem, padding-top: } */
-
-    .name {
-        font-size: 1.70rem;
-        color: #333;
-    }
-
-    .sideimg {
-        width: 110%;
-        /* border: 1px solid #ccc; */
-    }
-
-    /* .in-text {
-        font-weight: 400;
-    } */
-    .institution {
-        font-size: 12px;
-        color: #444;
-    }
-
-    .years {
-        font-size: 11px;
-        color: #888;
-    }
-
-    .instilogo {
-        height: 50px;
-        /* filter: grayscale(20%); */
-        /* opacity: 0.9; */
-    }
-
-    a {
-        /* color: #444; */
-        /* text-decoration: underline; */
-        /* color: #303f9f; */
-        color: #003d83;
-        /* color: #002147; */
-        font-weight: 400;
-    }
-
-    a:hover {
-        /* font-weight: 400; */
-        /* text-decoration: none;
-      transition-duration: 0.3s;
-      transition-timing-function: linear; */
-        text-decoration: none;
-        color: #1f62cc;
-        transition: 0.2s;
-        /* color: #444; */
-    }
-
-    .about {
-        font-size: 1rem;
-    }
-
-    .header-1 {
-        font-size: 1.8rem;
-        color: #444;
-    }
-
-
-
-    .thisauthor {
-        /* color: #111; */
-        text-decoration: underline;
-    }
-
-    .noter {
-        font-size: 9pt;
-    }
-
-    .tagsep {
-        padding: 4px;
-    }
-
-    .tag {
-        color: #444;
-        border: 1px solid rgb(155, 155, 155);
-        padding: 2px 4px;
-        border-radius: 3px;
-        margin: 0px 1px;
-        font-size: 90%;
-        background-color: rgba(88, 88, 88, 0.05);
-        /* margin-right:2px; */
-    }
-
-    /* .headtag {
-        color: #1f62cc;
-    }
-
-    .headtag:hover {
-        color: #1f62cc;
-    } */
-
-    .confshort {
-        font-weight: 300;
-    }
-
-    .conf {
-        display: inline-block;
-        padding-bottom: 4px;
-    }
-
-    .paper {
-        /* border-left: 1px solid #ddd; */
-        /* border-radius: 10px; */
-    }
-
-    .talk {
-        border-left: 2px solid #ddd;
-        /* color: #444; */
-        /* font-size: 0.95rem; */
-        /* border-radius: 10px; */
-    }
-
-    .papertitle {
-        /* color: #111; */
-        font-weight: 400;
-        /* font-size: 1rem; */
-    }
-
-    /* .talk:not(.papertitle) {
-        font-size: 0.5rem
-    } */
-
-    .menulink {
-        /* color: #444; */
-        color: #002147;
-        font-size: 1.1rem;
-        font-weight: 300;
-        /* text-decoration: underline;
-        text-decoration-color: #1f62cc; */
-    }
-
-    .menulink:hover {
-        color: #1f62cc;
-        transition: 0.2s;
-    }
-
-    .profilepic {
-        width: 235px;
-
-        /* border-radius:7%; */
-    }
-
-    @media (min-width: 768px) {
-        .fixed-posi {
-            /* width: 50%;
-          margin-left: 50%;
-          min-height:100%; */
-            position: fixed;
-        }
-    }
-
-    @media only screen and (max-width: 900px) {
-        .allstuff {
-            padding-top: 0px !important;
-        }
-
-        .allstuffp {
-            padding-top: 0px !important;
-        }
-
-        .profilepic {
-            width: 300px;
-            padding-top: 0px !important;
-            padding-bottom: 0px !important;
-        }
-
-        .menur {
-            padding-top: 18px !important;
-        }
-
-        .sideimg {
-            display: none;
-        }
-
-        .paper {
-            border-left: 1px solid #ddd;
-            /* border-radius: 10px; */
-        }
-
-    }
-</style>
-
-<script>
-    if (window.matchMedia('(max-width: 767px)').matches) {
-        $(".sideimg").remove();
-    }
-    $(function () {
-        $.each(document.images, function () {
-            var this_image = this;
-            var src = $(this_image).attr('src') || '';
-            if (!src.length > 0) {
-                //this_image.src = options.loading; // show loading
-                var lsrc = $(this_image).attr('lsrc') || '';
-                if (lsrc.length > 0) {
-                    var img = new Image();
-                    img.src = lsrc;
-                    $(img).on('load', function () {
-                        this_image.src = this.src;
-                    });
-                }
-            }
-        });
-    });
-</script>
-
-</html>
-
-
-<!-- 
-
-<style>
-    body {
-        /* font-family: 'Quicksand', sans-serif; */
-        font-family: 'Barlow', sans-serif;
-        font-weight: 300;
-        color: #333;
-        font-size: 17px;
-        background-color:rgb(255, 255, 255);
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 800 800'%3E%3Cg fill='none' stroke='%23d9e0ed' stroke-width='1.1'%3E%3Cpath d='M769 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63'/%3E%3Cpath d='M-31 229L237 261 390 382 603 493 308.5 537.5 101.5 381.5M370 905L295 764'/%3E%3Cpath d='M520 660L578 842 731 737 840 599 603 493 520 660 295 764 309 538 390 382 539 269 769 229 577.5 41.5 370 105 295 -36 126.5 79.5 237 261 102 382 40 599 -69 737 127 880'/%3E%3Cpath d='M520-140L578.5 42.5 731-63M603 493L539 269 237 261 370 105M902 382L539 269M390 382L102 382'/%3E%3Cpath d='M-222 42L126.5 79.5 370 105 539 269 577.5 41.5 927 80 769 229 902 382 603 493 731 737M295-36L577.5 41.5M578 842L295 764M40-201L127 80M102 382L-261 269'/%3E%3C/g%3E%3Cg fill='%23ffffff'%3E%3Ccircle cx='769' cy='229' r='5'/%3E%3Ccircle cx='539' cy='269' r='5'/%3E%3Ccircle cx='603' cy='493' r='5'/%3E%3Ccircle cx='731' cy='737' r='5'/%3E%3Ccircle cx='520' cy='660' r='5'/%3E%3Ccircle cx='309' cy='538' r='5'/%3E%3Ccircle cx='295' cy='764' r='5'/%3E%3Ccircle cx='40' cy='599' r='5'/%3E%3Ccircle cx='102' cy='382' r='5'/%3E%3Ccircle cx='127' cy='80' r='5'/%3E%3Ccircle cx='370' cy='105' r='5'/%3E%3Ccircle cx='578' cy='42' r='5'/%3E%3Ccircle cx='237' cy='261' r='5'/%3E%3Ccircle cx='390' cy='382' r='5'/%3E%3C/g%3E%3C/svg%3E");
-      }
-    .name {
-        font-size: 23pt;
-        color: #111;
-        
-    }
-
-    .sideimg {
-        width: 100%;
-        border: 1px solid #ccc;
-    }
-    .institution {
-        font-size: 13px;
-        color: #222;
-    }
-    .years {
-        font-size: 12px;
-        color: #666666;
-    }
-
-    .instilogo {
-        height: 50px;
-        filter: grayscale(20%);
-    }
-
-    a {
-        /* color: #555; */
-        /* text-decoration: underline; */
-        color: #a00000;
-        /* font-weight: 400; */
-    }
-
-    a:hover {
-      /* font-weight: 400; */
-      /* text-decoration: none;
-      transition-duration: 0.3s;
-      transition-timing-function: linear; */
-      text-decoration: none;
-      color: #a00000;
-      /* color: #444; */
-    }
-
-    .about {
-        font-size: 12pt;
-        text-align: justify;
-      text-justify: inter-word;
-    }
-
-    .header {
-        font-size: 18pt;
-        color: #111;
-    }
-
-    .papertitle {
-        color: #111;
-        font-weight: 400;
-    }
-
-    .thisauthor {
-        color: #000000;
-        text-decoration: underline dotted;
-        font-weight: 500;
-    }
-    .noter {
-        font-size: 9pt;
-    }
-    .tagsep {
-        padding: 4px;
-    }
-    /* .tag {
-        padding-right:2px;
-    }
-     */
-  .tag {
-      border: 1px solid rgb(143, 0, 0);
-      padding: 2px 4px;
-      border-radius: 3px;
-      margin: 0px 1px;
-      font-size: 90%;
-      background-color: rgb(143, 0, 0, 0.05);
-      /* margin-right:2px; */
-  }
-
-    .confshort {
-        font-weight: 300;
-    }
-
-    .conf {
-        display: inline-block;
-        padding-bottom: 4px;
-    }
-
-    .paper {
-        /* border-left: 1px solid #ddd; */
-        /* border-radius: 10px; */
-    }
-
-    .menulink {
-        color: #a00000;
-    }
-
-    .menulink:hover {
-        color: #111;
-    }
-
-    .profilepic {
-    width:240px;
-    /* padding-left:10px; */
-    
-    /* border-radius: 10%/20%; */
-    }
-
-    @media (min-width: 768px) {
-          .fixed-posi {
-          /* width: 50%;
-          margin-left: 50%;
-          min-height:100%; */
-          position:fixed;
-    }
-    }
-
-    @media only screen and (max-width: 900px) {
-    .allstuff {
-        padding-top:0px !important;
-    }
-
-    .allstuffp {
-        padding-top:0px !important;
-    }
-
-    .profilepic {
-          width:150px;
-          padding-top:0px !important;
-          padding-bottom: 0px !important;
-    }
-
-    .menur {
-        padding-top:18px !important;
-    }
-
-    .sideimg {
-        display: none;
-    }
-
-    .paper {
-        border-left: 1px solid #ddd;
-        /* border-radius: 10px; */
-    }
-
-    }
-    
-</style> -->
+</html> 
