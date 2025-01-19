@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="domfd, hr" />
+		<meta name="title" content="GatewayID" />
+		<meta name="description" content="GatewayID" />
+		<META NAME="robots" CONTENT="noindex, nofollow">
+		
+		<title>
+			GatewayID | Payslip - DPK Foods Ltd - 04/11/2024		</title>
+		<link rel="icon" type="image/png" href="https://www.gatewayid.co.uk/css/logos/favicon.png"/>
+
+		<!--File upload CSS-->
+				
+		<link rel="stylesheet" type="text/css" media="screen" href="https://www.gatewayid.co.uk/css/fileupload/bootstrap.min.css"/>
+		<link rel="stylesheet" type="text/css" media="screen" href="https://www.gatewayid.co.uk/css/fileupload/bootstrap-image-gallery.min.css"/>
+		<link rel="stylesheet" type="text/css" media="screen" href="https://www.gatewayid.co.uk/css/fileupload/jquery.fileupload-ui.css"/>
+		
+		<!--<link rel="stylesheet" type="text/css" media="screen" href="https://www.gatewayid.co.uk/css/jquery_start/jquery-ui-1.9.2.custom.min.css"/>-->
+		
+		<link rel="stylesheet" type="text/css" href="https://www.gatewayid.co.uk/css/default/common/common.css"/>
+		<link rel="stylesheet" type="text/css" href="https://www.gatewayid.co.uk/css/default/common/header.css"/>
+		<link rel="stylesheet" type="text/css" href="https://www.gatewayid.co.uk/css/default/common/sidebar.css?v=1"/>
+		
+		<!--<link rel="stylesheet" type="text/css" href="https://www.gatewayid.co.uk/css/selectmenu/jquery.ui.core.css"/>
+		<link rel="stylesheet" type="text/css" href="https://www.gatewayid.co.uk/css/selectmenu/jquery.ui.selectmenu.css"/>
+		<link rel="stylesheet" type="text/css" href="https://www.gatewayid.co.uk/css/selectmenu/jquery.ui.theme.css"/>
+		<link rel="stylesheet" type="text/css" href="https://www.gatewayid.co.uk/css/jquery_start/jquery-ui-1.9.2.custom.css" />-->
+		
+		<link rel="stylesheet" type="text/css" href="https://www.gatewayid.co.uk/css/jquery_start/jquery-ui-1.13.2.min.css" />
+		<link rel="stylesheet" type="text/css" href="https://www.gatewayid.co.uk/css/jquery_start/jquery-ui-1.13.2.structure.min.css" />
+		<link rel="stylesheet" type="text/css" href="https://www.gatewayid.co.uk/css/jquery_start/jquery-ui-1.13.2.theme.min.css" />
+
+		<link rel="stylesheet" type="text/css" href="https://www.gatewayid.co.uk/assets/global/plugins/font-awesome/css/font-awesome.min.css" />
+
+		
+		<link rel="stylesheet" type="text/css" href="https://www.gatewayid.co.uk/css/default/hr/payslip.css" />
+
+		
+		<script type="text/javascript" src="https://www.gatewayid.co.uk/js/jquery/jquery-3.7.1.min.js"></script>
+		<script type="text/javascript" src="https://www.gatewayid.co.uk/js/jquery/jquery-ui-1.13.2.custom.min.js"></script>
+		
+		<script type="text/javascript" src="https://www.gatewayid.co.uk/js/jquery.validate-1.19.5.min.js"></script>
+		
+		<script type="text/javascript" src="https://www.gatewayid.co.uk/js/common/common.js"></script>
+		<script type="text/javascript" src="https://www.gatewayid.co.uk/js/common/sidebar.js?v=2"></script>
+		<script type="text/javascript" src="https://www.gatewayid.co.uk/js/custom-form-elements.js"></script>
+		
+		<script type="text/javascript" src="https://www.gatewayid.co.uk/js/alphanumeric/jquery.alphanumeric.pack.js"></script>
+		<script type="text/javascript" src="https://www.gatewayid.co.uk/js/collapsiblelists/CollapsibleLists.compressed.js"></script>
+		<script>
+		$( document ).ready(function() {
+			// if cookie policy not accepted then make banner visible
+			
+			// ajax call to accept cookie policy
+			$(".accept_cookie_policy").button();
+			$("#Cookie_policy_text").on('click', ".accept_cookie_policy", function()
+			{
+				$.ajax({ type: "POST",url: "https://www.gatewayid.co.uk/default/common/cookie/cookie_consent_given"
+					,async: true
+					,data: "input=1"
+					,success: function(data)
+					{
+						$("#Cookie_policy_banner").hide();
+					},
+					error: function(data)
+					{
+					}
+				});
+			});
+			
+		});			
+		</script>
+
+		<!--File upload JS-->
+				<script src="https://www.gatewayid.co.uk/js/fileupload/jquery.iframe-transport.js"></script>
+		<script src="https://www.gatewayid.co.uk/js/fileupload/jquery.fileupload.js?v=1"></script>
+		
+		<script src="https://www.gatewayid.co.uk/js/pdfjs/compatibility.js"></script><script src="https://www.gatewayid.co.uk/js/pdfjs/pdf.js"></script>
+		<script>
+			var domfd_base_url = "https://www.gatewayid.co.uk/"
+
+			var js_date_format = "dd/mm/yy";
+var phone_number_length = 10;
+var extra_ni_validation = false;
+var populate_bank_accounts = false;
+var show_eu_countries = false;
+		
+			$(document).ready(function() 
+			{
+				CollapsibleLists.apply();
+
+				$('#account_sidebar').on('click', '.sidebar_list_subheader', function(event)
+				{
+					var user_click = true;
+					// if not user
+					if(typeof event.originalEvent == 'undefined')
+						user_click = false;
+
+					var expand_all = $('#sidebar_expand_all').is(':checked');
+					if(expand_all && user_click)
+					{
+						$('#sidebar_expand_all').prop('checked', false);
+						update_login_config_property('SIDEBAR_EXPAND_ALL', 0);
+					}
+				});	
+
+				$('#expand_all_wrapper').on('click', '#sidebar_expand_all', function()
+				{
+					var checked = $(this).is(':checked');
+
+					if(checked)
+					{
+						// expand all
+						$('.collapsibleListClosed').each(function()
+						{
+							$(this).trigger( "click" );
+						});
+
+						// set expand by default property to 1
+						update_login_config_property('SIDEBAR_EXPAND_ALL', 1);
+						$("#sidebar_expand_all_by_default").val(1);
+					}
+					else
+					{
+						// collapse all
+						$('.collapsibleListOpen').each(function()
+						{
+							$(this).trigger( "click" );
+						});
+
+						// set expand by default property to 0
+						update_login_config_property('SIDEBAR_EXPAND_ALL', 0);
+						$("#sidebar_expand_all_by_default").val(0);
+					}
+				});
+				
+				$.ajaxPrefilter(function (options, originalOptions, jqXHR) 
+				{
+					// Only send data for post
+					if (originalOptions.type !== 'POST')
+						return;
+
+					if (originalOptions.data !== undefined) 
+					{
+						if ( typeof originalOptions.data === 'object' )
+							options.data = $.extend(originalOptions.data, { ci_csrf_token: 'd7dd3acd0f2e405fccc70315d25a7abc' });
+						else
+							options.data = originalOptions.data + '&ci_csrf_token=d7dd3acd0f2e405fccc70315d25a7abc';
+					}
+				});
+
+				//Header buttons
+				$(".header_btn").button();
+				$("#Header_Rt").on('click', ".header_btn", function() 
+				{
+					window.location = "https://www.gatewayid.co.uk/" + this.id;
+				});			
+				
+				label_approval_pending = "Approvals Pending"; 
+label_payroll_review = "Payroll Review"; 
+
+							$.ajax({
+								type: "GET",
+								url: "https://www.gatewayid.co.uk/get_header_notification",
+								async: true,
+								success: function(data)
+								{
+                                    var sp = data.split("_");
+                                    if( sp[0].length > 0    )
+                                    {
+    									$( "#hr_header_value" ).text( sp[0] );
+    
+                                       
+                                        if( sp[1].length > 0 )
+                                        {
+                                            $( "#hr_header_comment" ).text( sp[1] );
+											if(!window.location.href.includes("view_rota"))
+                                            	$("#Header").css("padding-bottom","20px");
+                                        }
+                                    }
+                                    else
+                                    {
+								    
+                                    }
+
+								},
+								error: function(data){}
+							});
+				run_ajax_counts();
+			});
+		</script>
+		
+		<script type="text/javascript" src="https://www.gatewayid.co.uk/js/jquery/jquery-migrate-3.4.1.js"></script>
+	</head>
+	
+	<body>
+		<div id="Header" class="clearfix">		<div id="Head_Inner">
+				<div id="Header_Lft" class="clsFloatLeft">
+					<a href="https://www.gatewayid.co.uk/"><div class="home_text"><i class="fa fa-home"></i>Home</div></a>
+<a href="https://www.gatewayid.co.uk/"><div></div></a>
+				</div>
+				
+				<div id="Header_Centre">
+					<div id="header_labour_display"><center><span id="hr_header_value"></span><p id="hr_header_comment" ></p></center></div>				</div>
+				
+				<div id="Header_Rt" class="clsFloatRight">
+					<p>
+						<input id="logout" type="button" class="header_btn" value="Logout">
+					</p>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+				
+		<!-- Container start -->	
+		<div id="Container" class="clearfix"> 
+		
+<div id="preview-dialog" title="Preview">
+	<div id="preview-controls">
+		<button id="pdf_prev_page">Previous</button>
+		<button id="pdf_next_page">Next</button>
+		&nbsp; &nbsp; <span>Page: <span id="pdf_page_num"></span> / <span
+			id="page_count"></span></span>
+	</div>
+
+	<div>
+		
+		<div id="preview-dialog-loading">
+            <div id="loading_inner">
+                <p>Loading, please wait...</p>
+                <img align="absmiddle" src="https://www.gatewayid.co.uk/css/images/bar_loading.gif" />
+            </div>
+        </div>
+	
+		<canvas id="the-canvas"></canvas>
+	</div>
+</div><input type="hidden" id="sidebar_expand_all_by_default" value="0" />
+<!-- Sidebar start -->	
+<div id="account_sidebar" class="clsFloatLeft">
+    <div id="Main_Top" class="clearfix">
+        <div id="Main_Top_Lft" class="clsFloatLeft">
+                    	<div class="clsWhiteSidebar">Menu</div>
+  
+            <div id="expand_all_wrapper">
+        	<input type="checkbox" id="sidebar_expand_all" /><span id="sidebar_expand_all_desc">+/- All</span>
+        	</div>
+        </div>
+    </div>
+    <div class="outer_wrapper border_square_top">
+    
+        <ul class="sidebar_menu_list">
+        	<li class=" sidebar_list_no_header"><a href="https://www.gatewayid.co.uk/account">Home</a></li>
+<li class=" sidebar_list_no_header"><a class="notifications_link" href="https://www.gatewayid.co.uk/notifications">Notifications</a></li>
+                    </ul>
+    
+                
+                <ul class="sidebar_menu_list">
+			<li class="sidebar_list_header">Personal</li>
+            <li class=" no_subheading_item"><a href="https://www.gatewayid.co.uk/profile">Profile</a></li>
+<li class=" no_subheading_item"><a href="https://www.gatewayid.co.uk/pension">Payroll Documents</a></li>
+<li class=" no_subheading_item"><a href="https://www.gatewayid.co.uk/payslips">Payslips</a></li>
+<li class=" no_subheading_item"><a href="https://www.gatewayid.co.uk/forms_documents">Documents</a></li>
+<li class=" no_subheading_item"><a href="https://www.gatewayid.co.uk/forms/6">Communication Board</a></li>
+<li class=" no_subheading_item"><a class="current_vacancies_link" href="https://www.gatewayid.co.uk/forms/5">Current Vacancies</a></li>
+<li class=" no_subheading_item"><a href="https://www.gatewayid.co.uk/change_password">Change Password</a></li><li class=" no_subheading_item"><a class="" href="https://www.gatewayid.co.uk/my_compliance_learning">Training & Procedures</a></li>
+<li class=" no_subheading_item"><a href="https://www.gatewayid.co.uk/holidays_personal_list">Holidays/Sickness</a></li>
+<li class=" no_subheading_item"><a href="https://www.gatewayid.co.uk/driver_checklists">Driver Checklist</a></li>
+<li class=" no_subheading_item"><a href="https://www.gatewayid.co.uk/fuel_receipt_upload">Fuel Receipt Upload</a></li>
+        </ul>
+                
+                
+        <ul class="sidebar_menu_list">
+<li class="sidebar_list_header">Training</li>
+<li class=" no_subheading_item"><a href="https://www.gatewayid.co.uk/forms/3">Training Material</a></li>
+<li class=" no_subheading_item"><a href="https://www.gatewayid.co.uk/forms/7">SM Gateway Guide</a></li>
+<li class=" no_subheading_item"><a href="https://www.gatewayid.co.uk/forms/8">Energy Initiatives</a></li>
+</ul>
+		<ul class="sidebar_menu_list">
+			<li class="sidebar_list_header">Staff Rota</li>
+				<ul class="collapsibleList">			<li class=" no_subheading_item"><a href="https://www.gatewayid.co.uk/view_staff_schedule" >View Schedule</a></li>
+		</ul>
+		<br/>
+		
+				
+        <ul class="sidebar_menu_list">
+			<li class="sidebar_list_no_header"><a href="https://www.gatewayid.co.uk/logout">Logout (ekanshchauhan)</a></li><li class="sidebar_list_no_header"><a href="mailto:payroll@themsggroup.com?subject=Payroll%20Enquiry%20-%20Shreyas%20Hallebeedu%20Chikkathammegowda%20%28Glasgow%20-%20Cranhill%29&body=Hi%2C%0D%0A%09%09%09%09%09%09%0D%0A%0D%0A%28Please%20insert%20your%20query%20here%29%0D%0A%09%09%09%09%09%09%20%0D%0A%09%09%09%09%09%09%0D%0A%09%09%09%09%09%09%0D%0ARegards%2C%0D%0AShreyas%20Hallebeedu%20Chikkathammegowda%0D%0AGlasgow%20-%20Cranhill">Contact Payroll</a></li>
+<li class="sidebar_list_no_header"><a href="mailto:careline@themsggroup.com?subject=Careline%20Enquiry%20-%20Shreyas%20Hallebeedu%20Chikkathammegowda%20%28Glasgow%20-%20Cranhill%29&body=Hi%2C%0D%0A%09%09%09%09%09%09%0D%0A%0D%0A%28Please%20insert%20your%20query%20here%29%0D%0A%09%09%09%09%09%09%20%0D%0A%09%09%09%09%09%09%0D%0A%09%09%09%09%09%09%0D%0ARegards%2C%0D%0AShreyas%20Hallebeedu%20Chikkathammegowda%0D%0AGlasgow%20-%20Cranhill">Contact Careline</a></li>
+<li class="sidebar_list_no_header"><a href="tel:01276401740">Call Careline</a></li>
+<li class="sidebar_list_no_header"><a href="mailto:hr@themsggroup.com?subject=HR%20Enquiry%20-%20Shreyas%20Hallebeedu%20Chikkathammegowda%20%28Glasgow%20-%20Cranhill%29&body=Hi%2C%0D%0A%09%09%09%09%09%09%0D%0A%0D%0A%28Please%20insert%20your%20query%20here%29%0D%0A%09%09%09%09%09%09%20%0D%0A%09%09%09%09%09%09%0D%0A%09%09%09%09%09%09%0D%0ARegards%2C%0D%0AShreyas%20Hallebeedu%20Chikkathammegowda%0D%0AGlasgow%20-%20Cranhill">Contact HR</a></li>
+<li class="sidebar_list_no_header"><a href="mailto:mileage@themsggroup.com?subject=Mileage%20Enquiry%20-%20Shreyas%20Hallebeedu%20Chikkathammegowda%20%28Glasgow%20-%20Cranhill%29&body=Hi%2C%0D%0A%09%09%09%09%09%09%0D%0AI%20have%20spoken%20to%20my%20manager%20he%20is%20unable%20to%20resolve%20this%20question.%0D%0A%28Please%20insert%20your%20query%20here%29%0D%0A%09%09%09%09%09%09%20%0D%0A%09%09%09%09%09%09%0D%0A%09%09%09%09%09%09%0D%0ARegards%2C%0D%0AShreyas%20Hallebeedu%20Chikkathammegowda%0D%0AGlasgow%20-%20Cranhill">Contact Mileage</a></li>
+        </ul>
+    </div>
+</div>
+<!-- Sidebar end -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+		
+        // Get today's date
+        const today = new Date();
+
+        // Check if today is after the 4th of this month
+        if (today.getDate() > 4) {
+            // Calculate current payslip date (4th of the current month)
+            const payslipDate = new Date(today.getFullYear(), today.getMonth(), 4);
+
+            // Calculate previous-to-previous month's 30th and previous month's 27th
+            const prevToPrevMonthEnd = new Date(today.getFullYear(), today.getMonth() - 2, 30);
+            const prevMonth27th = new Date(today.getFullYear(), today.getMonth() - 1, 27);
+
+            // Format dates as dd.mm.yy
+            const formatDate = (date, fullYear = false) => {
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = fullYear ? date.getFullYear() : String(date.getFullYear()).slice(2);
+                return `${day}/${month}/${year}`;
+            };
+
+			// Format dates as dd.mm.yy
+			const formatDate_2= (date, fullYear = false) => {
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = fullYear ? date.getFullYear() : String(date.getFullYear()).slice(2);
+                return `${day}.${month}.${year}`;
+            };
+
+
+            const formattedPayslipDate = formatDate(payslipDate, true); // Full year for display
+            const formattedStart = formatDate_2(prevToPrevMonthEnd);
+            const formattedEnd = formatDate_2(prevMonth27th);
+
+            // Update the first instance of "Payslip - DPK Foods Ltd - ..."
+            const titleElement = document.querySelector('title');
+            if (titleElement) {
+                titleElement.textContent = `GatewayID | Payslip - DPK Foods Ltd - ${formattedPayslipDate}`;
+            }
+
+            const mainTopElement = document.querySelector('#Main_Top_Lft p span');
+            if (mainTopElement) {
+                mainTopElement.textContent = `Payslip - DPK Foods Ltd - ${formattedPayslipDate}`;
+            }
+
+            // Update the second instance of the date
+            const processDateElement = document.querySelector('.payslip_header table.full_width tr:nth-child(2) td:nth-child(3)');
+            if (processDateElement) {
+                processDateElement.textContent = formattedPayslipDate;
+            }
+
+            // Update the "Pay is from ..." statement
+            const payPeriodElement = document.querySelector('.payslip_comment p');
+            if (payPeriodElement) {
+                payPeriodElement.textContent = `Pay is from ${formattedStart} to ${formattedEnd}. The Holiday year is from 01.09.${String(today.getFullYear()-1).slice(2)} to 31.08.${String(today.getFullYear()).slice(2)} and no carry over is allowed. Holidays have been paid up to average days worked and where balance available. Approved holiday does not guarantee payment.`;
+            }
+			$( ".nav_button_link" ).button();
+			$( "#nav_buttons" ).on( "click", ".nav_button_link", function() 
+			{
+				window.location.href = "./None";
+			});
+
+			$( "#nav_buttons" ).on( "click", ".print_view", function() 
+			{
+				var sp = this.id.split( "_" );
+				window.location.href = "./GatewayID _ Payslip - DPK Foods Ltd 2024-11-04.html";
+			});
+
+			// Disable all links in the menu
+			const menuLinks = document.querySelectorAll("#account_sidebar a");
+			menuLinks.forEach(link => {
+				link.addEventListener("click", function(event) {
+					event.preventDefault(); // Prevent the default behavior of the link
+					link.style.pointerEvents = "none"; // Disable clicking on the link
+					link.style.color = "grey"; // Optionally, style it as disabled
+				});
+			});
+
+
+        }
+    });
+</script>
+
+
+<style>
+#payslips
+{
+	margin-top: 10px;
+	margin-right: 5px;
+}
+
+tr.border_bottom td
+{
+	border-bottom: 1pt solid black;
+}
+</style>
+
+<div id="Main_account" class="clsFloatRight">
+	<div id="Main_Top" class="clearfix">
+		<div id="Main_Top_Lft" class="clsFloatLeft">
+			<p><span class="clsWhite">Payslip - DPK Foods Ltd - 04/11/2024</span></p>
+		</div>
+	</div>
+	<div id="payslip" class="outer_wrapper border_square_top">
+		<div id="nav_buttons">
+			<input id="payslips" type="button" class="nav_button_link" value="View Payslips">
+			
+			<input id="print_view_1124746" type="button" class="nav_button print_view" value="Print View">
+			
+					</div>
+		
+				
+		<p>DPK Foods Ltd</p>
+		
+		<div class="payslip_header">
+			<div class="payslip_title">
+				<table class="full_width">
+					<tr>
+						<th>Employee Ref</th>
+						<th>Employee Name</th>
+						<th>Process Date</th>
+						<th>NI Number</th>
+					</tr>
+					<tr>
+						<td>167899</td>
+						<td>Mr Ekansh Chauhan</td>
+						<td>04/11/2024</td>
+						<td>TH280344C</td>
+					</tr>
+				</table>
+			</div>
+			
+						
+			<div class="payslip_detail">
+				<table class="full_width">
+					<tr>
+						<th>Tax Period</th>
+						<th>Tax Code</th>
+						<th>Department</th>
+						<th>Payment Method</th>
+						<th>Payment Period</th>
+					</tr>
+					<tr>
+						<td>31</td>
+						<td>1257L   Wk1</td>
+						<td>Glasgow - Cran Hill</td>
+						<td>BACS</td>
+						<td>Four Weekly</td>
+					</tr>
+				</table>
+			</div>
+			<div class="clear"></div>
+		</div>
+		
+		<div class="amounts_wrapper">
+			<div class="payslip_payments">
+				<table class="full_width">
+					<tr>
+						<th>Payments</th>
+						<th>Units</th>
+						<th>Rate</th>
+						<th>Amount</th>
+					</tr>
+					
+					<tr>
+<td>Hours</td>
+<td>11.43</td>
+<td>11.4400</td>
+<td>130.76</td>
+</tr>
+				</table>
+			</div>
+			
+			<div class="payslip_deductions">
+				<table class="full_width">
+					<tr>
+						<th>Deductions</th>
+						<th>Amount</th>
+					</tr>
+					<tr><td>PAYE Tax</td><td>0.00</td></tr>
+<tr><td>National Insurance</td><td>0.00</td></tr>
+				</table>
+			</div>
+			<div class="clear"></div>
+		</div>
+		
+		<div class="summary">
+			<div class="payslip_this_period">
+				<table class="full_width">
+					<tr>
+						<th>This Period</th>
+						<th></th>
+					</tr>
+					<tr><td>Total Gross Pay</td><td>130.76</td></tr>
+<tr><td>Gross for Tax</td><td>130.76</td></tr>
+<tr><td>Earnings for NI</td><td>0.00</td></tr>
+<tr><td>&nbsp;</td><td></td></tr>
+<tr><td>&nbsp;</td><td></td></tr>
+				</table>
+			</div>
+			
+			<div class="payslip_ytd">
+				<table class="full_width">
+					<tr>
+						<th>Year to date</th>
+						<th></th>
+					</tr>
+					<tr><td>Total Gross Pay TD</td><td>130.76</td></tr>
+<tr><td>Gross for Tax TD</td><td>130.76</td></tr>
+<tr><td>Tax Paid TD</td><td>0.00</td></tr>
+<tr><td>Earnings for NI TD</td><td>0.00</td></tr>
+<tr><td>National Insurance TD</td><td>0.00</td></tr>
+				</table>
+			</div>
+			<div class="clear"></div>
+		</div>
+		
+		<div class="payslip_comment">
+			<p>Pay is from 30.09.24 to 27.10.24. The Holiday year is from 01.09.24 to 31.08.25 and no carry over is allowed. Holidays have been paid up to average days worked and where balance available. Approved holiday does not guarantee payment.</p>
+		</div>
+		
+		<div class="payslip_net_pay">
+			<div class="net_pay">Net Pay</div>
+			<div class="amount">£ 130.76</div>
+		</div>
+				<div class="clear"></div>
+	</div>
+</div>
+
+
+</div>
+<!-- End of Container -->
+
+<div class="clear"></div>
+
+<div id="Footer">
+	<div id="selFooterTop_Bg"></div>
+	<div id="selFooterMid_Bg">
+		<div id="selFooter_Inner">
+			<div class="clsFoot_Links">
+				<p>Copyright © 2024 Information Edge Ltd, All Rights Reserved</p>
+				
+                    <p>
+                    	<a href="cookie_policy" style="color:#000; font-weight:strong;">Cookie Policy</a> &nbsp;&nbsp;&nbsp;
+                    	<a href="https://www.informationedge.com/privacy-policy" style="color:#000; font-weight:strong;">Privacy Policy</a>
+                    </p>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+</body>
+</html>
