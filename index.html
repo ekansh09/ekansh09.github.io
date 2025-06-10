@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Ekansh Chauhan</title>
@@ -24,27 +23,14 @@
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/cf1c3caa39.js" crossorigin="anonymous"></script>
-
-    <script>
-        // Function to clear cookies
-        function clearCookies() {
-            const cookies = document.cookie.split("; ");
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i];
-                const eqPos = cookie.indexOf("=");
-                const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
-                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/";
-            }
-            console.log("All cookies cleared!");
-        }
-
-        // Clear cookies on page load
-        window.onload = clearCookies;
-    </script>
-
 </head>
 <body>
-    <div class="container">
+    <!-- Banner directing to spatial transcriptomics page -->
+    <div class="alert alert-info d-flex align-items-center justify-content-center mb-0" role="alert" style="border-radius: 0;">
+      <img src="images/affiliations/cruk.png" alt="CRUK Logo" style="height:24px; margin-right:8px;">
+      <span>Explore our <a href="my_work.html" class="alert-link" style="font-weight:700;">Morphology &lt;-&gt; Gene Expression</a> project page!</span>
+    </div>
+<div class="container">
         <div class="row">
             <!-- Sidebar -->
             <div class="col-md-4">
@@ -72,6 +58,7 @@
                     </div>
                 </div>
             </div>
+
 
             <!-- Main Content -->
             <div class="col-md-8">
