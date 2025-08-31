@@ -2,9 +2,13 @@
     --primary-color: #003d83;
     --hover-color: #1f62cc;
     --text-color: #444;
+    --muted-text: #666; /* new */
     --light-border: #d3d3d3;
     --background: #fbfbfb;
     --card-background: #ffffff;
+    --shadow: 0 2px 4px rgba(0,0,0,0.1); /* new */
+    --shadow-lg: 0 4px 8px rgba(0,0,0,0.15); /* new */
+    --link-bg-hover: rgba(0,0,0,0.05); /* new */
 }
 
 body {
@@ -14,6 +18,7 @@ body {
     font-size: 0.95rem;
     background-color: var(--background);
     line-height: 1.6;
+    transition: background-color 0.25s ease, color 0.25s ease; /* smooth theme change */
 }
 
 .container {
@@ -63,7 +68,7 @@ body {
 
 .social-link:hover {
     color: var(--hover-color);
-    background-color: rgba(0,0,0,0.05);
+    background-color: var(--link-bg-hover); /* was rgba(0,0,0,0.05) */
     text-decoration: none;
     transform: translateX(5px);
 }
@@ -120,8 +125,7 @@ body {
     background: var(--card-background);
     padding: 1.5rem;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    /* transition: transform 0.3s ease, box-shadow 0.3s ease; */
+    box-shadow: var(--shadow); /* was 0 2px 4px rgba(0,0,0,0.1) */
     display: flex;
     gap: 1.5rem;
 }
@@ -170,7 +174,7 @@ body {
     padding: 1.5rem;
     background: var(--card-background);
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: var(--shadow); /* was 0 2px 4px rgba(0,0,0,0.1) */
 }
 
 .research-image {
@@ -283,3 +287,54 @@ body {
 .section {
     animation: fadeIn 0.8s ease forwards;
 }
+
+/* --- Theme toggle button --- */
+.theme-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: 1px solid var(--light-border);
+    background: var(--card-background);
+    color: var(--text-color);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    z-index: 1050;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+}
+.theme-toggle:hover { transform: translateY(-1px); }
+.theme-toggle:active { transform: scale(0.98); }
+
+/* --- Dark theme overrides --- */
+body.dark {
+    --primary-color: #8ab4f8;
+    --hover-color: #a6c8ff;
+    --text-color: #e0e0e0;
+    --muted-text: #b5b5b5;
+    --light-border: #2f2f2f;
+    --background: #121212;
+    --card-background: #1e1e1e;
+    --shadow: 0 2px 8px rgba(0,0,0,0.6);
+    --shadow-lg: 0 6px 16px rgba(0,0,0,0.7);
+    --link-bg-hover: rgba(255,255,255,0.06);
+}
+
+/* override hard-coded light colors in dark mode */
+body.dark .name,
+body.dark .section-title,
+body.dark .item-title,
+body.dark .research-title { color: #e8eaed; }
+
+body.dark .item-subtitle,
+body.dark .research-authors { color: var(--text-color); }
+
+body.dark .item-period { color: var(--muted-text); }
+
+body.dark .section-title { border-bottom-color: var(--light-border); }
+
+body.dark .research-venue { color: #ff8a80; } /* subtle red in dark mode */

@@ -1,353 +1,861 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Ekansh Chauhan</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ekansh Chauhan</title>
+<style>
+  *{box-sizing:border-box}
+  :root{
+    --fg:#f4f4f7;
+    --ink:#0b0b10;
+  }
+  body{
+    margin:0; min-height:100svh; display:grid; place-items:center;
+    background:var(--ink); font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--fg);
+  }
 
-    <!-- Meta Tags -->
-    <meta name="title" content="Ekansh Chauhan">
-    <meta name="description" content="PhD student at CRUK">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="ekansh09.github.io">
-    <meta property="og:title" content="Ekansh Chauhan">
-    <meta property="og:description" content="PhD student at CRUK SI">
-    <meta property="og:image" content="https://ekansh09.github.io/images/profile/ekansh_profile.jpg">
-    <meta name="theme-color" content="#222222">
+  /* Cover container: all visuals are clipped inside this */
+  .cover{
+    position:relative;
+    width:min(850px,85vw); /* reduced from 900px */
+    aspect-ratio:16/9;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 12px 50px rgba(0,0,0,.45);
+    user-select:none; -webkit-user-drag:none;
+    touch-action:none;          /* enables smooth pointer drag */
+    background:#000;
+    cursor:grab;
+  }
+  @supports not (aspect-ratio: 1/1){ .cover{ height:min(56vh, 540px); } } /* reduced height */
+  .cover.dragging{ cursor:grabbing }
 
-    <!-- Favicon -->
-    <link rel="icon" href="images/favicon.ico">
+  .cover > img{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    pointer-events:none;
+  }
+  .cover > canvas{
+    position:absolute; inset:0; width:100%; height:100%;
+    pointer-events:none; /* events go to .cover so drag works */
+  }
 
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/cf1c3caa39.js" crossorigin="anonymous"></script>
+  /* ---------- Side UI (same component both sides) ---------- */
+  .ui{ position:absolute; inset:0; z-index:3; pointer-events:none; }
+  .ui-side{
+    position:absolute; top:50%; transform:translateY(-50%);
+    display:flex; align-items:center; gap:.5rem;
+    pointer-events:auto;            /* clickable */
+  }
+  .ui-left{ left:16px; }
+  .ui-right{ right:16px; }
+
+  .btn-cta{
+    --ring: rgba(255,255,255,.22);
+    --bg: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
+    /* per-button overrides:
+       --accent:  (left color)
+       --accent-2:(right color) */
+    position:relative; display:inline-flex; align-items:center; gap:.5rem; /* reduced gap */
+    padding:.75rem 1rem; /* reduced from .85rem 1.15rem */
+    border-radius:999px;
+    border:1px solid var(--ring);
+    background: var(--bg);
+    color:var(--fg); text-decoration:none; font-weight:700; letter-spacing:.01em;
+    box-shadow: 0 6px 22px rgba(0,0,0,.3), inset 0 0 0 1px rgba(255,255,255,.05);
+    backdrop-filter: blur(6px);
+    transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease;
+    will-change: transform;
+    overflow:hidden;
+    outline: none;
+    font-size: 0.95rem; /* add explicit font size */
+  }
+  .btn-cta span.dot{
+    width:.6rem; height:.6rem; border-radius:999px;
+    background: radial-gradient(circle at 30% 30%, var(--accent), var(--accent-2));
+    box-shadow: 0 0 18px var(--accent);
+    flex:0 0 .6rem;
+  }
+  .btn-cta::after{ /* sheen */
+    content:""; position:absolute; inset:-50% -20%;
+    transform: translateX(-120%) rotate(18deg);
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,.35) 50%, rgba(255,255,255,0) 100%);
+    transition: transform .7s ease;
+    pointer-events:none;
+  }
+  .btn-cta:hover{ transform: translateY(-1px); border-color:rgba(255,255,255,.35); }
+  .btn-cta:hover::after{ transform: translateX(120%) rotate(18deg); }
+  .btn-cta:active{ transform: translateY(0); }
+  .btn-cta:focus-visible{
+    outline: 2px solid color-mix(in srgb, var(--accent) 60%, white);
+    outline-offset: 3px;
+  }
+
+  /* Mobile: move controls to bottom corners */
+  @media (max-width: 680px){
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem; /* Reduced padding */
+    }
+    
+    /* Fix for mobile container structure */
+    .page-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+    
+    /* Mobile buttons - positioned BEFORE the cover as a separate element */
+    .ui-container-mobile {
+      position: static; /* Not absolute */
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem; /* Space between buttons and cover */
+      width: 100%;
+      z-index: 10;
+    }
+    
+    .cover {
+      width: 92vw;
+      aspect-ratio: 16/10;
+      position: relative;
+      margin-top: 0; /* Remove any top margin */
+    }
+    
+    .ui-side { 
+      position: static;
+      transform: none;
+    }
+    
+    .ui-left, .ui-right {
+      position: static;
+    }
+    
+    .btn-cta {
+      padding: .65rem .9rem;
+      font-size: 0.9rem;
+    }
+    
+    /* Hide desktop buttons */
+    .desktop-only-ui {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .cover {
+      width: 94vw;
+    }
+    
+    .btn-cta {
+      padding: .6rem .8rem;
+      font-size: 0.85rem;
+    }
+  }
+
+  /* Optional caption */
+  .caption{
+    position:absolute; left:14px; bottom:12px; z-index:2; color:#f4f4f7;
+    font-weight:600; letter-spacing:.02em; text-shadow:0 1px 3px rgba(0,0,0,.6);
+    pointer-events:none;
+  }
+
+  /* View Transitions: morph .cover -> Snake board */
+  @supports (view-transition-name: foo) {
+    .cover { view-transition-name: hero; }
+    html { view-transition-name: root; }
+
+    ::view-transition-group(root),
+    ::view-transition-group(hero) {
+      animation-duration: 400ms;
+      animation-timing-function: cubic-bezier(.22,.61,.36,1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      ::view-transition-group(root),
+      ::view-transition-group(hero),
+      ::view-transition-image-pair(root),
+      ::view-transition-old(root),
+      ::view-transition-new(root) { animation: none !important; }
+    }
+  }
+
+  /* Add styles for intro and social links */
+  .intro {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    max-width: min(850px,85vw);
+  }
+
+  .intro h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem; /* Increased space between heading and paragraph */
+    background: linear-gradient(90deg, #7dd3fc, #a78bfa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
+  }
+
+  .intro p {
+    font-size: 0.95rem;
+    opacity: 0.9;
+    line-height: 1.5;
+    margin: 0.5rem 0;
+  }
+
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem; /* reduced from 1.2rem */
+    margin-top: 1.2rem; /* reduced from 1.5rem */
+  }
+
+  .social-links a {
+    color: var(--fg);
+    opacity: 0.8;
+    transition: opacity 0.2s, transform 0.2s;
+    font-size: 1.3rem; /* reduced from 1.5rem */
+  }
+
+  .social-links a:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+
+  /* Hide/show elements based on screen size */
+.ui-container-mobile {
+  display: none; /* Hidden by default */
+}
+
+@media (max-width: 680px) {
+  .ui-container-mobile {
+    display: flex; /* Show on mobile */
+  }
+  
+  .desktop-only-ui {
+    display: none; /* Hide on mobile */
+  }
+}
+</style>
 </head>
 <body>
-
-
-<!-- <div class="alert alert-info d-flex align-items-center justify-content-center mb-0" role="alert" style="border-radius: 0;">
-    <img src="images/affiliations/cruk.png" alt="CRUK Logo" style="height:24px; margin-right:8px;">
-    <span>Explore our <a href="my_work.html" class="alert-link" style="font-weight:700;">Morphology &lt;-&gt; Gene Expression</a> project page!</span>
-</div> -->
-    
-<!-- <div class="modal fade" id="projectModal" tabindex="-1" role="dialog" aria-labelledby="projectModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="projectModalLabel">New: Morphology ↔ Gene Expression</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body d-flex align-items-center">
-        <img src="images/affiliations/cruk.png" alt="CRUK Logo" style="height:24px; margin-right:8px;">
-        <span>Explore our <a href="my_work.html" style="font-weight:700;">Morphology &lt;-&gt; Gene Expression</a> project page!</span>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" onclick="window.location.href='my_work.html'">
-          Go to project
-        </button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Close
-        </button>
+  <div class="page-container">
+    <div class="intro">
+      <h1>hi, i'm ekansh</h1>
+      <p>Developer and AI engineer crafting ML for medical imaging and computational oncology.</p>
+      <p>PhD student at CRUK Scotland Institute & University of Glasgow, fusing spatial transcriptomics with histopathology to study the tumor microenvironment.</p>
+      
+      <div class="social-links">
+        <a href="https://scholar.google.com/citations?user=USERNAME" target="_blank" aria-label="Google Scholar">
+          <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+          </svg>
+        </a>
+        <a href="https://github.com/ekansh09" target="_blank" aria-label="GitHub">
+          <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+        <a href="https://linkedin.com/in/USERNAME" target="_blank" aria-label="LinkedIn">
+          <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+        </a>
+        <a href="mailto:your.email@example.com" aria-label="Email">
+          <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3v18h24v-18h-24zm21.518 2l-9.518 7.713-9.518-7.713h19.036zm-19.518 14v-11.817l10 8.104 10-8.104v11.817h-20z"/></svg>
+        </a>
       </div>
     </div>
-  </div>
-</div> -->
 
-<div class="container">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-md-4">
-                <div class="sidebar">
-                    <div class="profile-section">
-                        <h1 class="name"><span style="font-weight: 700;">Ekansh</span> Chauhan</h1>
-                        <img src="images/profile/ekansh_profile.jpg" alt="Ekansh Chauhan" class="profile-img">
-                        <div class="social-links">
-                            <a href="assets/ekansh_resume_phd.pdf" target="_blank" class="social-link">
-                                <i class="fas fa-file-alt"></i> Resume
-                            </a>
-                            <a href="https://scholar.google.com/citations?user=sRA8oqIAAAAJ&hl=en" target="_blank" class="social-link">
-                                <i class="fab fa-google"></i> Scholar
-                            </a>
-                            <a href="https://www.linkedin.com/in/ekanshchauhan/" target="_blank" class="social-link">
-                                <i class="fab fa-linkedin-in"></i> LinkedIn
-                            </a>
-                            <a href="https://github.com/ekansh09" target="_blank" class="social-link">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                            <a href="mailto:3068652C@student.gla.ac.uk" class="social-link">
-                                <i class="fas fa-envelope"></i> Email
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- Mobile buttons container - now OUTSIDE and BEFORE the cover -->
+    <div class="ui-container-mobile">
+      <!-- Play: cyan → purple -->
+      <a class="btn-cta" href="snake.html" aria-label="Play a game"
+         style="--accent:#7dd3fc; --accent-2:#a78bfa;">
+        <span class="dot" aria-hidden="true"></span>
+        Play a game
+      </a>
+      
+      <!-- About me: green gradient -->
+      <a class="btn-cta" href="about.html" aria-label="About me"
+         style="--accent:#34d399; --accent-2:#22c55e;">
+        <span class="dot" aria-hidden="true"></span>
+        About me
+      </a>
+    </div>
 
+    <!-- Figure remains with desktop buttons only -->
+    <figure class="cover" id="cover">
+      <img src="images/web/cover_photo.jpg" alt="Cover image" />
+      <canvas id="fx" aria-hidden="true"></canvas>
 
-            <!-- Main Content -->
-            <div class="col-md-8">
-                <div class="main-content">
-                    <!-- About Section -->
-                    <section class="section">
-                        <h2 class="section-title">About Me</h2>
-                        <p class="about-text">
-                            I am currently pursuing a PhD in Cancer Sciences at <a href="https://www.crukscotlandinstitute.ac.uk/" target="_blank" class="uline-special">Cancer Research UK (CRUK) Scotland Institute</a> and the <a href="https://www.gla.ac.uk/" target="_blank" class="uline-special">University of Glasgow</a>, under the guidance of <a href="https://www.crukscotlandinstitute.ac.uk/cruk-si-research/cruk-si-research-groups/crispin-miller-computational-biology.html" target="_blank" class="uline-special">Prof. Crispin Miller</a> and <a href="https://www.gla.ac.uk/schools/cancersciences/staff/kevinblyth/" target="_blank" class="uline-special">Prof. Kevin Blyth</a>. My research focuses on understanding cell interactions within the tumor microenvironment using computational and machine learning methods to gain insights into cancer biology, specifically by developing methods to combine spatial transcriptomics and histopathology image modalities using deep learning. I am also part of the <a href="https://www.predictmeso.com/" target="_blank" class="uline-special">PREDICT-Meso</a> project, a European consortium dedicated to exploring the early stages of mesothelioma development to design effective diagnostic and treatment strategies.
-                        </p>
-                        <p class="about-text">
-                            Previously, I completed a Master’s by Research at <a href="https://www.iiit.ac.in/" target="_blank" class="uline-special">IIIT Hyderabad</a>, where I worked with the Cancer Diagnostics (DIAG) lab under Prof. <a href="https://scholar.google.co.in/citations?user=c_V3bGgAAAAJ&hl=en" class="uline-special">Vinod P.K.</a> and Prof. <a href="https://scholar.google.com/citations?user=U9dH-DoAAAAJ&hl=en" class="uline-special">C.V. Jawahar</a>. My research focused on deep learning-based automated classification of tumors using histopathology images and collecting large datasets from partner institutions.
-                        </p>
-                        <p class="about-text">
-                            Earlier, as a Research Fellow at <a href="https://ihub-data.iiit.ac.in/" target="_blank" class="uline-special">iHub Data</a>, Hyderabad, I developed a low-parameter model for diagnosing cardiovascular diseases in resource-constrained environments, reducing input requirements to enhance its usability on edge devices. During my undergraduate studies at <a href="http://www.ipu.ac.in/" target="_blank" class="uline-special">Maharaja Agrasen Institute of Technology</a>, Delhi, I worked on evolutionary algorithms, COVID-19 prediction models, and environmental monitoring using machine learning during an internship at <a href="https://iitbhu.ac.in/" target="_blank" class="uline-special">IIT-BHU</a>.
-                        </p>
-                        <p class="about-text">
-                            I am passionate about addressing critical challenges in medical sciences through artificial intelligence, with a focus on cancer and other life-threatening diseases.
-                        </p>
-                    </section>
-                                                            
-                    <!-- Research Section -->
-                    <section class="section">
-                        <h2 class="section-title">Research</h2>
-
-                        <div class="research-item">
-                            <img src="images/projects/Her2/b-facts.gif" alt="Breast Cancer" class="research-image">
-                            <div class="research-content">
-                                <h3 class="research-title">Contrasting Low- and High-Resolution Features for HER2 Scoring using Deep Learning: An Indian Cohort Study</h3>
-                                <p class="research-authors">
-                                    <span style="text-decoration: underline;">Ekansh Chauhan</span>, Amit Sharma, Anila Sharma, C.V. Jawahar & P.K. Vinod
-                                </p>
-                                <p class="research-venue">Manuscript In Preparation</p>
-                                <!-- <div class="research-links">
-                                    <a href="https://openreview.net/forum?id=c1AfNZoSyQ">Paper</a>
-                                    <a href="https://github.com/ekansh09/">Code</a>
-                                </div> -->
-                            </div>
-                        </div>
-
-                        <div class="research-item">
-                            <img src="images/projects/brain_histo/image.png" alt="Brain Histopathology" class="research-image">
-                            <div class="research-content">
-                                <h3 class="research-title">Multiple Instance Learning for Glioma Subtype, Grading and IHC biomarkers using H&E Stained WSIs: An Indian Cohort Study</h3>
-                                <p class="research-authors">
-                                    <span style="text-decoration: underline;">Ekansh Chauhan</span>, Amit Sharma, Megha S Uppin, C.V. Jawahar & P.K. Vinod
-                                </p>
-                                <p class="research-venue">Nature Scientific Data'24</p>
-                                <div class="research-links">
-                                    <a href="https://doi.org/10.1038/s41597-024-04225-9">Paper</a>
-                                    <a href="https://github.com/ekansh09/">Code</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="research-item">
-                            <img src="images/projects/lupus_nephritis/Animated_Kidney.gif" alt="Lupus Nephritis" class="research-image">
-                            <div class="research-content">
-                                <h3 class="research-title">Lupus Nephritis Subtype Classification with only Slide Level Labels</h3>
-                                <p class="research-authors">
-                                    Amit Sharma, <span style="text-decoration: underline;">Ekansh Chauhan</span>, Megha S Uppin, Liza Rajasekhar, C.V. Jawahar & P.K. Vinod
-                                </p>
-                                <p class="research-venue">MIDL'24</p>
-                                <div class="research-links">
-                                    <a href="https://openreview.net/forum?id=c1AfNZoSyQ">Paper</a>
-                                    <a href="https://github.com/ekansh09/">Code</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="research-item">
-                            <img src="images/projects/lrh-net_miccai_workshop_2022/ecg_gif.gif" alt="LRH-Net" class="research-image">
-                            <div class="research-content">
-                                <h3 class="research-title">LRH-Net: A Multi-level Knowledge Distillation Approach for Low-Resource Heart Network</h3>
-                                <p class="research-authors">
-                                    <span style="text-decoration: underline;">Ekansh Chauhan</span>, Swathi Guptha, Likith Reddy & Bapi Raju
-                                </p>
-                                <p class="research-venue">MICCAI Workshop: FAIR'22</p>
-                                <div class="research-links">
-                                    <a href="https://link.springer.com/chapter/10.1007/978-3-031-18523-6_18">Paper</a>
-                                    <a href="https://github.com/ekansh09/">Code</a>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Work Experience -->
-                    <section class="section">
-                        <h2 class="section-title">Work Experience</h2>
-                        <div class="grid-container">
-                            <div class="grid-item">
-                                <img src="images/affiliations/game_theory.png" alt="Game Theory Logo" class="grid-item-logo">
-                                <div class="grid-item-content">
-                                    <h3 class="item-title">Game Theory, Bangalore</h3>
-                                    <div class="item-subtitle">Intern</div>
-                                    <div class="item-subtitle">Computer Vision</div>
-                                    <div class="item-period">May 2021 - May 2022</div>
-                                </div>
-                            </div>
-                            <div class="grid-item">
-                                <img src="images/affiliations/ihub_data.png" alt="iHub-Data Logo" class="grid-item-logo">
-                                <div class="grid-item-content">
-                                    <h3 class="item-title">iHub-Data, Hyderabad</h3>
-                                    <div class="item-subtitle">Research Fellow</div>
-                                    <div class="item-subtitle">Healthcare & Artificial Intelligence (HAI)</div>
-                                    <div class="item-period">May 2021 - May 2022</div>
-                                </div>
-                            </div>
-                            <div class="grid-item">
-                                <img src="images/affiliations/ui_educon.png" alt="UI-Educon Logo" class="grid-item-logo">
-                                <div class="grid-item-content">
-                                    <h3 class="item-title">UI-Educon, Delhi</h3>
-                                    <div class="item-subtitle">Affiliated Member</div>
-                                    <div class="item-subtitle">Discussion/Ideation with Founders</div>
-                                    <div class="item-period">Feb 2019 - Jul 2023</div>
-                                </div>
-                            </div>
-                            <div class="grid-item">
-                                <img src="images/affiliations/iit_bhu.png" alt="IIT BHU Logo" class="grid-item-logo">
-                                <div class="grid-item-content">
-                                    <h3 class="item-title">Indian Institute of Technology (BHU), Varanasi</h3>
-                                    <div class="item-subtitle">Research Intern</div>
-                                    <div class="item-subtitle">IoT & Machine Learning</div>
-                                    <div class="item-period">Jun 2020 - Jul 2020</div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Teaching Experience -->
-                    <section class="section">
-                        <h2 class="section-title">Teaching Experience</h2>
-                        <div class="grid-container">
-                            <div class="grid-item">
-                                <img src="images/affiliations/iiit-logo.png" alt="IIIT Hyderabad Logo" class="grid-item-logo">
-                                <div class="grid-item-content">
-                                    <h3 class="item-title">
-                                        Teaching Assistant <a href="https://www.iiit.ac.in" target="_blank">@IIIT Hyderabad</a>
-                                    </h3>
-                                    <div class="item-subtitle">Responsibilities included conducting regular tutorials, grading assignments and exams, creating assignment questions, and assisting with evaluations for:</div>
-                                    <ul class="teaching-courses">
-                                        <li>Introduction to NLP</li>
-                                        <li>Advanced NLP</li>
-                                        <li>Cognitive Science and AI</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="grid-item">
-                                <img src="images/affiliations/kggs.png" alt="KGGS Logo" class="grid-item-logo">
-                                <div class="grid-item-content">
-                                    <h3 class="item-title">
-                                        Visiting Senior Secondary Teacher <a href="https://www.kggschool.com" target="_blank">@KGGS Surjannagar</a>
-                                    </h3>
-                                    <div class="item-subtitle">Subjects taught:</div>
-                                    <ul class="teaching-courses">
-                                        <li>Mathematics</li>
-                                        <li>Organic Chemistry</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Education Section -->
-                    <section class="section">
-                        <h2 class="section-title">Education</h2>
-                        <div class="grid-container">
-                            <div class="grid-item">
-                                <img src="images/affiliations/cruk.png" alt="CRUK Logo" class="grid-item-logo">
-                                <div class="grid-item-content">
-                                    <h3 class="item-title"><b>Cancer Research UK, Scotland Institute & University of Glasgow</b></h3>
-                                    <div class="item-subtitle"><b>Doctor of Philosophy</b></div>
-                                    <div class="item-subtitle"><b>Cancer Sciences</b></div>
-                                    <div class="item-period"><b>Nov 2024 - Current</b></div>
-                                </div>
-                            </div>
-                            <div class="grid-item">
-                                <img src="images/affiliations/iiit-logo.png" alt="IIIT Hyderabad Logo" class="grid-item-logo">
-                                <div class="grid-item-content">
-                                    <h3 class="item-title">International Institute of Information Technology, Hyderabad</h3>
-                                    <div class="item-subtitle">Master of Science by Research  |  CGPA: 9.17</div>
-                                    <div class="item-subtitle">Computer Science and Engineering (Specialization: AI)</div>
-                                    <div class="item-subtitle">Thesis: Deep Learning for Cancer Subtype Classification from Histopathology Images: An Indian Cohort Study</div>
-                                    <div class="item-period">Jan 2022 - Dec 2024</div>
-                                </div>
-                            </div>
-                            <div class="grid-item">
-                                <img src="images/affiliations/mait.png" alt="MAIT Logo" class="grid-item-logo">
-                                <div class="grid-item-content">
-                                    <h3 class="item-title">Maharaja Agrasen Institute of Technology, Delhi</h3>
-                                    <div class="item-subtitle">Bachelor of Technology  |  CGPA: 8.66</div>
-                                    <div class="item-subtitle">Information Technology</div>
-                                    <div class="item-period">Aug 2017 - Jun 2021</div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- News & Announcements Section -->
-                    <section class="section">
-                        <h2 class="section-title">News & Announcements</h2>
-                        
-                        <ul class="news-list">
-                            <li class="news-year" style="margin-bottom: 1.5em;">
-                                <h3 class="year-title" style="font-size: 1.2em;">2025</h3>
-                                <ul>
-                                    <li>July: Finished my first year Annual Review at CRUK-SI.</li>
-                                    <li>June: Presented a poster at <a href='https://coursesandconferences.wellcomeconnectingscience.org/event/ai-x-bio-20250623/'>AI X BIO</a> held at the Wellcome Genome Campus, UK.</li>
-                                    <li>June: Presented a poster at <a href='https://www.ipscc2025.com/'>IPSCC</a> held at the Cancer Research UK Manchester Institute, <a href=''>(more details)</a>.</li>
-                                    <li>June: Participated in <a href='https://glasgow-compbio.github.io/events/202506_Hackathon/'> CompBio Hackathon</a> and developed multimodal machine learning subtype classification model for breast cancer.</li>
-                                    <li>May: Attended <a href='https://www.beatsonconference.org/'>Beatson International Cancer Conference 2025</a></li>
-
-                                    <li>March: Joined <a href='https://mlinscience.gitlab.io/'>MLiS</a> as an organizer</li>
-                                </ul>
-                            </li>
-
-                            <li class="news-year" style="margin-bottom: 1.5em;">
-                                <h3 class="year-title" style="font-size: 1.2em;">2024</h3>
-                                <ul>
-                                    <li>December: Publication in <a href="https://doi.org/10.1038/s41597-024-04225-9">Nature Scientific Data</a></li>
-                                    <li>November: Joined CRUK SI as a PhD student</li>
-                                    <li>September: Secured a funded PhD opportunity at the Cancer Research UK Scotland Institute (CRUK SI) & the University of Glasgow (UofG)</li>
-                                    <li>July: Paper accepted at MIDL 2024</li>
-                                    <li>March: Presented a poster at the <a href="https://blogs.iiit.ac.in/monthly_news/rd-showcase-2024-2/">R&D Showcase</a></li>
-                                </ul>
-                            </li>
-                            <li class="news-year" style="margin-bottom: 1.5em;">
-                                <h3 class="year-title" style="font-size: 1.2em;">2023</h3>
-                                <ul>
-                                    <li>May: Completed coursework and began focusing solely on research</li>
-                                    <li>January: Presented a poster at the <a href="https://blogs.iiit.ac.in/monthly_news/rd-showcase/">R&D Showcase</a></li>
-                                </ul>
-                            </li>
-                            <li class="news-year" style="margin-bottom: 1.5em;">
-                                <h3 class="year-title" style="font-size: 1.2em;">2022</h3>
-                                <ul>
-                                    <li>September: Paper accepted at FAIR, a MICCAI Workshop</li>
-                                    <li>May: Completed the Healthcare and AI Research Fellowship at iHub-Data</li>
-                                    <li>January: Joined the Master's by Research in CSE program at the International Institute of Information Technology, Hyderabad</li>
-                                    <ul>
-                                        <li>My Master's degree is funded by the Department of Science & Technology, Govt. of India, which includes a monthly stipend &#128512;</li>
-                                    </ul>
-                                </ul>
-                            </li>
-                        </ul>
-                    </section>
-
-
-                </div>
-            </div>
+      <!-- Desktop buttons (hidden on mobile) -->
+      <div class="ui desktop-only-ui">
+        <div class="ui-side ui-left">
+          <a class="btn-cta" href="snake.html" aria-label="Play a game"
+             style="--accent:#7dd3fc; --accent-2:#a78bfa;">
+            <span class="dot" aria-hidden="true"></span>
+            Play a game
+          </a>
         </div>
-    </div>
+        <div class="ui-side ui-right">
+          <a class="btn-cta" href="about.html" aria-label="About me"
+             style="--accent:#34d399; --accent-2:#22c55e;">
+            <span class="dot" aria-hidden="true"></span>
+            About me
+          </a>
+        </div>
+      </div>
 
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <script>
-  $(document).ready(function(){
-    $('#projectModal').modal('show');
+      <figcaption class="caption">drag anywhere ✨</figcaption>
+    </figure>
+  </div>
+
+<script>
+(() => {
+  // =============== Tunables for the squishy effect ===============
+  const DPR_CAP        = 1.2;
+  const TARGET_FPS     = 60;
+
+  // Foreground dots (smaller + more)
+  const DENSITY        = 1 / 2000;   // dots per CSS px
+  const MAX_DOTS       = 3500;
+  const R_MIN          = 0.7;
+  const R_MAX          = 2.2;
+
+  // Gentle base drift (px/ms ranges)
+  const VX_RANGE       = 0.016;
+  const VY_MIN         = 0.025;
+  const VY_MAX         = 0.07;
+
+  // Spring smoothing
+  const SPRING_K       = 18;   // 1/s^2
+  const DAMPING        = 7;    // 1/s
+
+  // Squishy Attractors (no glow)
+  const EMIT_EVERY_PX  = 48;
+  const PULL_PIXELS    = 90;
+  const SIGMA          = 280;
+  const HALF_LIFE      = 3.2;  // seconds to 50%
+  const GROW_TIME      = 0.12; // ramp-in
+  const MAX_BLOBS      = 48;
+
+  // (kept off — no “white radiation”)
+  const SHOW_BLOBS     = false;
+  const BLOB_ALPHA     = 0.08;
+  // ===============================================================
+
+  const cover = document.getElementById('cover');
+  const canvas = document.getElementById('fx');
+  const ctx = canvas.getContext('2d', { alpha:true });
+
+  let dpr = Math.min(DPR_CAP, window.devicePixelRatio || 1);
+  let dots = [];
+  let blobs = []; // {x,y,age}
+
+  function fit(){
+    dpr = Math.min(DPR_CAP, window.devicePixelRatio || 1);
+    const r = cover.getBoundingClientRect();
+    if (r.height === 0) cover.style.minHeight = '360px';
+
+    const rr = cover.getBoundingClientRect();
+    canvas.width  = Math.floor(rr.width * dpr);
+    canvas.height = Math.floor(rr.height * dpr);
+    canvas.style.width  = rr.width + 'px';
+    canvas.style.height = rr.height + 'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+
+    const count = Math.min(MAX_DOTS, Math.round(rr.width*rr.height * DENSITY));
+    dots = new Array(count).fill(0).map(() => ({
+      bx: Math.random()*rr.width,
+      by: Math.random()*rr.height,
+      x: 0, y: 0, vx: 0, vy: 0,
+      r: R_MIN + Math.random()*(R_MAX-R_MIN),
+      tv: Math.random()*0.009 + 0.002, // twinkle speed
+      t: Math.random()*Math.PI*2,      // twinkle phase
+      ax: (Math.random()-0.5)*VX_RANGE,
+      ay: VY_MIN + Math.random()*(VY_MAX - VY_MIN)
+    })).map(d => (d.x=d.bx, d.y=d.by, d));
+  }
+
+  // helpers
+  const mod  = (n,m)=>((n%m)+m)%m;
+  const gauss= (d, s)=>Math.exp(-(d*d)/(2*s*s));
+  const clamp= (v,a,b)=>v<a?a:v>b?b:v;
+  const easeInOut = t => t*t*(3-2*t);
+  const strength  = age => easeInOut(Math.min(age/GROW_TIME,1)) * Math.exp(-Math.LN2 * age / HALF_LIFE);
+
+  function step(dtMs){
+    const dt = dtMs/1000;
+    const r = cover.getBoundingClientRect(), w=r.width, h=r.height;
+    if (!w || !h) return;
+
+    // age blobs
+    for (const b of blobs) b.age += dt;
+    for (let i=blobs.length-1;i>=0;i--) if (strength(blobs[i].age) < 0.05) blobs.splice(i,1);
+
+    // dots
+    for (const d of dots){
+      d.bx = mod(d.bx + d.ax*dtMs, w);
+      d.by = mod(d.by + d.ay*dtMs, h);
+
+      let tx = d.bx, ty = d.by;
+      if (blobs.length){
+        let ox=0, oy=0;
+        for (const b of blobs){
+          const s = strength(b.age);
+          if (s <= 0) continue;
+          const dx = b.x - d.bx, dy = b.y - d.by;
+          const dist = Math.hypot(dx,dy);
+          if (dist < SIGMA*3){
+            const wgt = gauss(dist, SIGMA) * s;
+            const near= 1 / (1 + dist*0.004);
+            const k = (PULL_PIXELS * wgt * near) / (dist + 1e-6);
+            ox += dx * k; oy += dy * k;
+          }
+        }
+        tx += ox; ty += oy;
+      }
+
+      // spring toward target
+      const fx = SPRING_K * (tx - d.x) - DAMPING * d.vx;
+      const fy = SPRING_K * (ty - d.y) - DAMPING * d.vy;
+      d.vx += fx * dt; d.vy += fy * dt;
+      d.x  += d.vx * dt; d.y  += d.vy * dt;
+
+      d.t += d.tv * dtMs;
+    }
+  }
+
+  function render(){
+    const r = cover.getBoundingClientRect(), w=r.width, h=r.height;
+    if (!w || !h) return;
+    ctx.clearRect(0,0,w,h);
+
+    // (debug) blobs glow — off by default
+    if (SHOW_BLOBS && blobs.length){
+      ctx.save(); ctx.globalCompositeOperation='lighter';
+      for (const b of blobs){
+        const s = strength(b.age), rad = SIGMA*.9;
+        const g = ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,rad);
+        g.addColorStop(0,`rgba(255,255,255,${BLOB_ALPHA*s})`);
+        g.addColorStop(1,`rgba(255,255,255,0)`);
+        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(b.x,b.y,rad,0,Math.PI*2); ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    // dots with tiny stroke for contrast on bright images
+    for (const d of dots){
+      const a = clamp(0.75 + 0.25*Math.sin(d.t), 0, 1);
+      ctx.globalAlpha = a;
+      ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI*2);
+      ctx.fillStyle = '#fff'; ctx.fill();
+      ctx.lineWidth = 0.75; ctx.strokeStyle = 'rgba(0,0,0,0.25)'; ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  // RAF with cap
+  let last=performance.now(), acc=0;
+  function loop(){
+    const now=performance.now(), dt=now-last; last=now; acc+=dt;
+    const stepMs=1000/TARGET_FPS;
+    if(acc>=stepMs){ step(acc); render(); acc=0; }
+    requestAnimationFrame(loop);
+  }
+
+  // Ignore UI clicks for dragging
+  const drag = { on:false, x:0, y:0, lastEmitX:0, lastEmitY:0, trail:0 };
+  const isUI = el => el.closest && el.closest('.ui');
+
+  function localXY(e){
+    const r = cover.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  }
+  function addBlob(p){
+    blobs.push({ x:p.x, y:p.y, age:0 });
+    if (blobs.length > MAX_BLOBS) blobs.shift();
+  }
+
+  cover.addEventListener('pointerdown', e=>{
+    if (isUI(e.target)) return;               // don’t start drag on buttons
+    cover.setPointerCapture?.(e.pointerId);
+    drag.on = true;
+    const p = localXY(e);
+    drag.x=p.x; drag.y=p.y; drag.lastEmitX=p.x; drag.lastEmitY=p.y; drag.trail=0;
+
+    addBlob(p); addBlob(p);                   // instantaneous, obvious effect
+    cover.classList.add('dragging');
   });
+
+  cover.addEventListener('pointermove', e=>{
+    if(!drag.on) return;
+    const p = localXY(e);
+    const ddx = p.x - drag.lastEmitX, ddy = p.y - drag.lastEmitY;
+    drag.trail += Math.hypot(ddx, ddy);
+    if (drag.trail >= EMIT_EVERY_PX){
+      addBlob(p);
+      drag.lastEmitX = p.x; drag.lastEmitY = p.y; drag.trail = 0;
+    }
+    drag.x = p.x; drag.y = p.y;
+  });
+
+  function endDrag(e){
+    drag.on = false;
+    cover.releasePointerCapture?.(e.pointerId);
+    cover.classList.remove('dragging');
+  }
+  cover.addEventListener('pointerup', endDrag);
+  cover.addEventListener('pointercancel', endDrag);
+  cover.addEventListener('lostpointercapture', ()=>{ drag.on=false; });
+
+  // Size sync
+  const ro = new ResizeObserver(()=>fit());
+  ro.observe(cover);
+  window.addEventListener('resize', fit);
+
+  fit(); loop();
+})();
 </script>
 
+<script>
+(() => {
+  // Check for View Transitions API support
+  if (!document.startViewTransition) {
+    console.log('View Transitions API not supported');
+    return;
+  }
+  
+  // Get ALL game and about links, both mobile and desktop versions
+  const gameLinks = document.querySelectorAll('a[href="snake.html"]');
+  const aboutLinks = document.querySelectorAll('a[href="about.html"]');
+  if (!gameLinks.length || !aboutLinks.length) return;
+  
+  // Enhanced transition for "Play a game" button
+  function createGameTransition(e) {
+    e.preventDefault();
+    
+    // Reference to cover and canvas for animation
+    const cover = document.getElementById('cover');
+    const fx = document.getElementById('fx');
+    const ctx = fx.getContext('2d');
+    const linkHref = e.currentTarget.href; // Store the clicked link's href
+    
+    const coverRect = cover.getBoundingClientRect();
+    const centerX = coverRect.width / 2;
+    const centerY = coverRect.height / 2;
+    
+    // Create multiple particle systems for more dynamic effect
+    const spiralParticles = [];
+    const convergingParticles = [];
+    const burstParticles = [];
+    
+    // Spiral particles that spiral into center
+    for (let i = 0; i < 15; i++) {
+      const angle = (i / 15) * Math.PI * 2;
+      const radius = 150 + Math.random() * 100;
+      const x = centerX + Math.cos(angle) * radius;
+      const y = centerY + Math.sin(angle) * radius;
+      
+      spiralParticles.push({
+        x, y,
+        angle: angle,
+        radius: radius,
+        spiralSpeed: 0.15 + Math.random() * 0.1,
+        shrinkSpeed: 80 + Math.random() * 40,
+        size: 3 + Math.random() * 4,
+        color: Math.random() > 0.5 ? '#7cf5ff' : '#a78bfa',
+        alpha: 1,
+        trail: []
+      });
+    }
+    
+    // Converging particles from edges
+    for (let i = 0; i < 25; i++) {
+      let x, y;
+      const edge = Math.floor(Math.random() * 4);
+      
+      switch (edge) {
+        case 0: x = Math.random() * coverRect.width; y = 0; break; // top
+        case 1: x = coverRect.width; y = Math.random() * coverRect.height; break; // right
+        case 2: x = Math.random() * coverRect.width; y = coverRect.height; break; // bottom
+        case 3: x = 0; y = Math.random() * coverRect.height; break; // left
+      }
+      
+      const angle = Math.atan2(centerY - y, centerX - x);
+      const speed = 3 + Math.random() * 2;
+      
+      convergingParticles.push({
+        x, y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        size: 2 + Math.random() * 3,
+        color: Math.random() > 0.6 ? '#7cf5ff' : Math.random() > 0.5 ? '#a78bfa' : '#ffffff',
+        alpha: 0.8 + Math.random() * 0.2,
+        life: 1
+      });
+    }
+    
+    // Add ripple effect to cover
+    cover.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+    cover.style.transform = 'scale(1.02)';
+    
+    // Create expanding rings
+    const rings = [];
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => {
+        rings.push({
+          x: centerX,
+          y: centerY,
+          radius: 0,
+          maxRadius: Math.max(coverRect.width, coverRect.height) * 0.8,
+          alpha: 0.6,
+          speed: 200 + i * 50,
+          color: i % 2 === 0 ? '#7cf5ff' : '#a78bfa'
+        });
+      }, i * 150);
+    }
+    
+    let animating = true;
+    let time = 0;
+    
+    function animateGameTransition() {
+      if (!animating) return;
+      
+      time += 16; // roughly 60fps
+      ctx.clearRect(0, 0, coverRect.width, coverRect.height);
+      
+      // Draw expanding rings
+      for (let i = rings.length - 1; i >= 0; i--) {
+        const ring = rings[i];
+        ring.radius += ring.speed * 0.016;
+        ring.alpha *= 0.985;
+        
+        if (ring.alpha < 0.01) {
+          rings.splice(i, 1);
+          continue;
+        }
+        
+        ctx.globalAlpha = ring.alpha;
+        ctx.strokeStyle = ring.color;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(ring.x, ring.y, ring.radius, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      
+      // Update and draw spiral particles
+      for (const p of spiralParticles) {
+        // Update spiral motion
+        p.angle += p.spiralSpeed;
+        p.radius = Math.max(0, p.radius - p.shrinkSpeed * 0.016);
+        p.x = centerX + Math.cos(p.angle) * p.radius;
+        p.y = centerY + Math.sin(p.angle) * p.radius;
+        
+        // Add to trail
+        p.trail.push({ x: p.x, y: p.y });
+        if (p.trail.length > 8) p.trail.shift();
+        
+        // Draw trail
+        ctx.globalAlpha = 0.3;
+        ctx.strokeStyle = p.color;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        for (let i = 1; i < p.trail.length; i++) {
+          if (i === 1) ctx.moveTo(p.trail[i-1].x, p.trail[i-1].y);
+          ctx.lineTo(p.trail[i].x, p.trail[i].y);
+        }
+        ctx.stroke();
+        
+        // Draw particle
+        ctx.globalAlpha = p.alpha;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        
+        // Add glow
+        ctx.globalAlpha = p.alpha * 0.3;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * 2, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+      }
+      
+      // Update and draw converging particles
+      for (const p of convergingParticles) {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= 0.02;
+        p.alpha = Math.max(0, p.life);
+        
+        // Add slight acceleration toward center
+        const dx = centerX - p.x;
+        const dy = centerY - p.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist > 10) {
+          p.vx += (dx / dist) * 0.1;
+          p.vy += (dy / dist) * 0.1;
+        }
+        
+        ctx.globalAlpha = p.alpha;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+      }
+      
+      // Create burst effect in center after some time
+      if (time > 400 && time < 600 && Math.random() < 0.3) {
+        for (let i = 0; i < 3; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 2 + Math.random() * 3;
+          burstParticles.push({
+            x: centerX + (Math.random() - 0.5) * 20,
+            y: centerY + (Math.random() - 0.5) * 20,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            size: 1 + Math.random() * 2,
+            color: '#ffffff',
+            alpha: 1,
+            life: 0.8 + Math.random() * 0.4
+          });
+        }
+      }
+      
+      // Update and draw burst particles
+      for (let i = burstParticles.length - 1; i >= 0; i--) {
+        const p = burstParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vx *= 0.98;
+        p.vy *= 0.98;
+        p.life -= 0.025;
+        p.alpha = Math.max(0, p.life);
+        
+        if (p.alpha <= 0) {
+          burstParticles.splice(i, 1);
+          continue;
+        }
+        
+        ctx.globalAlpha = p.alpha;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+      }
+      
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(animateGameTransition);
+    }
+    
+    // Start animation
+    animateGameTransition();
+    
+    // Begin view transition after animation builds up
+    setTimeout(() => {
+      animating = false;
+      
+      document.startViewTransition(() => {
+        window.location.href = linkHref; // Use the stored href
+      });
+    }, 500);
+  }
+  
+  // Simple transition for "About me" button
+  function createAboutTransition(e) {
+    e.preventDefault();
+    
+    const cover = document.getElementById('cover');
+    const fx = document.getElementById('fx');
+    const ctx = fx.getContext('2d');
+    const linkHref = e.currentTarget.href; // Store the clicked link's href
+    
+    const coverRect = cover.getBoundingClientRect();
+    const particles = [];
+    
+    // Create gentle flowing particles
+    for (let i = 0; i < 20; i++) {
+      const x = Math.random() * coverRect.width;
+      const y = Math.random() * coverRect.height;
+      const angle = Math.atan2(coverRect.height/2 - y, coverRect.width * 0.8 - x);
+      const speed = 1.5 + Math.random() * 2;
+      
+      particles.push({
+        x, y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        size: 2 + Math.random() * 3,
+        color: Math.random() > 0.5 ? '#34d399' : '#22c55e',
+        alpha: 0.8 + Math.random() * 0.2
+      });
+    }
+    
+    // Gentle scale effect
+    cover.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    cover.style.transform = 'scale(1.02)';
+    
+    let animating = true;
+    function animateAboutTransition() {
+      if (!animating) return;
+      
+      ctx.clearRect(0, 0, coverRect.width, coverRect.height);
+      
+      for (const p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha *= 0.985;
+        
+        ctx.globalAlpha = p.alpha;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+      }
+      
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(animateAboutTransition);
+    }
+    
+    animateAboutTransition();
+    
+    setTimeout(() => {
+      animating = false;
+      document.startViewTransition(() => {
+        window.location.href = linkHref; // Use the stored href
+      });
+    }, 300);
+  }
+  
+  // Apply enhanced transitions to ALL buttons (both mobile and desktop)
+  gameLinks.forEach(link => {
+    link.addEventListener('click', createGameTransition);
+  });
+  
+  aboutLinks.forEach(link => {
+    link.addEventListener('click', createAboutTransition);
+  });
+  
+  // Handle other internal links with standard view transitions
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a');
+    
+    // Skip links we've already handled and external links
+    if (!link || 
+        link.href.includes('snake.html') || 
+        link.href.includes('about.html') || 
+        link.target || 
+        !link.href.startsWith(window.location.origin)) return;
+    
+    e.preventDefault();
+    document.startViewTransition(() => {
+      window.location.href = link.href;
+    });
+  });
+})();
+</script>
 </body>
-</html> 
+</html>
