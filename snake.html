@@ -676,10 +676,8 @@ window.addEventListener('resize', setVH);
       touchStartX = touch.clientX;
       touchStartY = touch.clientY;
 
-      // Start the game on first touch
-      if (!playing && !dead) {
-        togglePlay(true);
-      }
+      // Start or restart on touch
+      togglePlay(true);
     }
 
     function handleTouchMove(e) {
@@ -725,7 +723,15 @@ window.addEventListener('resize', setVH);
     });
 
     function togglePlay(forcePlay = false) {
-      if (dead) { reset(); return; }
+      if (dead) {
+        reset();
+        if (forcePlay) {
+          playing = true;
+          setToast('');
+          updateHUD();
+        }
+        return;
+      }
       playing = forcePlay ? true : !playing;
       setToast(playing ? '' : 'Paused — press Space'); updateHUD();
     }
