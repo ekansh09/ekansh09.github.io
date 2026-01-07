@@ -868,7 +868,7 @@ function initFakeTerminal() {
   }
 
   const files = {
-    'about.txt': `I am currently pursuing a PhD in Cancer Sciences at <span class="terminal-highlight">Cancer Research UK (CRUK) Scotland Institute</span> and the <span class="terminal-highlight">University of Glasgow</span>.\n\nMy research focuses on combining spatial transcriptomics and histopathology with deep learning.\n\nI’m also part of the <span class="terminal-highlight">PREDICT-Meso</span> consortium.`
+    'about.txt': `I am currently pursuing a PhD in Cancer Sciences at <span class="terminal-highlight">Cancer Research UK (CRUK) Scotland Institute</span> and the <span class="terminal-highlight">University of Glasgow</span>. My research focuses on combining spatial transcriptomics and histopathology with deep learning. I’m also part of the <span class="terminal-highlight">PREDICT-Meso</span> consortium.`
   };
 
   function handleCommand(raw) {

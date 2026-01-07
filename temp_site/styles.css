@@ -51,7 +51,11 @@
   --left-pane-width: 420px;
   
   /* Components */
-  --terminal-max-h: clamp(520px, 80vh, 900px);
+  /* Make terminal smaller by default */
+  --terminal-max-h: clamp(500px, 100vh, 550px);
+  --terminal-max-w: 680px; /* limit terminal width on large screens */
+  --terminal-min-h: 220px; /* minimum resizable height */
+  --terminal-init-h: clamp(300px, 45vh, 500px); /* initial height so resize handle appears */
 }
 
 /* Light theme variables */
@@ -227,18 +231,27 @@ body {
   color: var(--text-primary);
   border: 1px solid var(--border-subtle);
   border-radius: 999px;
-  padding: 0.5rem 0.75rem;
+  width: 42px;
+  height: 42px;
+  padding: 0;
   line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+  display: grid;
+  place-items: center;
+  gap: 0;
   box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: background 160ms ease, border-color 160ms ease, transform 120ms ease;
 }
 .theme-toggle:hover { background: var(--bg-card-hover); }
 .theme-toggle:active { transform: scale(0.98); }
-.theme-toggle .label { font-size: 0.9rem; }
+.theme-toggle .label { font-size: 0.9rem; display: none; }
+
+/* Center emoji icon visually */
+.theme-toggle .icon {
+  font-size: 1rem;
+  line-height: 1;
+  display: inline-block;
+}
 
 .profile-image-wrapper .role-badge.role-badge--by-photo .role-article {
   color: var(--text-primary);
@@ -307,7 +320,7 @@ body {
    ============================================ */
 .right-pane {
   flex: 1;
-  max-width: min(980px, 65vw);
+  max-width: min(900px, 60vw); /* decreased width */
   display: flex;
   flex-direction: column;
   gap: clamp(2rem, 4vw, 3rem);
@@ -450,7 +463,14 @@ body {
   border-radius: 16px;
   overflow: hidden;
   box-shadow: var(--shadow-md);
+  /* Enable manual resize from bottom-right */
+  resize: vertical;
+  min-height: var(--terminal-min-h);
+  height: var(--terminal-init-h);
   max-height: var(--terminal-max-h);
+  max-width: var(--terminal-max-w);
+  width: 100%;             /* responsive: fill small screens, cap on large */
+  margin-inline: auto;     /* center horizontally within right pane */
   display: flex;
   flex-direction: column;
 }
@@ -502,8 +522,8 @@ body {
 .terminal-body {
   font-family: var(--font-mono);
   font-size: 0.9375rem;
-  padding: 1.5rem;
-  line-height: 1.8;
+  padding: 1rem;           /* tighter padding for smaller terminal */
+  line-height: 1.2;        /* tighter line height to remove extra spacing */
   user-select: text;
   -webkit-user-select: text;
   overflow: auto;          /* scroll inside terminal */
@@ -515,7 +535,7 @@ body {
 .terminal-line {
   display: flex;
   gap: 0.75rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0;        /* remove extra spacing between lines */
   user-select: text;
   -webkit-user-select: text;
 }
@@ -538,7 +558,7 @@ body {
   color: var(--text-primary);
   font-family: var(--font-mono);
   font-size: inherit;
-  line-height: 1.8;
+  line-height: 1.2;        /* match tighter line height */
   padding: 0;
 }
 
@@ -551,7 +571,7 @@ body {
 }
 
 .terminal-output p {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0;        /* remove spacing between output lines */
 }
 
 /* Help list formatting: no native bullets, keep leading dashes in text */
