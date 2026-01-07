@@ -53,7 +53,7 @@
   /* Components */
   /* Make terminal smaller by default */
   --terminal-max-h: clamp(500px, 100vh, 550px);
-  --terminal-max-w: 680px; /* limit terminal width on large screens */
+  --terminal-max-w: 100%; /* let terminal grow with container/screen */
   --terminal-min-h: 220px; /* minimum resizable height */
   --terminal-init-h: clamp(300px, 45vh, 500px); /* initial height so resize handle appears */
 
@@ -593,7 +593,8 @@ body {
   line-height: 1.2;        /* tighter line height to remove extra spacing */
   user-select: text;
   -webkit-user-select: text;
-  overflow: auto;          /* scroll inside terminal */
+  overflow-y: auto;        /* scroll vertically inside terminal */
+  overflow-x: hidden;      /* prevent horizontal scrollbars; wrap long text */
   -webkit-overflow-scrolling: touch; /* smooth on iOS */
   overscroll-behavior: contain;      /* prevent page scroll chaining */
   flex: 1;                 /* fill window and keep header fixed */
@@ -605,6 +606,7 @@ body {
   margin-bottom: 0;        /* remove extra spacing between lines */
   user-select: text;
   -webkit-user-select: text;
+  min-width: 0;            /* allow flex children to shrink/wrap */
 }
 
 .terminal-prompt {
@@ -615,6 +617,9 @@ body {
 
 .terminal-command {
   color: var(--accent-secondary);
+  overflow-wrap: anywhere; /* wrap long commands instead of overflowing */
+  word-break: break-word;
+  min-width: 0;
 }
 
 .terminal-input {
@@ -635,6 +640,20 @@ body {
   margin-bottom: 1.5rem;
   user-select: text;
   -webkit-user-select: text;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Ensure pre/code in the terminal can wrap on small screens */
+.terminal-body pre,
+.terminal-body code {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* General text wrapping to avoid horizontal overflow on phones */
+p, li, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
 }
 
 .terminal-output p {
@@ -820,6 +839,9 @@ body {
   .container-split {
     flex-direction: column;
     gap: 3rem;
+    /* Leave a small gutter on both sides incl. safe-area */
+    padding-left: calc(clamp(16px, 5vw, 24px) + env(safe-area-inset-left));
+    padding-right: calc(clamp(16px, 5vw, 24px) + env(safe-area-inset-right));
   }
   
   .left-pane {
@@ -832,6 +854,7 @@ body {
     border-right: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     padding-bottom: 3rem;
+    min-height: auto; /* avoid full-viewport left pane on mobile */
   }
   
   .right-pane {
@@ -855,17 +878,47 @@ body {
   }
 }
 
-/* Mobile: keep pill bottom-right inside photo */
+/* Mobile/tablet: ensure badge overlays 40% of its width on the photo */
 @media (max-width: 992px) {
   .profile-image-wrapper .role-badge.role-badge--by-photo {
-    bottom: 0;  /* still touching bottom */
-    left: 100%;
+    bottom: 0;              /* touch bottom of the image */
+    left: 100%;             /* anchor to right edge of photo */
     right: auto;
     top: auto;
-    transform: translateX(-60%);
+    transform: translateX(-40%); /* 40% overlay on image, 60% outside */
     max-width: none;
   }
   .profile-image-wrapper {
     margin-bottom: clamp(2rem, 6vw, 3.25rem);
   }
 }
+
+@media (max-width: 480px) {
+  .profile-image-wrapper {
+    /* Slightly larger portrait on phones, responsive to viewport */
+    width: clamp(200px, 70vw, 260px);
+    height: auto; /* keep aspect ratio */
+  }
+  .profile-image-wrapper .role-badge.role-badge--by-photo {
+    bottom: 0;
+    left: 100%;
+    right: auto;
+    top: auto;
+    transform: translateX(-40%); /* keep 40% overlay on very small screens */
+    padding: 0.15rem 0.4rem;
+  }
+  .profile-links {
+    gap: 1rem;
+  }
+  /* Better placement inside notches/rounded corners */
+  .theme-toggle {
+    right: calc(16px + env(safe-area-inset-right));
+    top: calc(12px + env(safe-area-inset-top));
+  }
+}
+
+/* Media utility: images and embeds scale down on small viewports */
+img, video { max-width: 100%; height: auto; }
+
+/* Improve tap behavior on mobile */
+button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }

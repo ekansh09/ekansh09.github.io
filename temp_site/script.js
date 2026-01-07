@@ -16,17 +16,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initLoader();
   initCustomCursor();
-  initMagneticButtons();
   initNavigation();
   initMobileMenu();
   initScrollAnimations();
-  initParticles();
   initCounterAnimation();
   initSmoothScroll();
   initSkillBars();
   initThemeSwitch();
   initRoleCycler();
   updateYear();
+
+  // Mobile/performance: disable heavy pointer/scroll effects on touch or small screens
+  const isCoarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  const smallScreen = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
+  const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!isCoarse && !smallScreen && !reducedMotion) {
+    initMagneticButtons();
+    initParticles();
+  }
+
+  // Always enable the terminal last
   initFakeTerminal();
 });
 
@@ -694,8 +704,13 @@ function initTiltEffect() {
 
 // Initialize tilt effect after DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  initTiltEffect();
-  initParallax();
+  const isCoarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  const smallScreen = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
+  const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!isCoarse && !smallScreen && !reducedMotion) {
+    initTiltEffect();
+    initParallax();
+  }
 });
 
 // ============================================
