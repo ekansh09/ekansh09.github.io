@@ -1,0 +1,784 @@
+/* ============================================
+   PORTFOLIO - TWO PANE LAYOUT
+   Fixed Left Pane + Scrollable Right Content
+   ============================================ */
+
+/* ============================================
+   CSS Variables
+   ============================================ */
+:root {
+  /* Colors - Dark Theme */
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --bg-tertiary: #1f2937;
+  --bg-card: rgba(255, 255, 255, 0.04);
+  --bg-card-hover: rgba(255, 255, 255, 0.07);
+  
+  /* Text Colors */
+  --text-primary: #f0f6fc;
+  --text-secondary: rgba(240, 246, 252, 0.75);
+  --text-tertiary: rgba(240, 246, 252, 0.55);
+  
+  /* Accent Colors - Modern Blue/Purple Palette */
+  --accent-primary: #58a6ff;
+  --accent-secondary: #79c0ff;
+  --accent-purple: #bc8cff;
+  --accent-cyan: #56d4dd;
+  --accent-green: #3fb950;
+  --accent-orange: #f78166;
+  --accent-pink: #ff7ab9;
+  
+  /* Link Colors */
+  --link-color: #58a6ff;
+  --link-hover: #79c0ff;
+  
+  /* Borders */
+  --border-subtle: rgba(240, 246, 252, 0.1);
+  --border-medium: rgba(240, 246, 252, 0.15);
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
+  
+  /* Typography */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Space Grotesk', var(--font-primary);
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+  
+  /* Spacing */
+  --gap-panes: 4.5rem;
+  --left-pane-width: 420px;
+  
+  /* Components */
+  --terminal-max-h: clamp(520px, 80vh, 900px);
+}
+
+/* Light theme variables */
+:root[data-theme="light"] {
+  --bg-primary: #f7f8fb;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #edf1f5;
+  --bg-card: rgba(0, 0, 0, 0.04);
+  --bg-card-hover: rgba(0, 0, 0, 0.07);
+
+  --text-primary: #0b0b10;
+  --text-secondary: rgba(0, 0, 0, 0.7);
+  --text-tertiary: rgba(0, 0, 0, 0.55);
+
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-medium: rgba(0, 0, 0, 0.14);
+}
+
+/* ============================================
+   Reset & Base
+   ============================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-primary);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ============================================
+   Noise Texture Overlay
+   ============================================ */
+.noise {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.03;
+  z-index: 1000;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* ============================================
+   Main Split Container
+   ============================================ */
+.container-split {
+  display: flex;
+  min-height: 100vh;
+  gap: var(--gap-panes);
+  padding: clamp(1rem, 2vw, 2rem);
+  width: 100%;
+  max-width: 1440px; /* keep equal left/right outer space */
+  margin-inline: auto;
+}
+
+/* ============================================
+   Left Pane - Fixed Profile Section
+   ============================================ */
+.left-pane {
+  position: sticky;
+  top: 2rem;
+  width: clamp(260px, 28vw, 360px);
+  height: fit-content;
+  flex-shrink: 0;
+  display: flex;
+  align-items: top;
+  min-height: calc(100vh - 4rem);
+}
+
+.left-pane {
+  padding-right: clamp(1.5rem, 3vw, 2.5rem);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.profile-section {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  box-shadow: none;
+  width: 100%;
+  /* Nudge content up without moving divider line */
+  /* transform: translateY(-5%); */
+}
+
+/* Profile Image */
+.profile-image-wrapper {
+  position: relative;
+  width: min(200px, 70%);
+  height: min(200px, 70vw);
+  aspect-ratio: 1;
+  border-radius: clamp(12px, 1.5vw, 18px);
+  /* Allow badge to hang outside the right edge */
+  overflow: visible;
+  border: none;
+  box-shadow: none;
+  margin-bottom: clamp(2rem, 4vw, 4rem);
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Keep rounded corners when wrapper overflow is visible */
+  border-radius: clamp(12px, 1.5vw, 18px);
+  transition: transform 0.3s ease;
+}
+
+.profile-image-wrapper:hover .profile-image {
+  transform: scale(1.05);
+}
+
+/* Role badge overlay on photo (bottom-right) */
+.profile-image-wrapper .role-badge.role-badge--by-photo {
+  position: absolute;
+  bottom: 0px;               /* touch bottom edge */
+  left: 100%;              /* anchor to right edge of photo */
+  right: auto;
+  top: auto;
+  transform: translateX(-60%); /* 60% over photo, 40% outside */
+  white-space: nowrap;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--border-medium);
+  box-shadow: var(--shadow-sm);
+  border-radius: 14px;
+  padding: 0.2rem 0.25rem;
+  backdrop-filter: saturate(140%) blur(10px);
+  z-index: 2;
+  pointer-events: none;
+  max-width: none;
+  box-sizing: border-box; /* JS width includes padding */
+  display: inline-flex;
+  justify-content: center; /* center horizontally */
+  align-items: center;      /* center vertically */
+  text-align: center;
+}
+
+/* Light theme tweak for the badge over the photo */
+:root[data-theme="light"] .profile-image-wrapper .role-badge.role-badge--by-photo {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--border-medium);
+}
+
+/* ============================================
+   Theme Toggle Button
+   ============================================ */
+.theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1100;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  padding: 0.5rem 0.75rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, transform 120ms ease;
+}
+.theme-toggle:hover { background: var(--bg-card-hover); }
+.theme-toggle:active { transform: scale(0.98); }
+.theme-toggle .label { font-size: 0.9rem; }
+
+.profile-image-wrapper .role-badge.role-badge--by-photo .role-article {
+  color: var(--text-primary);
+  font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+}
+
+.profile-image-wrapper .role-badge.role-badge--by-photo .role-text {
+  color: #3b82f6;
+  font-weight: 700;
+  font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+}
+
+/* Name */
+.profile-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 3.5vw, 1.875rem);
+  font-weight: 700;
+  margin: 0 0 clamp(1.25rem, 3vw, 2rem) 0;
+  color: var(--text-primary);
+  text-align: center;
+  width: 100%;
+}
+
+/* Profile Links */
+.profile-links {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 3vw, 2rem);
+  width: 100%;
+  align-items: center;
+}
+
+.profile-link {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(0.4rem, 0.8vw, 0.5rem);
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: #3b82f6; /* match role text blue */
+  text-decoration: none;
+  font-weight: 500;
+  font-size: clamp(0.875rem, 1.5vw, 0.9375rem);
+  line-height: 1.4;
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.profile-link::before {
+  display: none;
+}
+
+.profile-link:hover {
+  transform: translateX(2px);
+  color: #60a5fa; /* lighter blue on hover */
+}
+
+.profile-link svg {
+  width: clamp(16px, 2.5vw, 18px);
+  height: clamp(16px, 2.5vw, 18px);
+  flex-shrink: 0;
+  color: currentColor;
+}
+
+/* ============================================
+   Right Pane - Main Content (Scrollable)
+   ============================================ */
+.right-pane {
+  flex: 1;
+  max-width: min(980px, 65vw);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 4vw, 3rem);
+  padding-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+/* Tighter top alignment like screenshot */
+.right-pane > :first-child {
+  margin-top: 0.25rem;
+}
+
+/* ============================================
+   Hero Title Section
+   ============================================ */
+.hero {
+  margin-top: clamp(0.5rem, 1.5vw, 1.25rem);
+}
+
+.hero-intro {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.4rem, 1vw, 0.65rem);
+}
+
+.hero-line {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 1.4vw, 1rem);
+}
+
+.hero-word {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  line-height: 0.95;
+  color: var(--text-primary);
+  /* Stronger layered shadow for depth */
+  text-shadow: 0.12em 0.12em 0 rgba(255, 255, 255, 0.12), 0.22em 0.22em 0 rgba(0, 0, 0, 0.55);
+}
+
+.hero-dot {
+  width: clamp(10px, 1.6vw, 14px);
+  height: clamp(10px, 1.6vw, 14px);
+  border-radius: 50%;
+  background: #8b5cf6;
+  /* Stronger dot shadow */
+  box-shadow: 0.22em 0.22em 0 rgba(0,0,0,0.55);
+}
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+}
+
+.role-article {
+  font-size: clamp(0.9rem, 2.4vw, 1rem);
+  color: var(--text-secondary);
+  transition: transform 300ms ease, opacity 300ms ease;
+  will-change: transform, opacity;
+}
+
+.role-text {
+  font-weight: 700;
+  font-size: clamp(0.95rem, 2.8vw, 1.15rem);
+  color: #3b82f6;
+  transition: transform 300ms ease, opacity 300ms ease;
+  will-change: transform, opacity;
+}
+
+.role-text.is-changing {
+  transform: translateY(6px) scale(0.98);
+  opacity: 0;
+}
+
+/* Animate article similarly when changing */
+.role-article.is-changing {
+  transform: translateY(6px) scale(0.98);
+  opacity: 0.5;
+}
+
+/* Left-pane placement tweaks */
+.hero-left {
+  align-self: stretch;
+  text-align: center;
+  margin-top: clamp(0.75rem, 2vw, 1rem);
+  /* Increased gap between name (hero) and buttons */
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+}
+
+.left-pane .hero-intro { align-items: center; }
+
+/* Ensure each hero line centers horizontally in the left pane */
+.left-pane .hero-line { width: 100%; justify-content: center; }
+
+/* Placement tweaks for split hero */
+.hero-top {
+  margin-top: clamp(0.25rem, 1vw, 0.5rem);
+  margin-bottom: clamp(1rem, 3vw, 2rem); /* space above photo */
+}
+
+.hero-bottom {
+  margin-top: clamp(1rem, 3vw, 1.75rem); /* space below photo */
+}
+
+.left-pane .hero-word {
+  font-size: clamp(1.4rem, 5vw, 1.8rem);
+}
+
+.left-pane .role-article { font-size: clamp(0.85rem, 2.2vw, 0.95rem); }
+.left-pane .role-text { font-size: clamp(0.9rem, 2.4vw, 1.05rem); }
+
+/* ============================================
+   Terminal Section
+   ============================================ */
+.terminal-section {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.terminal-window {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  max-height: var(--terminal-max-h);
+  display: flex;
+  flex-direction: column;
+}
+
+.terminal-header {
+  background: var(--bg-tertiary);
+  padding: 0.875rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.terminal-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.terminal-btn {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.terminal-btn:hover {
+  transform: scale(1.2);
+}
+
+.terminal-btn.close {
+  background: #ff5f56;
+}
+
+.terminal-btn.minimize {
+  background: #ffbd2e;
+}
+
+.terminal-btn.maximize {
+  background: #27c93f;
+}
+
+.terminal-title {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.terminal-body {
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  padding: 1.5rem;
+  line-height: 1.8;
+  user-select: text;
+  -webkit-user-select: text;
+  overflow: auto;          /* scroll inside terminal */
+  -webkit-overflow-scrolling: touch; /* smooth on iOS */
+  overscroll-behavior: contain;      /* prevent page scroll chaining */
+  flex: 1;                 /* fill window and keep header fixed */
+}
+
+.terminal-line {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.terminal-prompt {
+  color: var(--accent-green);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.terminal-command {
+  color: var(--accent-secondary);
+}
+
+.terminal-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: inherit;
+  line-height: 1.8;
+  padding: 0;
+}
+
+.terminal-output {
+  color: var(--text-secondary);
+  margin-left: 0;
+  margin-bottom: 1.5rem;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.terminal-output p {
+  margin-bottom: 0.5rem;
+}
+
+/* Help list formatting: no native bullets, keep leading dashes in text */
+.terminal-output .terminal-list,
+.terminal-list,
+.terminal-list li {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.terminal-highlight {
+  color: var(--accent-cyan);
+  font-weight: 600;
+}
+
+.terminal-cursor {
+  color: var(--text-primary);
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* ============================================
+   Content Sections
+   ============================================ */
+.about-section,
+.research-section {
+  animation: fadeInUp 0.6s ease-out;
+  animation-fill-mode: both;
+}
+
+.about-section {
+  animation-delay: 0.2s;
+}
+
+.research-section {
+  animation-delay: 0.4s;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Underline accent similar to screenshot */
+.section-title {
+  position: relative;
+  padding-bottom: 0.75rem;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--border-medium);
+}
+
+.content-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.content-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-purple), var(--accent-cyan));
+  opacity: 0.6;
+}
+
+.content-card p {
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+  line-height: 1.7;
+}
+
+.content-card p:last-child {
+  margin-bottom: 0;
+}
+
+.content-card strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Research Topics */
+.research-topics {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.topic-item {
+  display: flex;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.topic-item:hover {
+  border-color: var(--accent-secondary);
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(88, 166, 255, 0.15);
+}
+
+.topic-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+  filter: grayscale(0.2) brightness(1.1);
+  transition: filter 0.3s ease;
+}
+
+.topic-item:hover .topic-icon {
+  filter: grayscale(0) brightness(1.3);
+}
+
+.topic-content h3 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.topic-content p {
+  color: var(--text-tertiary);
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+.footer {
+  padding: 2rem 0;
+  text-align: center;
+  color: var(--text-tertiary);
+  font-size: 0.875rem;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 3rem;
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+@media (max-width: 1200px) {
+  :root {
+    --gap-panes: 3rem;
+  }
+}
+
+/* Stack panes later so they stay side-by-side longer */
+@media (max-width: 768px) {
+  .container-split {
+    flex-direction: column;
+    gap: 3rem;
+  }
+  
+  .left-pane {
+    position: relative;
+    top: 0;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding-right: 0;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 3rem;
+  }
+  
+  .right-pane {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .terminal-body {
+    font-size: 0.875rem;
+    padding: 1rem;
+  }
+  
+  .content-card {
+    padding: 1.5rem;
+  }
+  
+  .topic-item {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+/* Mobile: keep pill bottom-right inside photo */
+@media (max-width: 992px) {
+  .profile-image-wrapper .role-badge.role-badge--by-photo {
+    bottom: 0;  /* still touching bottom */
+    left: 100%;
+    right: auto;
+    top: auto;
+    transform: translateX(-60%);
+    max-width: none;
+  }
+  .profile-image-wrapper {
+    margin-bottom: clamp(2rem, 6vw, 3.25rem);
+  }
+}
