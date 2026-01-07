@@ -705,6 +705,7 @@ html, body {
   user-select: text;
   -webkit-user-select: text;
   min-width: 0;            /* allow flex children to shrink/wrap */
+  max-width: 100%;         /* keep lines within terminal body */
 }
 
 .terminal-prompt {
@@ -722,6 +723,7 @@ html, body {
 
 .terminal-input {
   flex: 1;
+  min-width: 0;            /* critical: allow flex item to shrink on iOS */
   background: transparent;
   border: none;
   outline: none;
@@ -730,6 +732,18 @@ html, body {
   font-size: inherit;
   line-height: 1.2;        /* match tighter line height */
   padding: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;        /* when typing long commands, scroll instead of shifting layout */
+  white-space: pre;        /* keep command on one line; input scrolls horizontally */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile: slightly tighter prompt + safer wrapping behavior */
+@media (max-width: 768px) {
+  .terminal-line {
+    gap: 0.5rem;
+  }
 }
 
 .terminal-output {
