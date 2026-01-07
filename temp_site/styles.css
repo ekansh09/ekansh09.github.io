@@ -279,7 +279,7 @@ body {
 .profile-links {
   display: flex;
   flex-direction: column;
-  gap: clamp(1rem, 3vw, 2rem);
+  gap: clamp(1.05rem, 3.2vw, 2.1rem); /* reduced slightly */
   width: 100%;
   align-items: center;
 }
@@ -287,15 +287,15 @@ body {
 .profile-link {
   display: inline-flex;
   align-items: center;
-  gap: clamp(0.4rem, 0.8vw, 0.5rem);
-  padding: 0;
+  gap: clamp(0.45rem, 0.9vw, 0.65rem);
+  padding: 0.25rem 0.4rem; /* reduced slightly */
   background: transparent;
   border: none;
   color: #3b82f6; /* match role text blue */
   text-decoration: none;
-  font-weight: 500;
-  font-size: clamp(0.875rem, 1.5vw, 0.9375rem);
-  line-height: 1.4;
+  font-weight: 600;
+  font-size: clamp(0.95rem, 1.8vw, 1.05rem); /* reduced slightly */
+  line-height: 1.5;
   transition: color 180ms ease, transform 180ms ease;
 }
 
@@ -309,8 +309,8 @@ body {
 }
 
 .profile-link svg {
-  width: clamp(16px, 2.5vw, 18px);
-  height: clamp(16px, 2.5vw, 18px);
+  width: clamp(17px, 2.6vw, 20px);  /* reduced slightly */
+  height: clamp(17px, 2.6vw, 20px);
   flex-shrink: 0;
   color: currentColor;
 }

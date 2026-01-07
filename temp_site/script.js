@@ -817,7 +817,7 @@ function initFakeTerminal() {
   }
 
   function unknown(cmd) {
-    appendOutput(`Command Not Found: But hey, at least you're trying! ✨<br><span style="color:#9ca3af">${cmd}</span>`);
+    appendOutput(`Command not found. Bold. Incorrect. Iconic.<br><span style="color:#9ca3af">${cmd}</span>`);
   }
 
   function intro() {
@@ -840,7 +840,7 @@ function initFakeTerminal() {
 
   function helpText() {
     return `
-      <p>Available commands (mostly harmless):</p>
+      <p>Available commands (emotionally damaging, technically harmless):</p>
       <ul class="terminal-list">
         <li>- init</li>
         <li>- help</li>
@@ -857,13 +857,13 @@ function initFakeTerminal() {
         <li>- exit</li>
       </ul>
       <br>
-      <p>Utility commands (bring a towel):</p>
+      <p>Utility commands (for when you panic responsibly):</p>
       <ul class="terminal-list">
         <li>- reset — Reset terminal to initial state</li>
         <li>- clear — Clear terminal</li>
       </ul>
       <br>
-      <p>Tip: Use ↑ and ↓ to navigate command history.</p>
+      <p>Tip: Use ↑ and ↓ for history. Like regrets, but faster.</p>
     `;
   }
 
@@ -891,22 +891,22 @@ function initFakeTerminal() {
         <div class=\"terminal-divider\">====================================================</div>
         <div class=\"terminal-welcome\">\n          <p>Welcome! I'm Ekansh Chauhan.</p>\n          <p>I work at the intersection of AI and cancer research.</p>\n        </div>\n        <div class=\"terminal-divider\">====================================================</div>\n        <br>\n        ${aboutHTML}\n        <br>\n        <p class=\"terminal-help\">Type 'help' to see available commands.</p>\n      `);
     } else if (cmd === 'ls') {
-      appendOutput('<p>Carefully rummaging through your backpack…</p>about.txt  projects/  skills/  contact.txt');
+      appendOutput('<p>Listing files… because guessing is for amateurs.</p>about.txt  projects/  skills/  contact.txt');
     } else if (cmd.startsWith('cat ')) {
       const target = cmd.slice(4).trim();
       if (files[target]) {
-        appendOutput(`<p>Unrolling ancient scroll: ${target}</p><p>${files[target].replace(/\n/g, '<br>')}</p>`);
+        appendOutput(`<p>Printing ${target}… (try not to get emotionally attached).</p><p>${files[target].replace(/\n/g, '<br>')}</p>`);
       } else {
-        appendOutput(`cat: ${target}: No such file (it escaped).`);
+        appendOutput(`cat: ${target}: No such file. It left you on read.`);
       }
     } else if (cmd === 'whoami') {
-      appendOutput('ekansh — certified human and occasional wizard.');
+      appendOutput("ekansh — definitely human. Allegedly well-rested.");
     } else if (cmd.startsWith('echo ')) {
-      appendOutput(`Parrot says: ${cmd.slice(5)}`);
+      appendOutput(`Echoing… because silence was too powerful:<br><span style="color:#9ca3af">${cmd.slice(5)}</span>`);
     } else if (cmd.startsWith('touch ')) {
       const f = cmd.slice(6).trim();
       if (f) {
-        appendOutput(`Touched '${f}'. It blushed (simulated).`);
+        appendOutput(`Created '${f}' (in spirit). Your filesystem remains unbothered.`);
       } else {
         appendOutput('touch: missing file operand (try a cute filename).');
       }
@@ -914,13 +914,13 @@ function initFakeTerminal() {
       const text = history.map((h, i) => `${i + 1}  ${h}`).join('<br>');
       appendOutput(text ? `<p>History repeats itself... especially if you copy-paste it. :) </p>${text}` : '(empty — spotless record!)');
     } else if (cmd === 'df -h') {
-      appendOutput(`<p>Storage vibes:</p>Filesystem      Size  Used Avail Use% Mounted on<br>/dev/sim0       512G  120G  392G  24% /<br>devfs            1.0K  1.0K     0 100% /dev`);
+      appendOutput(`<p>Disk usage report (because denial isn't a strategy):</p>Filesystem      Size  Used Avail Use% Mounted on<br>/dev/sim0       512G  120G  392G  24% /<br>devfs            1.0K  1.0K     0 100% /dev`);
     } else if (cmd === 'ps aux') {
       appendOutput(`<p>Processes pretending to be busy:</p>USER   PID  %CPU %MEM COMMAND<br>root     1   0.0  0.1 launchd<br>ekansh  42   3.1  1.2 node portfolio.js<br>ekansh 1337  0.5  0.7 python train.py`);
     } else if (cmd === 'vim') {
-      appendOutput("Opening Vim... just kidding — press :wq in your heart.");
+      appendOutput("Launching Vim… psych. You don't get to suffer today.");
     } else if (cmd.startsWith('sudo rm -rf')) {
-      appendOutput('Nice try 😄  Permission denied. The files union has rights.');
+      appendOutput("Nice try. Permission denied. I'm chaotic, not self-destructive.");
     } else if (cmd === 'exit') {
       appendOutput('Exiting… may your bugs be features.');
       acceptingInput = false;
