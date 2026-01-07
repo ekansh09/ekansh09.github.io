@@ -284,6 +284,13 @@
         <span class="dot" aria-hidden="true"></span>
         About me
       </a>
+
+      <!-- Temp site: orange → pink gradient -->
+      <a class="btn-cta" href="temp_site/index.html" aria-label="Open temp site"
+         style="--accent:#fb923c; --accent-2:#ff7ab9;">
+        <span class="dot" aria-hidden="true"></span>
+        Temp site
+      </a>
     </div>
 
     <!-- Figure remains with desktop buttons only -->
@@ -305,6 +312,12 @@
              style="--accent:#34d399; --accent-2:#22c55e;">
             <span class="dot" aria-hidden="true"></span>
             About me
+          </a>
+
+          <a class="btn-cta" href="temp_site/index.html" aria-label="Open temp site"
+             style="--accent:#fb923c; --accent-2:#ff7ab9;">
+            <span class="dot" aria-hidden="true"></span>
+            Temp site
           </a>
         </div>
       </div>
@@ -532,7 +545,8 @@
   // Get ALL game and about links, both mobile and desktop versions
   const gameLinks = document.querySelectorAll('a[href="snake.html"]');
   const aboutLinks = document.querySelectorAll('a[href="about.html"]');
-  if (!gameLinks.length || !aboutLinks.length) return;
+  const tempLinks = document.querySelectorAll('a[href="temp_site/index.html"]');
+  if (!gameLinks.length || !aboutLinks.length || !tempLinks.length) return;
   
   // Enhanced transition for "Play a game" button
   function createGameTransition(e) {
@@ -838,6 +852,17 @@
   aboutLinks.forEach(link => {
     link.addEventListener('click', createAboutTransition);
   });
+
+  // Standard view transition for temp site
+  tempLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const linkHref = e.currentTarget.href;
+      document.startViewTransition(() => {
+        window.location.href = linkHref;
+      });
+    });
+  });
   
   // Handle other internal links with standard view transitions
   document.addEventListener('click', (e) => {
@@ -845,8 +870,9 @@
     
     // Skip links we've already handled and external links
     if (!link || 
-        link.href.includes('snake.html') || 
-        link.href.includes('about.html') || 
+      link.href.includes('snake.html') || 
+      link.href.includes('about.html') || 
+      link.href.includes('temp_site/index.html') || 
         link.target || 
         !link.href.startsWith(window.location.origin)) return;
     
