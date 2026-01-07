@@ -934,7 +934,7 @@ function initFakeTerminal() {
         <div class=\"terminal-divider\">====================================================</div>
         <div class=\"terminal-welcome\">\n          <p>Welcome! I'm Ekansh Chauhan.</p>\n          <p>I work at the intersection of AI and cancer research.</p>\n        </div>\n        <div class=\"terminal-divider\">====================================================</div>\n        <br>\n        ${aboutHTML}\n        <br>\n        <p class=\"terminal-help\">Type 'help' to see available commands.</p>\n      `);
     } else if (cmd === 'ls') {
-      appendOutput('<p>Listing files… because guessing is for amateurs.</p>about.txt  projects/  skills/  contact.txt');
+      appendOutput('<p>Listing files… because guessing is for amateurs.</p>DEFINITELY_NOT_SECRETS/  research_papers/  freelancing_projects/  Documents/ ');
     } else if (cmd.startsWith('cat ')) {
       const target = cmd.slice(4).trim();
       if (files[target]) {
@@ -943,7 +943,7 @@ function initFakeTerminal() {
         appendOutput(`cat: ${target}: No such file. It left you on read.`);
       }
     } else if (cmd === 'whoami') {
-      appendOutput("ekansh — definitely human. Allegedly well-rested.");
+      appendOutput("Ekansh Chauhan — definitely human. Allegedly well-rested.");
     } else if (cmd.startsWith('echo ')) {
       appendOutput(`Echoing… because silence was too powerful:<br><span style="color:#9ca3af">${cmd.slice(5)}</span>`);
     } else if (cmd.startsWith('touch ')) {
