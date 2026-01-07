@@ -7,7 +7,7 @@
    CSS Variables
    ============================================ */
 :root {
-  /* Colors - Dark Theme */
+  /* Colors - Dark Theme (White on Black) */
   --bg-primary: #0d1117;
   --bg-secondary: #161b22;
   --bg-tertiary: #1f2937;
@@ -15,11 +15,11 @@
   --bg-card-hover: rgba(255, 255, 255, 0.07);
   
   /* Text Colors */
-  --text-primary: #f0f6fc;
-  --text-secondary: rgba(240, 246, 252, 0.75);
-  --text-tertiary: rgba(240, 246, 252, 0.55);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.85);
+  --text-tertiary: rgba(255, 255, 255, 0.65);
   
-  /* Accent Colors - Modern Blue/Purple Palette */
+  /* Accent Colors */
   --accent-primary: #58a6ff;
   --accent-secondary: #79c0ff;
   --accent-purple: #bc8cff;
@@ -29,12 +29,12 @@
   --accent-pink: #ff7ab9;
   
   /* Link Colors */
-  --link-color: #58a6ff;
-  --link-hover: #79c0ff;
+  --link-color: #ffffff;
+  --link-hover: #e5e5e5;
   
   /* Borders */
-  --border-subtle: rgba(240, 246, 252, 0.1);
-  --border-medium: rgba(240, 246, 252, 0.15);
+  --border-subtle: rgba(255, 255, 255, 0.15);
+  --border-medium: rgba(255, 255, 255, 0.25);
   
   /* Shadows */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -56,22 +56,32 @@
   --terminal-max-w: 680px; /* limit terminal width on large screens */
   --terminal-min-h: 220px; /* minimum resizable height */
   --terminal-init-h: clamp(300px, 45vh, 500px); /* initial height so resize handle appears */
+
+  /* Cursor */
+  --cursor-color: #ffffff;
 }
 
 /* Light theme variables */
 :root[data-theme="light"] {
-  --bg-primary: #f7f8fb;
+  /* Colors - Light Theme (Black on White) */
+  --bg-primary: #ffffff;
   --bg-secondary: #ffffff;
-  --bg-tertiary: #edf1f5;
-  --bg-card: rgba(0, 0, 0, 0.04);
-  --bg-card-hover: rgba(0, 0, 0, 0.07);
+  --bg-tertiary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f2f2f2;
 
-  --text-primary: #0b0b10;
-  --text-secondary: rgba(0, 0, 0, 0.7);
-  --text-tertiary: rgba(0, 0, 0, 0.55);
+  --text-primary: #000000;
+  --text-secondary: rgba(0, 0, 0, 0.85);
+  --text-tertiary: rgba(0, 0, 0, 0.65);
 
-  --border-subtle: rgba(0, 0, 0, 0.08);
-  --border-medium: rgba(0, 0, 0, 0.14);
+  --link-color: #000000;
+  --link-hover: #333333;
+
+  --border-subtle: rgba(0, 0, 0, 0.12);
+  --border-medium: rgba(0, 0, 0, 0.2);
+
+  /* Cursor */
+  --cursor-color: #000000;
 }
 
 /* ============================================
@@ -96,6 +106,31 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
+}
+
+/* ============================================
+   Custom Cursor (dot)
+   ============================================ */
+@media (pointer: fine) {
+  body, a, button, input, textarea, select { cursor: none; }
+
+  .cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--cursor-color);
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%, -50%);
+    transition: transform 120ms ease, opacity 200ms ease, background-color 200ms ease;
+  }
+
+  .cursor-dot.hover { transform: translate(-50%, -50%) scale(1.8); }
+  .cursor-dot.active { transform: translate(-50%, -50%) scale(0.9); }
+  .cursor-dot.hidden { opacity: 0; }
 }
 
 /* ============================================
@@ -434,6 +469,9 @@ body {
 
 .left-pane .hero-word {
   font-size: clamp(1.4rem, 5vw, 1.8rem);
+  /* Soften the name shadow specifically in the left pane */
+  text-shadow: 0.06em 0.06em 0 rgba(255, 255, 255, 0.08),
+               0.12em 0.12em 0 rgba(0, 0, 0, 0.3);
 }
 
 .left-pane .role-article { font-size: clamp(0.85rem, 2.2vw, 0.95rem); }

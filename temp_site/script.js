@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.scrollTo(0, 0);
 
   initLoader();
+  initCustomCursor();
   initMagneticButtons();
   initNavigation();
   initMobileMenu();
@@ -51,8 +52,50 @@ function initLoader() {
 }
 
 // ============================================
-// Custom cursor removed - using default system cursor
+// Custom Cursor (small dot)
 // ============================================
+function initCustomCursor() {
+  // Skip on touch devices
+  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
+
+  const dot = document.createElement('div');
+  dot.className = 'cursor-dot hidden';
+  document.body.appendChild(dot);
+
+  let x = 0, y = 0;
+  let raf = 0;
+
+  function render() {
+    dot.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+    raf = 0;
+  }
+
+  function onMove(e) {
+    x = e.clientX;
+    y = e.clientY;
+    dot.classList.remove('hidden');
+    if (!raf) raf = requestAnimationFrame(render);
+  }
+
+  document.addEventListener('mousemove', onMove, { passive: true });
+  document.addEventListener('mouseenter', () => dot.classList.remove('hidden'));
+  document.addEventListener('mouseleave', () => dot.classList.add('hidden'));
+  document.addEventListener('mousedown', () => dot.classList.add('active'));
+  document.addEventListener('mouseup', () => dot.classList.remove('active'));
+
+  const hoverSel = 'a, button, .btn, [role="button"], input, textarea, select, .clickable';
+  // Delegate to support dynamic content
+  document.addEventListener('mouseover', (e) => {
+    if (e.target && (e.target.matches(hoverSel) || e.target.closest(hoverSel))) {
+      dot.classList.add('hover');
+    }
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target && (e.target.matches(hoverSel) || e.target.closest(hoverSel))) {
+      dot.classList.remove('hover');
+    }
+  });
+}
 // Magnetic Buttons Effect
 // ============================================
 function initMagneticButtons() {
