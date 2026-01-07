@@ -477,7 +477,7 @@ body {
 
 .terminal-header {
   background: var(--bg-tertiary);
-  padding: 0.875rem 1.25rem;
+  padding: 0.5rem 1rem;    /* reduced header height */
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -490,8 +490,8 @@ body {
 }
 
 .terminal-btn {
-  width: 12px;
-  height: 12px;
+  width: 10px;            /* slightly smaller buttons */
+  height: 10px;
   border-radius: 50%;
   cursor: pointer;
   transition: transform 0.2s ease;
