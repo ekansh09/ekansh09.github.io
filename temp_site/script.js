@@ -40,6 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Always enable the terminal last
   initFakeTerminal();
+  // Show mobile down-arrow indicator initially, hide on interaction
+  initMobileDownIndicator();
 });
 
 // ============================================
@@ -175,6 +177,32 @@ function initMobileMenu() {
       document.body.style.overflow = '';
     });
   });
+}
+
+// ============================================
+// Mobile Down Arrow Indicator (show at first, hide later)
+// ============================================
+function initMobileDownIndicator() {
+  const btn = document.querySelector('.mobile-down-nav');
+  if (!btn) return;
+  const isMobile = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
+  if (!isMobile) return;
+
+  // Ensure visible at start
+  btn.classList.remove('is-hidden');
+
+  const hide = () => btn.classList.add('is-hidden');
+  const maybeToggle = () => {
+    if (window.pageYOffset > 60) hide();
+    else btn.classList.remove('is-hidden');
+  };
+
+  // Hide after first scroll a bit
+  window.addEventListener('scroll', maybeToggle, { passive: true });
+  // Hide when user taps the button
+  btn.addEventListener('click', hide);
+  // Safety: auto-hide after a short delay if idle
+  setTimeout(hide, 5000);
 }
 
 // ============================================

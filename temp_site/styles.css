@@ -430,6 +430,54 @@ html, body {
   padding-bottom: clamp(2rem, 5vw, 4rem);
 }
 
+/* ============================================
+   Mobile Down Arrow Navigation
+   ============================================ */
+.mobile-down-nav {
+  display: none; /* hidden by default; show on mobile */
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  transition: background 160ms ease, transform 200ms ease, border-color 160ms ease, opacity 220ms ease;
+  opacity: 0.96;
+}
+.mobile-down-nav:hover { background: var(--bg-card-hover); }
+.mobile-down-nav:active { transform: scale(0.98); }
+
+@media (max-width: 768px) {
+  .mobile-down-nav {
+    display: grid;
+    position: fixed; /* always visible at bottom center on first page */
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: calc(clamp(12px, 3vw, 20px) + env(safe-area-inset-bottom));
+    margin: 0; /* override any margins */
+    z-index: 1150;
+    background: rgba(0, 0, 0, 0.38); /* translucent */
+    backdrop-filter: saturate(140%) blur(8px);
+  }
+}
+
+/* Light theme translucency */
+:root[data-theme="light"] .mobile-down-nav {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* Hidden state after user starts scrolling/interacts */
+@media (max-width: 768px) {
+  .mobile-down-nav.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(8px);
+  }
+}
+
 /* Tighter top alignment like screenshot */
 .right-pane > :first-child {
   margin-top: 0.25rem;
