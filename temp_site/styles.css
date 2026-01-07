@@ -1065,7 +1065,11 @@ p, li, h1, h2, h3, h4, h5, h6 {
   .theme-toggle {
     right: calc(16px + env(safe-area-inset-right));
     top: calc(12px + env(safe-area-inset-top));
+    /* Make the toggle a bit smaller on mobile */
+    width: 36px;
+    height: 36px;
   }
+  .theme-toggle .icon { font-size: 0.9rem; }
 }
 
 /* Media utility: images and embeds scale down on small viewports */
