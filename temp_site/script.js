@@ -823,7 +823,14 @@ function initFakeTerminal() {
   }
   const activeLine = document.getElementById('terminalActiveLine');
   if (activeLine) activeLine.addEventListener('click', focusInput);
-  focusInput();
+
+  // Avoid auto-focusing input on touch/small screens to prevent the
+  // browser from auto-scrolling the page down on load (common on mobile).
+  const isCoarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  const smallScreen = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
+  if (!(isCoarse || smallScreen)) {
+    focusInput();
+  }
 
   // Allow paste/typing without needing to click to focus first.
   // If user hits Cmd/Ctrl+V (or starts typing) while focus is elsewhere,
