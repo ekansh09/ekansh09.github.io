@@ -126,6 +126,7 @@ body {
 html, body {
   width: 100%;
   max-width: 100%;
+  overflow-x: clip;
 }
 
 /* Avoid rare horizontal scroll from transformed children */
@@ -265,10 +266,11 @@ html, body {
 .profile-image-wrapper .role-badge.role-badge--by-photo {
   position: absolute;
   bottom: 0px;               /* touch bottom edge */
-  left: auto;
-  right: 0;
+  left: 100%;                /* anchor to right edge of photo */
+  right: auto;
   top: auto;
-  transform: translateX(0);
+  /* 80% over the photo, 20% outside */
+  transform: translateX(-80%);
   white-space: nowrap;
   background: rgba(0, 0, 0, 0.7);
   border: 1px solid var(--border-medium);
@@ -938,10 +940,11 @@ p, li, h1, h2, h3, h4, h5, h6 {
 @media (max-width: 992px) {
   .profile-image-wrapper .role-badge.role-badge--by-photo {
     bottom: 0;              /* touch bottom of the image */
-    left: auto;
-    right: 0;               /* keep fully inside image wrapper */
+    left: 100%;             /* keep the same anchored hang */
+    right: auto;
     top: auto;
-    transform: translateX(0);
+    /* Keep ~80% over photo on smaller screens too */
+    transform: translateX(-80%);
     max-width: none;
   }
   .profile-image-wrapper {
@@ -957,10 +960,10 @@ p, li, h1, h2, h3, h4, h5, h6 {
   }
   .profile-image-wrapper .role-badge.role-badge--by-photo {
     bottom: 0;
-    left: auto;
-    right: 0;
+    left: 100%;
+    right: auto;
     top: auto;
-    transform: translateX(0);
+    transform: translateX(-80%);
     padding: 0.15rem 0.4rem;
   }
   .profile-links {
