@@ -229,9 +229,9 @@
   }
 
   /* Hide/show elements based on screen size */
-.ui-container-mobile {
-  display: none; /* Hidden by default */
-}
+  .ui-container-mobile {
+    display: none; /* Hidden by default */
+  }
 
 @media (max-width: 680px) {
   .ui-container-mobile {
@@ -241,8 +241,16 @@
   .desktop-only-ui {
     display: none; /* Hide on mobile */
   }
-}
-</style>
+  }
+  
+  /* Global font-size scaling for mobile */
+  @media (max-width: 680px) {
+    html { font-size: 15px; }
+  }
+  @media (max-width: 480px) {
+    html { font-size: 14px; }
+  }
+  </style>
 </head>
 <body>
   <div class="page-container">
