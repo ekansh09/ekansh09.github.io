@@ -108,12 +108,22 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Prevent iOS text inflation / random zoom jumps */
+html { -webkit-text-size-adjust: 100%; }
+
 body {
   font-family: var(--font-primary);
   background: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
+}
+
+/* Avoid rare horizontal scroll from transformed children */
+.container-split,
+.left-pane,
+.right-pane {
+  min-width: 0;
 }
 
 /* ============================================
@@ -171,6 +181,14 @@ body {
   width: 100%;
   max-width: 1440px; /* keep equal left/right outer space */
   margin-inline: auto;
+}
+
+/* Ensure safe-area padding even before mobile breakpoint triggers */
+@supports (padding: max(0px)) {
+  .container-split {
+    padding-left: max(clamp(1rem, 2vw, 2rem), env(safe-area-inset-left));
+    padding-right: max(clamp(1rem, 2vw, 2rem), env(safe-area-inset-right));
+  }
 }
 
 /* ============================================
@@ -363,6 +381,16 @@ body {
   transition: color 180ms ease, transform 180ms ease;
 }
 
+/* Better accessibility/tap targets on touch */
+.profile-link {
+  -webkit-tap-highlight-color: transparent;
+}
+.profile-link:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 4px;
+  border-radius: 10px;
+}
+
 .profile-link::before {
   display: none;
 }
@@ -540,6 +568,11 @@ body {
   margin-inline: auto;     /* center horizontally within right pane */
   display: flex;
   flex-direction: column;
+}
+
+/* On touch devices, disable manual resizing (awkward on iOS/Android) */
+@media (pointer: coarse) {
+  .terminal-window { resize: none; }
 }
 
 .terminal-header {
@@ -860,6 +893,12 @@ p, li, h1, h2, h3, h4, h5, h6 {
   .right-pane {
     max-width: 100%;
   }
+
+  /* Make links easier to tap without changing desktop look */
+  .profile-link {
+    padding: 0.5rem 0.75rem;
+    border-radius: 12px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -909,6 +948,18 @@ p, li, h1, h2, h3, h4, h5, h6 {
   }
   .profile-links {
     gap: 1rem;
+  }
+
+  /* Reduce huge shadows that can visually clip on tiny screens */
+  .profile-name {
+    text-shadow: 2px 2px 0 var(--name-shadow-block), 4px 4px 10px var(--name-shadow-soft);
+  }
+
+  .terminal-header {
+    padding: 0.5rem 0.75rem;
+  }
+  .terminal-body {
+    padding: 0.85rem;
   }
   /* Better placement inside notches/rounded corners */
   .theme-toggle {

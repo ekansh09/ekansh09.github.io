@@ -11,8 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
   }
-  // Ensure we start at the top on initial load
-  window.scrollTo(0, 0);
+  // Avoid forced scroll jumps on mobile; only reset scroll on larger screens.
+  const isCoarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  const smallScreen = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
+  if (!(isCoarse || smallScreen)) {
+    window.scrollTo(0, 0);
+  }
 
   initLoader();
   initCustomCursor();
@@ -27,8 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
   updateYear();
 
   // Mobile/performance: disable heavy pointer/scroll effects on touch or small screens
-  const isCoarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-  const smallScreen = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
   const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (!isCoarse && !smallScreen && !reducedMotion) {
@@ -777,7 +779,7 @@ function initScrollProgress() {
   
   window.addEventListener('scroll', () => {
     const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = (window.pageYOffset / windowHeight) * 100;
+    const progress = windowHeight > 0 ? (window.pageYOffset / windowHeight) * 100 : 0;
     progressBar.style.width = `${progress}%`;
   }, { passive: true });
 }
