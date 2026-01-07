@@ -887,7 +887,7 @@ function initFakeTerminal() {
     appendOutput(`Command not found. Bold. Incorrect. Iconic.<br><span style="color:#9ca3af">${cmd}</span>`);
   }
 
-  function intro() {
+  function intro(shouldScroll = true) {
     appendLine('init');
     const aboutHTML = `<p>${files['about.txt'].replace(/\n/g, '<br>')}</p>`;
     appendOutput(`
@@ -902,7 +902,12 @@ function initFakeTerminal() {
       <br>
       <p class="terminal-help">Type 'help' to see available commands.</p>
     `);
-    scrollToBottom();
+    if (shouldScroll) {
+      scrollToBottom();
+    } else {
+      // Ensure we start at the top of the terminal content
+      body.scrollTop = 0;
+    }
   }
 
   function helpText() {
@@ -952,7 +957,7 @@ function initFakeTerminal() {
       clearTerminal();
     } else if (cmd === 'reset') {
       clearTerminal();
-      intro();
+      intro(true);
     } else if (cmd === 'init') {
       const aboutHTML = `<p>${files['about.txt'].replace(/\\n/g, '<br>')}</p>`;
       appendOutput(`
@@ -1036,5 +1041,6 @@ function initFakeTerminal() {
   // Start with a friendly intro the first time when page loads
   // but only if the page doesn't already show the about.txt demo
   // We will append the intro below the pre-seeded content on reset
-  intro();
+  // Initial render: show intro but keep scroll at top like a classic terminal
+  intro(false);
 }

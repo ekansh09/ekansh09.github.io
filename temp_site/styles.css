@@ -106,6 +106,9 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Prevent iOS from auto-zooming text or changing sizes unexpectedly */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 /* Prevent iOS text inflation / random zoom jumps */
@@ -903,7 +906,8 @@ p, li, h1, h2, h3, h4, h5, h6 {
 
 @media (max-width: 768px) {
   .terminal-body {
-    font-size: 0.875rem;
+    font-size: 1rem;       /* 16px to avoid iOS input zoom */
+    line-height: 1.35;
     padding: 1rem;
   }
   
@@ -914,6 +918,13 @@ p, li, h1, h2, h3, h4, h5, h6 {
   .topic-item {
     flex-direction: column;
     gap: 1rem;
+  }
+}
+
+/* Ensure form controls are >=16px on mobile to prevent iOS zoom */
+@media (max-width: 768px) {
+  input, textarea, select, .terminal-input {
+    font-size: 16px;
   }
 }
 
