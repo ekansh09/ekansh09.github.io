@@ -940,7 +940,7 @@ function initFakeTerminal() {
 
   function helpText() {
     return `
-      <p>Available commands (emotionally damaging, technically harmless):</p>
+      <p>Available commands:</p>
       <ul class="terminal-list">
         <li>- init</li>
         <li>- help</li>
@@ -980,7 +980,7 @@ function initFakeTerminal() {
 
     // Commands
     if (cmd === 'help') {
-      appendOutput(`<p>Here’s a totally serious manual:</p>` + helpText());
+      appendOutput(`<p>Here’s a totally serious manual:\n</p>` + helpText());
     } else if (cmd === 'clear') {
       clearTerminal();
     } else if (cmd === 'reset') {
