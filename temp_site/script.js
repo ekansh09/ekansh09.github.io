@@ -538,6 +538,9 @@ function initRoleCycler() {
     if (!badgeEl) return;
     const probe = document.createElement('span');
     probe.className = 'role-badge role-badge--by-photo';
+    // Copy computed styles so measurement matches the actual badge
+    // (important on mobile where font-size/padding differ via media queries).
+    const cs = window.getComputedStyle(badgeEl);
     // Neutralize absolute positioning for measurement
     Object.assign(probe.style, {
       position: 'absolute',
@@ -547,12 +550,42 @@ function initRoleCycler() {
       bottom: 'auto',
       right: 'auto',
       pointerEvents: 'none',
-      visibility: 'hidden'
+      visibility: 'hidden',
+      boxSizing: cs.boxSizing,
+      padding: cs.padding,
+      border: cs.border,
+      borderRadius: cs.borderRadius,
+      fontFamily: cs.fontFamily,
+      fontSize: cs.fontSize,
+      fontWeight: cs.fontWeight,
+      letterSpacing: cs.letterSpacing,
+      lineHeight: cs.lineHeight,
+      whiteSpace: 'nowrap',
+      display: cs.display
     });
     const a = document.createElement('span');
     a.className = 'role-article';
     const t = document.createElement('span');
     t.className = 'role-text';
+
+    // Ensure the inner spans also use the real computed typography
+    const aCS = window.getComputedStyle(articleEl);
+    const tCS = window.getComputedStyle(roleEl);
+    Object.assign(a.style, {
+      fontFamily: aCS.fontFamily,
+      fontSize: aCS.fontSize,
+      fontWeight: aCS.fontWeight,
+      letterSpacing: aCS.letterSpacing,
+      lineHeight: aCS.lineHeight
+    });
+    Object.assign(t.style, {
+      fontFamily: tCS.fontFamily,
+      fontSize: tCS.fontSize,
+      fontWeight: tCS.fontWeight,
+      letterSpacing: tCS.letterSpacing,
+      lineHeight: tCS.lineHeight
+    });
+
     probe.appendChild(a);
     probe.appendChild(t);
     document.body.appendChild(probe);
@@ -591,6 +624,17 @@ function initRoleCycler() {
 
   // Start immediately, then repeat
   setFixedBadgeWidth();
+
+  // On mobile, font loading can finish after DOMContentLoaded,
+  // which changes text metrics. Recompute once fonts are ready.
+  if (document.fonts && typeof document.fonts.ready?.then === 'function') {
+    document.fonts.ready.then(() => setFixedBadgeWidth());
+  }
+
+  // iOS can change layout on orientation change without a full resize event.
+  window.addEventListener('orientationchange', () => {
+    setTimeout(setFixedBadgeWidth, 250);
+  });
   cycle();
   setInterval(cycle, displayMs + transitionMs);
 

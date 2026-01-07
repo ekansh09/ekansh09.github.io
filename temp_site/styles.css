@@ -288,6 +288,12 @@ html, body {
   text-align: center;
 }
 
+/* Prevent occasional overflow glitches on mobile while JS recalculates width */
+.profile-image-wrapper .role-badge.role-badge--by-photo .role-article,
+.profile-image-wrapper .role-badge.role-badge--by-photo .role-text {
+  min-width: 0;
+}
+
 /* Light theme tweak for the badge over the photo */
 :root[data-theme="light"] .profile-image-wrapper .role-badge.role-badge--by-photo {
   background: rgba(255, 255, 255, 0.85);
@@ -1014,13 +1020,26 @@ p, li, h1, h2, h3, h4, h5, h6 {
     width: clamp(200px, 70vw, 260px);
     height: auto; /* keep aspect ratio */
   }
+  /* Keep name size consistent on phones */
+  .profile-name {
+    font-size: 30px; /* fixed size, independent of vw/rem scaling */
+  }
   .profile-image-wrapper .role-badge.role-badge--by-photo {
     bottom: 0;
     left: 100%;
     right: auto;
     top: auto;
     transform: translateX(-80%);
-    padding: 0.15rem 0.4rem;
+    padding: 0.2rem 0.5rem;
+    white-space: nowrap;      /* do not wrap text */
+    overflow: visible;        /* allow box to extend beyond photo if needed */
+  }
+  /* Bump rotating role text sizes on phones */
+  .profile-image-wrapper .role-badge.role-badge--by-photo .role-text {
+    font-size: clamp(1.1rem, 5vw, 1.35rem);
+  }
+  .profile-image-wrapper .role-badge.role-badge--by-photo .role-article {
+    font-size: clamp(0.9rem, 3.5vw, 1.05rem);
   }
   .profile-links {
     gap: 1rem;
