@@ -59,20 +59,24 @@
 
   /* Cursor */
   --cursor-color: #ffffff;
+
+  /* Name shadow (screenshot-style) */
+  /* On dark backgrounds, a light offset reads better than black */
+  --name-shadow-block: rgba(255, 255, 255, 0.25);
+  --name-shadow-soft: rgba(0, 0, 0, 0.45);
 }
 
 /* Light theme variables */
 :root[data-theme="light"] {
   /* Colors - Light Theme (Black on White) */
-  --bg-primary: #ffffff;
+  --bg-primary: #f7f8fb;
   --bg-secondary: #ffffff;
-  --bg-tertiary: #ffffff;
-  --bg-card: #ffffff;
-  --bg-card-hover: #f2f2f2;
-
-  --text-primary: #000000;
-  --text-secondary: rgba(0, 0, 0, 0.85);
-  --text-tertiary: rgba(0, 0, 0, 0.65);
+  --bg-tertiary: #edf1f5;
+  --bg-card: rgba(0, 0, 0, 0.04);
+  --bg-card-hover: rgba(0, 0, 0, 0.07);
+  --text-primary: #0b0b10;
+  --text-secondary: rgba(0, 0, 0, 0.7);
+  --text-tertiary: rgba(0, 0, 0, 0.55);
 
   --link-color: #000000;
   --link-hover: #333333;
@@ -82,6 +86,10 @@
 
   /* Cursor */
   --cursor-color: #000000;
+
+  /* Name shadow (lighter, still visible on white) */
+  --name-shadow-block: rgba(0, 0, 0, 0.28);
+  --name-shadow-soft: rgba(0, 0, 0, 0.16);
 }
 
 /* ============================================
@@ -112,7 +120,9 @@ body {
    Custom Cursor (dot)
    ============================================ */
 @media (pointer: fine) {
-  body, a, button, input, textarea, select { cursor: none; }
+  /* Hide the system cursor by default, but keep it for interactive elements */
+  body { cursor: none; }
+  a, button, .btn, .terminal-btn, [role="button"], input, textarea, select, .clickable { cursor: pointer; }
 
   .cursor-dot {
     position: fixed;
@@ -125,7 +135,8 @@ body {
     pointer-events: none;
     z-index: 10000;
     transform: translate(-50%, -50%);
-    transition: transform 120ms ease, opacity 200ms ease, background-color 200ms ease;
+    /* Remove transform transition so cursor tracks instantly */
+    transition: opacity 200ms ease, background-color 200ms ease;
   }
 
   .cursor-dot.hover { transform: translate(-50%, -50%) scale(1.8); }
@@ -304,11 +315,29 @@ body {
   font-family: var(--font-display);
   font-size: clamp(1.375rem, 3.5vw, 1.875rem);
   font-weight: 700;
-  margin: 0 0 clamp(1.25rem, 3vw, 2rem) 0;
+  margin: 0 0 clamp(0.4rem, 1.2vw, 0.9rem) 0;
   color: var(--text-primary);
   text-align: center;
   width: 100%;
+  text-decoration: none;
+  /* Screenshot-style: crisp offset block shadow + subtle depth */
+  text-shadow:
+    3px 3px 0 var(--name-shadow-block),
+    6px 6px 14px var(--name-shadow-soft);
 }
+
+/* Softer effect in light theme so it doesn't look heavy */
+:root[data-theme="light"] .profile-name {
+  /* Keep the same geometry in light mode; vars handle contrast */
+  text-shadow:
+    3px 3px 0 var(--name-shadow-block),
+    6px 6px 14px var(--name-shadow-soft);
+}
+
+/* Ensure visited state keeps color/shadow */
+.profile-name:visited { color: var(--text-primary); }
+
+.profile-name:hover { color: var(--link-hover); }
 
 /* Profile Links */
 .profile-links {
@@ -460,7 +489,7 @@ body {
 /* Placement tweaks for split hero */
 .hero-top {
   margin-top: clamp(0.25rem, 1vw, 0.5rem);
-  margin-bottom: clamp(1rem, 3vw, 2rem); /* space above photo */
+  margin-bottom: clamp(0.4rem, 1.2vw, 0.9rem); /* tighter space above photo */
 }
 
 .hero-bottom {
