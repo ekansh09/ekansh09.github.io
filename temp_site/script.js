@@ -887,6 +887,7 @@ function initFakeTerminal() {
       <ul class="terminal-list">
         <li>- init</li>
         <li>- help</li>
+        <li>- pwd</li>
         <li>- ls</li>
         <li>- cat about.txt</li>
         <li>- whoami</li>
@@ -933,6 +934,8 @@ function initFakeTerminal() {
       appendOutput(`
         <div class=\"terminal-divider\">====================================================</div>
         <div class=\"terminal-welcome\">\n          <p>Welcome! I'm Ekansh Chauhan.</p>\n          <p>I work at the intersection of AI and cancer research.</p>\n        </div>\n        <div class=\"terminal-divider\">====================================================</div>\n        <br>\n        ${aboutHTML}\n        <br>\n        <p class=\"terminal-help\">Type 'help' to see available commands.</p>\n      `);
+    } else if (cmd === 'pwd') {
+      appendOutput('/opt/dreams/unicorn-startup-ideas');
     } else if (cmd === 'ls') {
       appendOutput('<p>Listing files… because guessing is for amateurs.</p>DEFINITELY_NOT_SECRETS/  research_papers/  freelancing_projects/  Documents/ ');
     } else if (cmd.startsWith('cat ')) {
