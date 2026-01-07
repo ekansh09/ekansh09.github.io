@@ -1031,6 +1031,11 @@ p, li, h1, h2, h3, h4, h5, h6 {
     text-shadow: 2px 2px 0 var(--name-shadow-block), 4px 4px 10px var(--name-shadow-soft);
   }
 
+  /* Light theme: make the block shadow subtler on phones */
+  :root[data-theme="light"] .profile-name {
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.18), 4px 4px 10px rgba(0, 0, 0, 0.12);
+  }
+
   .terminal-header {
     padding: 0.5rem 0.75rem;
   }
