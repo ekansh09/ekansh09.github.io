@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+	GatewayID | Payslip - DPK Foods Ltd 2024-11-04</title>
+
+
+<link rel="stylesheet" type="text/css" href="https://www.gatewayid.co.uk/css/default/hr/payslip.css"/>
+<link rel="stylesheet" type="text/css" href="https://www.gatewayid.co.uk/css/default/common/common.css"/>
+
+<style>
+
+tr.border_bottom td
+{
+	border-bottom: 1pt solid black;
+}
+</style>
+</head>
+<body>
+	<div id="payslip_printer">
+		<div id="payslip" class="outer_wrapper border_square_top"> 
+						<p>DPK Foods Ltd</p>
+			<div class="payslip_header">
+				<div class="payslip_title">
+					<table class="full_width">
+						<tr>
+							<th>Employee Ref</th>
+							<th>Employee Name</th>
+							<th>Process Date</th>
+							<th>NI Number</th>
+						</tr>
+						<tr>
+							<td>167899</td>
+							<td>Mr Ekansh Chauhan</td>
+							<td>04/11/2024</td>
+							<td>TH280344C</td>
+						</tr>
+					</table>
+				</div>
+				
+							
+				<div class="payslip_detail">
+					<table class="full_width">
+						<tr>
+							<th>Tax Period</th>
+							<th>Tax Code</th>
+							<th>Department</th>
+							<th>Payment Method</th>
+							<th>Payment Period</th>
+						</tr>
+						<tr>
+							<td>31</td>
+							<td>1257L   Wk1</td>
+							<td>Glasgow - Cran Hill</td>
+							<td>BACS</td>
+							<td>Four Weekly</td>
+						</tr>
+					</table>
+				</div>
+				<div class="clear"></div>
+			</div>
+			
+			<div class="amounts_wrapper">
+				<div class="payslip_payments">
+					<table class="full_width">
+						<tr>
+							<th>Payments</th>
+							<th>Units</th>
+							<th>Rate</th>
+							<th>Amount</th>
+						</tr>
+						<tr>
+<td>Hours</td>
+<td>11.43</td>
+<td>11.4400</td>
+<td>130.76</td>
+</tr>
+					</table>
+				</div>
+				
+				<div class="payslip_deductions">
+					<table class="full_width">
+						<tr>
+							<th>Deductions</th>
+							<th>Amount</th>
+						</tr>
+						<tr><td>PAYE Tax</td><td>0.00</td></tr>
+<tr><td>National Insurance</td><td>0.00</td></tr>
+					</table>
+				</div>
+				<div class="clear"></div>
+			</div>
+			
+			<div class="summary">
+				<div class="payslip_this_period">
+					<table class="full_width">
+						<tr>
+							<th>This Period</th>
+							<th></th>
+						</tr>
+						<tr><td>Total Gross Pay</td><td>130.76</td></tr>
+<tr><td>Gross for Tax</td><td>130.76</td></tr>
+<tr><td>Earnings for NI</td><td>0.00</td></tr>
+<tr><td>Holiday Fund Accrued</td><td>0.00</td></tr>
+<tr><td>Holiday Fund C/F</td><td>0.00</td></tr>
+					</table>
+				</div>
+				
+				<div class="payslip_ytd">
+					<table class="full_width">
+						<tr>
+							<th>Year to date</th>
+							<th></th>
+						</tr>
+						<tr><td>Total Gross Pay TD</td><td>130.76</td></tr>
+<tr><td>Gross for Tax TD</td><td>130.76</td></tr>
+<tr><td>Tax Paid TD</td><td>0.00</td></tr>
+<tr><td>Earnings for NI TD</td><td>0.00</td></tr>
+<tr><td>National Insurance TD</td><td>0.00</td></tr>
+					</table>
+				</div>
+				<div class="clear"></div>
+			</div>
+			
+			<div class="payslip_comment">
+				<p>Pay is from 30.09.24 to 27.10.24. The Holiday year is from 01.09.24 to 31.08.25 and no carry over is allowed. Holidays have been paid up to average days worked and where balance available. Approved holiday does not guarantee payment.</p>
+			</div>
+			
+			<div class="payslip_net_pay">
+				<div class="net_pay">Net Pay</div>
+				<div class="amount">£ 130.76</div>
+			</div>
+			
+			<div class="clear"></div>
+		</div>
+	</div>
+</body>
+</html>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+		
+        // Get today's date
+        const today = new Date();
+
+        // Check if today is after the 4th of this month
+        if (today.getDate() > 4) {
+            // Calculate current payslip date (4th of the current month)
+            const payslipDate = new Date(today.getFullYear(), today.getMonth(), 4);
+
+            // Calculate previous-to-previous month's 30th and previous month's 27th
+            const prevToPrevMonthEnd = new Date(today.getFullYear(), today.getMonth() - 2, 30);
+            const prevMonth27th = new Date(today.getFullYear(), today.getMonth() - 1, 27);
+
+            // Format dates as dd/mm/yy
+            const formatDate = (date, fullYear = false) => {
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = fullYear ? date.getFullYear() : String(date.getFullYear()).slice(2);
+                return `${day}/${month}/${year}`;
+            };
+
+			// Format dates as dd.mm.yy
+			const formatDate_2= (date, fullYear = false) => {
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = fullYear ? date.getFullYear() : String(date.getFullYear()).slice(2);
+                return `${day}.${month}.${year}`;
+            };
+
+			// Format dates as dd-mm-yy
+			const formatDate_3= (date, fullYear = false) => {
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = fullYear ? date.getFullYear() : String(date.getFullYear()).slice(2);
+                return `${year}-${month}-${day}`;
+            };
+
+            const formattedPayslipDate_header = formatDate_3(payslipDate, true); // Full year for display
+            const formattedPayslipDate = formatDate(payslipDate, true); // Full year for display
+
+            const formattedStart = formatDate_2(prevToPrevMonthEnd);
+            const formattedEnd = formatDate_2(prevMonth27th);
+
+            // Update the first instance of "Payslip - DPK Foods Ltd - ..."
+            const titleElement = document.querySelector('title');
+            if (titleElement) {
+                titleElement.textContent = `GatewayID | Payslip - DPK Foods Ltd ${formattedPayslipDate_header}`;
+            }
+
+            const mainTopElement = document.querySelector('#Main_Top_Lft p span');
+            if (mainTopElement) {
+                mainTopElement.textContent = `Payslip - DPK Foods Ltd - ${formattedPayslipDate}`;
+            }
+
+            // Update the second instance of the date
+            const processDateElement = document.querySelector('.payslip_header table.full_width tr:nth-child(2) td:nth-child(3)');
+            if (processDateElement) {
+                processDateElement.textContent = formattedPayslipDate;
+            }
+
+            // Update the "Pay is from ..." statement
+            const payPeriodElement = document.querySelector('.payslip_comment p');
+            if (payPeriodElement) {
+                payPeriodElement.textContent = `Pay is from ${formattedStart} to ${formattedEnd}. The Holiday year is from 01.09.${String(today.getFullYear()-1).slice(2)} to 31.08.${String(today.getFullYear()).slice(2)} and no carry over is allowed. Holidays have been paid up to average days worked and where balance available. Approved holiday does not guarantee payment.`;
+            }
+
+        }
+    });
+</script>

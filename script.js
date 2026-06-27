@@ -445,31 +445,101 @@ function initCollapsibleSections() {
 }
 
 // ============================================
-// Research list disclosure
+// Research Carousel
 // ============================================
 function initResearchList() {
-  const list = document.getElementById('researchList');
-  const button = document.getElementById('toggleResearch');
-  if (!list || !button) return;
+  const list    = document.getElementById('researchList');
+  const prevBtn = document.getElementById('carouselPrev');
+  const nextBtn = document.getElementById('carouselNext');
+  const dotsEl  = document.getElementById('carouselDots');
+  if (!list || !prevBtn || !nextBtn) return;
 
   const cards = [...list.querySelectorAll(':scope > .research-card')];
-  const extraCards = cards.slice(3);
-  if (!extraCards.length) return;
 
-  const label = button.querySelector('.research-more-label');
-  extraCards.forEach((card) => {
-    card.classList.add('research-card--extra');
-    card.hidden = true;
+  // Build dot indicators
+  const dots = cards.map((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'carousel-dot';
+    d.setAttribute('aria-label', `Go to paper ${i + 1}`);
+    dotsEl?.appendChild(d);
+    return d;
   });
-  button.hidden = false;
 
-  button.addEventListener('click', () => {
-    const shouldExpand = button.getAttribute('aria-expanded') !== 'true';
-    extraCards.forEach((card) => { card.hidden = !shouldExpand; });
-    button.setAttribute('aria-expanded', String(shouldExpand));
-    button.classList.toggle('is-expanded', shouldExpand);
-    if (label) label.textContent = shouldExpand ? 'Show less' : 'Show more';
+  function cardStep() {
+    const card = cards[0];
+    if (!card) return 0;
+    return card.offsetWidth + parseFloat(getComputedStyle(list).gap || '0');
+  }
+
+  function activeDotIndex() {
+    const step = cardStep();
+    return step ? Math.round(list.scrollLeft / step) : 0;
+  }
+
+  function updateUI() {
+    const atStart = list.scrollLeft <= 1;
+    const atEnd   = list.scrollLeft >= list.scrollWidth - list.clientWidth - 1;
+    prevBtn.disabled = atStart;
+    nextBtn.disabled = atEnd;
+
+    const idx = activeDotIndex();
+    dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+  }
+
+  prevBtn.addEventListener('click', () => {
+    list.scrollBy({ left: -cardStep(), behavior: 'smooth' });
   });
+  nextBtn.addEventListener('click', () => {
+    list.scrollBy({ left: cardStep(), behavior: 'smooth' });
+  });
+
+  dots.forEach((d, i) => {
+    d.addEventListener('click', () => {
+      list.scrollTo({ left: cardStep() * i, behavior: 'smooth' });
+      resetAutoPlay();
+    });
+  });
+
+  list.addEventListener('scroll', updateUI, { passive: true });
+  updateUI();
+
+  // Auto-rotate every 4 s; pause while hovered or focused
+  const INTERVAL = 4000;
+  let timer = null;
+
+  function advance() {
+    const atEnd = list.scrollLeft >= list.scrollWidth - list.clientWidth - 1;
+    if (atEnd) {
+      list.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      list.scrollBy({ left: cardStep(), behavior: 'smooth' });
+    }
+  }
+
+  function startAutoPlay() {
+    if (!timer) timer = setInterval(advance, INTERVAL);
+  }
+
+  function stopAutoPlay() {
+    clearInterval(timer);
+    timer = null;
+  }
+
+  function resetAutoPlay() {
+    stopAutoPlay();
+    startAutoPlay();
+  }
+
+  const carousel = list.closest('.research-carousel');
+  carousel?.addEventListener('mouseenter', stopAutoPlay);
+  carousel?.addEventListener('mouseleave', startAutoPlay);
+  carousel?.addEventListener('focusin',    stopAutoPlay);
+  carousel?.addEventListener('focusout',   startAutoPlay);
+
+  prevBtn.addEventListener('click', resetAutoPlay);
+  nextBtn.addEventListener('click', resetAutoPlay);
+
+  startAutoPlay();
 }
 
 // ============================================
@@ -989,13 +1059,17 @@ function initContactModal() {
     if (input) input.value = '';
   }
 
-  function open(e) {
+  function open(e, preselectedService) {
     lastTrigger = e.currentTarget;
     history.pushState({ contactModal: true }, '', location.href);
     overlay.classList.add('is-open');
     overlay.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     refreshCaptcha();
+    if (preselectedService) {
+      const serviceSelect = document.getElementById('cfService');
+      if (serviceSelect) serviceSelect.value = preselectedService;
+    }
     closeBtn.focus();
   }
 
@@ -1016,6 +1090,7 @@ function initContactModal() {
 
   trigger.addEventListener('click', open);
   document.getElementById('ecoffeeTrigger')?.addEventListener('click', open);
+  document.getElementById('discussProjectTrigger')?.addEventListener('click', (e) => open(e, 'AI Strategy & Prototyping'));
   closeBtn.addEventListener('click', handleClose);
 
   overlay.addEventListener('click', (e) => {
@@ -1123,3 +1198,39 @@ function initContactModal() {
 }
 
 document.addEventListener('DOMContentLoaded', initContactModal);
+
+// ============================================
+// Research Card Proximity Colour Effect
+// ============================================
+function initResearchCardProximity() {
+  if (!window.matchMedia('(hover: hover)').matches) return;
+  const imgs = Array.from(document.querySelectorAll('.research-card-img'));
+  if (!imgs.length) return;
+
+  const RADIUS = 300; // px — full colour within this distance
+
+  function updateFromPoint(x, y) {
+    imgs.forEach(img => {
+      const rect = img.closest('.research-card-img-wrap').getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dist = Math.hypot(x - cx, y - cy);
+      img.style.filter = `grayscale(${Math.min(1, dist / RADIUS).toFixed(3)})`;
+    });
+  }
+
+  function resetAll() {
+    imgs.forEach(img => { img.style.filter = 'grayscale(1)'; });
+  }
+
+  document.addEventListener('mousemove', e => updateFromPoint(e.clientX, e.clientY));
+  document.documentElement.addEventListener('mouseleave', resetAll);
+
+  document.addEventListener('touchmove', e => {
+    const t = e.touches[0];
+    updateFromPoint(t.clientX, t.clientY);
+  }, { passive: true });
+  document.addEventListener('touchend', resetAll);
+}
+
+document.addEventListener('DOMContentLoaded', initResearchCardProximity);
