@@ -762,21 +762,41 @@ body::before {
 
 .research-molecule-ring i {
   position: absolute;
-  top: -0.28rem;
-  left: calc(50% - 0.28rem);
-  width: 0.56rem;
-  height: 0.56rem;
-  border-radius: 50%;
-  background: var(--accent-secondary);
-  box-shadow: 0 0 0.8rem var(--accent-primary);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  animation: electron-orbit 3s linear infinite;
+}
+
+.research-molecule-ring i::before {
+  content: '♥';
+  position: absolute;
+  top: -0.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  font-style: normal;
+  line-height: 1;
+  color: var(--accent-secondary);
+  filter: drop-shadow(0 0 0.4rem var(--accent-primary));
 }
 
 .research-molecule-ring--one { transform: rotateX(68deg) rotateZ(12deg); }
 .research-molecule-ring--two { transform: rotateY(68deg) rotateZ(62deg); }
 .research-molecule-ring--three { transform: rotateX(58deg) rotateY(55deg) rotateZ(-28deg); }
 
-.research-molecule-ring--two i { background: var(--accent-purple); }
-.research-molecule-ring--three i { background: var(--accent-cyan); }
+.research-molecule-ring--two i { animation-duration: 4.5s; animation-direction: reverse; }
+.research-molecule-ring--three i { animation-duration: 4.5s; }
+
+.research-molecule-ring--two i::before { color: var(--accent-purple); }
+.research-molecule-ring--three i::before { color: var(--accent-cyan); }
+
+@keyframes electron-orbit {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
 
 @keyframes moleculeTurn {
   from { transform: rotateX(12deg) rotateY(0deg) rotateZ(0deg); }
