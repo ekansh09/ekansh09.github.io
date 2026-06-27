@@ -1,6 +1,6 @@
 /**
- * PREMIUM PORTFOLIO - ANIMATIONS & INTERACTIONS
- * Advanced JavaScript for stunning visual effects
+ * PORTFOLIO 3D GLASSMORPHISM EDITION
+ * 3D Starfield, Mouse-Tracking Scene, Tilt Cards, Neon Effects
  */
 
 // ============================================
@@ -11,76 +11,315 @@ document.addEventListener('DOMContentLoaded', () => {
   if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
   }
-  // Avoid forced scroll jumps on mobile; only reset scroll on larger screens.
+
   const isCoarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
   const smallScreen = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
-  if (!(isCoarse || smallScreen)) {
-    window.scrollTo(0, 0);
-  }
-
-  initLoader();
-  initCustomCursor();
-  initNavigation();
-  initMobileMenu();
-  initScrollAnimations();
-  initCounterAnimation();
-  initSmoothScroll();
-  initSkillBars();
-  initThemeSwitch();
-  initRoleCycler();
-  updateYear();
-
-  // Mobile/performance: disable heavy pointer/scroll effects on touch or small screens
   const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (!isCoarse && !smallScreen && !reducedMotion) {
-    initMagneticButtons();
-    initParticles();
+  if (!window.location.hash) {
+    const resetScroll = () => window.scrollTo(0, 0);
+    resetScroll();
+    requestAnimationFrame(resetScroll);
+    window.addEventListener('load', resetScroll, { once: true });
+    window.addEventListener('pageshow', resetScroll);
   }
 
-  // Always enable the terminal last
+  initThemeSwitch();
+  initCollapsibleSections();
+  initResearchList();
+  initSectionNavigation();
+  initRoleCycler();
+  updateYear();
+  initScrollProgress();
   initFakeTerminal();
-  // Show mobile down-arrow indicator initially, hide on interaction
   initMobileDownIndicator();
+
+  // 3D & visual effects — only on capable devices
+  if (!reducedMotion) {
+    init3DStarfield();
+
+    if (!isCoarse && !smallScreen) {
+      initCustomCursor();
+      init3DSceneTracking();
+      initTiltCards();
+      initMagneticLinks();
+    }
+  }
 });
 
 // ============================================
-// Page Loader
+// 3D Starfield Canvas
 // ============================================
-function initLoader() {
-  const loader = document.getElementById('loader');
-  
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      if (loader) loader.classList.add('hidden');
-      document.body.style.overflow = 'visible';
-      
-      // Trigger initial animations after loader
-      setTimeout(() => {
-        document.querySelectorAll('.hero .reveal, .hero .reveal-up, .hero .reveal-scale').forEach(el => {
-          el.classList.add('revealed');
-        });
-      }, 200);
-    }, 2000);
+function init3DStarfield() {
+  const canvas = document.getElementById('bg-canvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+
+  let W = window.innerWidth;
+  let H = window.innerHeight;
+  canvas.width = W;
+  canvas.height = H;
+
+  const NUM_STARS = Math.min(280, Math.floor((W * H) / 5000));
+  const CENTER_X = W / 2;
+  const CENTER_Y = H / 2;
+  const FOCAL   = 500;
+  const SPEED   = 0.6;
+
+  // Stars: x,y in -1..1 space, z: depth 0-1
+  const stars = [];
+
+  function spawnStar(z) {
+    return {
+      x: (Math.random() - 0.5) * 2,
+      y: (Math.random() - 0.5) * 2,
+      z: z ?? Math.random(),
+      size: Math.random() * 1.5 + 0.3,
+      brightness: Math.random() * 0.6 + 0.4,
+      hue: Math.random() < 0.15
+        ? 205  // occasional slate-blue tint
+        : 170  // teal-white core
+    };
+  }
+
+  for (let i = 0; i < NUM_STARS; i++) {
+    stars.push(spawnStar());
+  }
+
+  // Nebula dust particles (slower, larger, dimmer)
+  const NUM_NEBULA = Math.min(30, Math.floor(W / 60));
+  const nebula = [];
+  for (let i = 0; i < NUM_NEBULA; i++) {
+    nebula.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 3 + 1,
+      opacity: Math.random() * 0.08 + 0.02,
+      speedX: (Math.random() - 0.5) * 0.15,
+      speedY: (Math.random() - 0.5) * 0.1,
+      hue: Math.random() < 0.5 ? 180 : 205
+    });
+  }
+
+  let raf;
+
+  function resize() {
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width  = W;
+    canvas.height = H;
+  }
+  window.addEventListener('resize', resize);
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Draw nebula dust
+    nebula.forEach(n => {
+      n.x += n.speedX;
+      n.y += n.speedY;
+      if (n.x < 0) n.x = W;
+      if (n.x > W) n.x = 0;
+      if (n.y < 0) n.y = H;
+      if (n.y > H) n.y = 0;
+
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${n.hue}, 70%, 70%, ${n.opacity})`;
+      ctx.fill();
+    });
+
+    // Draw 3D stars
+    for (let i = 0; i < stars.length; i++) {
+      const s = stars[i];
+      s.z -= SPEED / 1000;
+
+      if (s.z <= 0) {
+        stars[i] = spawnStar(1);
+        continue;
+      }
+
+      // Project 3D -> 2D
+      const scale = FOCAL / (FOCAL * s.z);
+      const px = CENTER_X + s.x * W * 0.5 * scale;
+      const py = CENTER_Y + s.y * H * 0.5 * scale;
+
+      if (px < 0 || px > W || py < 0 || py > H) {
+        stars[i] = spawnStar(1);
+        continue;
+      }
+
+      // Closer = bigger & brighter
+      const depth     = 1 - s.z;
+      const radius    = s.size * depth * 2.5 + 0.3;
+      const opacity   = s.brightness * depth;
+
+      ctx.beginPath();
+      ctx.arc(px, py, radius, 0, Math.PI * 2);
+
+      // White core with colored tint
+      const alpha = Math.min(opacity, 1);
+      ctx.fillStyle = `hsla(${s.hue}, 80%, 90%, ${alpha})`;
+      ctx.fill();
+
+      // Glow halo for brighter stars
+      if (opacity > 0.6 && radius > 0.8) {
+        const grd = ctx.createRadialGradient(px, py, 0, px, py, radius * 3.5);
+        grd.addColorStop(0,   `hsla(${s.hue}, 80%, 80%, ${alpha * 0.35})`);
+        grd.addColorStop(1,   `hsla(${s.hue}, 80%, 80%, 0)`);
+        ctx.beginPath();
+        ctx.arc(px, py, radius * 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = grd;
+        ctx.fill();
+      }
+    }
+
+    raf = requestAnimationFrame(draw);
+  }
+
+  draw();
+
+  // Clean up on page hide
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) cancelAnimationFrame(raf);
+    else raf = requestAnimationFrame(draw);
   });
 }
 
 // ============================================
-// Custom Cursor (small dot)
+// 3D Scene Mouse Tracking (parallax tilt)
+// ============================================
+function init3DSceneTracking() {
+  const scene = document.getElementById('scene3d');
+  if (!scene) return;
+
+  const MAX_TILT = 4; // degrees
+  let targetRX = 0, targetRY = 0;
+  let currentRX = 0, currentRY = 0;
+  let raf;
+
+  document.addEventListener('mousemove', (e) => {
+    const nx = (e.clientX / window.innerWidth  - 0.5) * 2; // -1 to 1
+    const ny = (e.clientY / window.innerHeight - 0.5) * 2;
+
+    targetRY =  nx * MAX_TILT;
+    targetRX = -ny * MAX_TILT * 0.6;
+  }, { passive: true });
+
+  // Reset on leave
+  document.addEventListener('mouseleave', () => {
+    targetRX = 0;
+    targetRY = 0;
+  });
+
+  function tick() {
+    // Smooth lerp toward target
+    currentRX += (targetRX - currentRX) * 0.06;
+    currentRY += (targetRY - currentRY) * 0.06;
+
+    scene.style.transform = `rotateX(${currentRX}deg) rotateY(${currentRY}deg)`;
+
+    raf = requestAnimationFrame(tick);
+  }
+
+  tick();
+}
+
+// ============================================
+// 3D Tilt Cards (terminal + profile image)
+// ============================================
+function initTiltCards() {
+  const cards = document.querySelectorAll('.tilt-card');
+  const MAX = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--tilt-max')) || 3;
+  const EASING = 0.085;
+
+  cards.forEach(card => {
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let raf = null;
+
+    function render() {
+      currentX += (targetX - currentX) * EASING;
+      currentY += (targetY - currentY) * EASING;
+
+      const settled = Math.abs(targetX - currentX) < 0.01 && Math.abs(targetY - currentY) < 0.01;
+      if (settled) {
+        currentX = targetX;
+        currentY = targetY;
+      }
+
+      const depth = Math.min(3, Math.max(Math.abs(currentX), Math.abs(currentY)));
+      card.style.transform = `perspective(1200px) rotateX(${currentX}deg) rotateY(${currentY}deg) translateZ(${depth}px)`;
+
+      if (settled) raf = null;
+      else raf = requestAnimationFrame(render);
+    }
+
+    function requestRender() {
+      if (raf === null) raf = requestAnimationFrame(render);
+    }
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const cx   = rect.left + rect.width  / 2;
+      const cy   = rect.top  + rect.height / 2;
+      const dx   = (e.clientX - cx) / (rect.width  / 2);
+      const dy   = (e.clientY - cy) / (rect.height / 2);
+
+      targetX = -dy * MAX;
+      targetY = dx * MAX;
+      requestRender();
+    });
+
+    card.addEventListener('mouseleave', () => {
+      targetX = 0;
+      targetY = 0;
+      requestRender();
+    });
+  });
+}
+
+// ============================================
+// Magnetic Link Effect
+// ============================================
+function initMagneticLinks() {
+  document.querySelectorAll('.magnetic').forEach(el => {
+    const strength = parseFloat(el.dataset.strength || 18);
+
+    el.addEventListener('mousemove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const cx = rect.left + rect.width  / 2;
+      const cy = rect.top  + rect.height / 2;
+      const dx = e.clientX - cx;
+      const dy = e.clientY - cy;
+
+      el.style.transform = `translate(${dx / strength}px, ${dy / strength}px)`;
+    });
+
+    el.addEventListener('mouseleave', () => {
+      el.style.transform = '';
+    });
+  });
+}
+
+// ============================================
+// Custom Cursor (neon dot)
 // ============================================
 function initCustomCursor() {
-  // Skip on touch devices
   if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
 
   const dot = document.createElement('div');
   dot.className = 'cursor-dot hidden';
   document.body.appendChild(dot);
 
-  let x = 0, y = 0;
-  let raf = 0;
+  let x = 0, y = 0, raf = 0;
 
   function render() {
-    dot.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+    dot.style.left = x + 'px';
+    dot.style.top  = y + 'px';
     raf = 0;
   }
 
@@ -94,11 +333,10 @@ function initCustomCursor() {
   document.addEventListener('mousemove', onMove, { passive: true });
   document.addEventListener('mouseenter', () => dot.classList.remove('hidden'));
   document.addEventListener('mouseleave', () => dot.classList.add('hidden'));
-  document.addEventListener('mousedown', () => dot.classList.add('active'));
-  document.addEventListener('mouseup', () => dot.classList.remove('active'));
+  document.addEventListener('mousedown',  () => dot.classList.add('active'));
+  document.addEventListener('mouseup',    () => dot.classList.remove('active'));
 
-  const hoverSel = 'a, button, .btn, [role="button"], input, textarea, select, .clickable';
-  // Delegate to support dynamic content
+  const hoverSel = 'a, button, .btn, [role="button"], input, textarea, select, .clickable, .tilt-card';
   document.addEventListener('mouseover', (e) => {
     if (e.target && (e.target.matches(hoverSel) || e.target.closest(hoverSel))) {
       dot.classList.add('hover');
@@ -110,77 +348,25 @@ function initCustomCursor() {
     }
   });
 }
-// Magnetic Buttons Effect
-// ============================================
-function initMagneticButtons() {
-  const magneticElements = document.querySelectorAll('.magnetic');
-  
-  magneticElements.forEach(el => {
-    const strength = el.dataset.strength || 20;
-    
-    el.addEventListener('mousemove', (e) => {
-      const rect = el.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
-      
-      el.style.transform = `translate(${x / strength}px, ${y / strength}px)`;
-    });
-    
-    el.addEventListener('mouseleave', () => {
-      el.style.transform = 'translate(0, 0)';
-    });
-  });
-}
 
 // ============================================
-// Navigation
+// Scroll Progress Bar
 // ============================================
-function initNavigation() {
-  const nav = document.getElementById('nav');
-  if (!nav) return;
-  let lastScroll = 0;
-  
+function initScrollProgress() {
+  const bar = document.createElement('div');
+  bar.className = 'scroll-progress-bar';
+  bar.style.width = '0%';
+  document.body.appendChild(bar);
+
   window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-    
-    // Add scrolled class
-    if (currentScroll > 50) {
-      nav.classList.add('scrolled');
-    } else {
-      nav.classList.remove('scrolled');
-    }
-    
-    lastScroll = currentScroll;
+    const total    = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = total > 0 ? (window.pageYOffset / total) * 100 : 0;
+    bar.style.width = `${progress}%`;
   }, { passive: true });
 }
 
 // ============================================
-// Mobile Menu
-// ============================================
-function initMobileMenu() {
-  const toggle = document.getElementById('navToggle');
-  const menu = document.getElementById('mobileMenu');
-  if (!toggle || !menu) return;
-  const links = menu.querySelectorAll('.mobile-link');
-  
-  toggle.addEventListener('click', () => {
-    toggle.classList.toggle('active');
-    menu.classList.toggle('active');
-    document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
-  });
-  
-  // Close menu when clicking a link
-  links.forEach(link => {
-    link.addEventListener('click', () => {
-      toggle.classList.remove('active');
-      menu.classList.remove('active');
-      document.body.style.overflow = '';
-    });
-  });
-}
-
-// ============================================
-// Mobile Down Arrow Indicator (show at first, hide later)
+// Mobile Down Arrow Indicator
 // ============================================
 function initMobileDownIndicator() {
   const btn = document.querySelector('.mobile-down-nav');
@@ -188,72 +374,219 @@ function initMobileDownIndicator() {
   const isMobile = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
   if (!isMobile) return;
 
-  // Ensure visible at start
   btn.classList.remove('is-hidden');
-
   const hide = () => btn.classList.add('is-hidden');
   const maybeToggle = () => {
     if (window.pageYOffset > 60) hide();
     else btn.classList.remove('is-hidden');
   };
-
-  // Hide after first scroll a bit
   window.addEventListener('scroll', maybeToggle, { passive: true });
-  // Hide when user taps the button
   btn.addEventListener('click', hide);
-  // Safety: auto-hide after a short delay if idle
   setTimeout(hide, 5000);
+}
+
+// ============================================
+// Collapsible content sections
+// ============================================
+function setSectionExpanded(section, expanded) {
+  const button = section?.querySelector(':scope > .section-heading .section-toggle');
+  const content = section?.querySelector(':scope > .section-content');
+  if (!button || !content) return;
+
+  button.setAttribute('aria-expanded', String(expanded));
+  button.setAttribute('aria-label', `${expanded ? 'Collapse' : 'Expand'} ${button.dataset.sectionTitle}`);
+  content.hidden = !expanded;
+  section.classList.toggle('is-collapsed', !expanded);
+  section.dispatchEvent(new CustomEvent('sectiontoggle', { detail: { expanded } }));
+}
+
+function initCollapsibleSections() {
+  const sections = document.querySelectorAll('.content-section');
+
+  sections.forEach((section) => {
+    const heading = section.querySelector(':scope > .section-heading');
+    if (!heading) return;
+
+    const iconText = heading.querySelector('.section-heading-icon')?.textContent || '';
+    const title = heading.textContent.replace(iconText, '').trim().replace(/\s+/g, ' ');
+    const content = document.createElement('div');
+    content.className = 'section-content';
+    content.id = `${section.id}-content`;
+
+    while (heading.nextSibling) content.appendChild(heading.nextSibling);
+    section.appendChild(content);
+
+    const headingMain = document.createElement('span');
+    headingMain.className = 'section-heading-main';
+    headingMain.append(...heading.childNodes);
+
+    const button = document.createElement('button');
+    button.className = 'section-toggle';
+    button.type = 'button';
+    button.dataset.sectionTitle = title;
+    button.setAttribute('aria-controls', content.id);
+    button.appendChild(headingMain);
+
+    const chevron = document.createElement('span');
+    chevron.className = 'section-chevron';
+    chevron.setAttribute('aria-hidden', 'true');
+    button.appendChild(chevron);
+    heading.appendChild(button);
+
+    const startsCollapsed = section.dataset.startCollapsed === 'true';
+    setSectionExpanded(section, !startsCollapsed);
+
+    button.addEventListener('click', () => {
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      setSectionExpanded(section, !isExpanded);
+    });
+  });
+}
+
+// ============================================
+// Research list disclosure
+// ============================================
+function initResearchList() {
+  const list = document.getElementById('researchList');
+  const button = document.getElementById('toggleResearch');
+  if (!list || !button) return;
+
+  const cards = [...list.querySelectorAll(':scope > .research-card')];
+  const extraCards = cards.slice(3);
+  if (!extraCards.length) return;
+
+  const label = button.querySelector('.research-more-label');
+  extraCards.forEach((card) => {
+    card.classList.add('research-card--extra');
+    card.hidden = true;
+  });
+  button.hidden = false;
+
+  button.addEventListener('click', () => {
+    const shouldExpand = button.getAttribute('aria-expanded') !== 'true';
+    extraCards.forEach((card) => { card.hidden = !shouldExpand; });
+    button.setAttribute('aria-expanded', String(shouldExpand));
+    button.classList.toggle('is-expanded', shouldExpand);
+    if (label) label.textContent = shouldExpand ? 'Show less' : 'Show more';
+  });
+}
+
+// ============================================
+// Compact section navigation
+// ============================================
+function initSectionNavigation() {
+  const nav = document.querySelector('.section-nav');
+  const links = [...document.querySelectorAll('.section-nav-link')];
+  const sections = [...document.querySelectorAll('.content-section')];
+  const toggleAll = document.getElementById('toggleAllSections');
+  if (!nav || !links.length || !sections.length) return;
+  if (toggleAll) toggleAll.hidden = false;
+
+  const updateAllLabel = () => {
+    const hasExpandedSection = sections.some((section) => !section.classList.contains('is-collapsed'));
+    if (toggleAll) toggleAll.textContent = hasExpandedSection ? 'Collapse all' : 'Expand all';
+  };
+
+  sections.forEach((section) => section.addEventListener('sectiontoggle', updateAllLabel));
+  updateAllLabel();
+
+  toggleAll?.addEventListener('click', () => {
+    const shouldExpand = sections.every((section) => section.classList.contains('is-collapsed'));
+    sections.forEach((section) => setSectionExpanded(section, shouldExpand));
+    if (!shouldExpand) nav.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  links.forEach((link) => {
+    link.addEventListener('click', () => {
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target?.classList.contains('is-collapsed')) setSectionExpanded(target, true);
+    });
+  });
+
+  let ticking = false;
+  const updateActiveLink = () => {
+    const marker = nav.getBoundingClientRect().bottom + 28;
+    let active = null;
+    sections.forEach((section) => {
+      if (section.getBoundingClientRect().top <= marker) active = section;
+    });
+
+    links.forEach((link) => {
+      const isActive = Boolean(active && link.getAttribute('href') === `#${active.id}`);
+      link.classList.toggle('is-active', isActive);
+      if (isActive) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+    ticking = false;
+  };
+
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(updateActiveLink);
+  }, { passive: true });
+  updateActiveLink();
+
+  let initialTarget = null;
+  try {
+    initialTarget = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+  } catch { /* Ignore malformed URL fragments. */ }
+  if (initialTarget) {
+    if (initialTarget.classList.contains('content-section')) setSectionExpanded(initialTarget, true);
+    requestAnimationFrame(() => initialTarget.scrollIntoView({ block: 'start' }));
+  }
 }
 
 // ============================================
 // Theme Switch (Light/Dark with persistence)
 // ============================================
 function initThemeSwitch() {
-  const root = document.documentElement;
+  const root       = document.documentElement;
   const storageKey = 'theme';
-  const mql = window.matchMedia('(prefers-color-scheme: dark)');
+  const mql        = window.matchMedia('(prefers-color-scheme: dark)');
+  const themeMeta  = document.querySelector('meta[name="theme-color"]');
 
-  // Create toggle button
   const btn = document.createElement('button');
   btn.className = 'theme-toggle';
-  btn.type = 'button';
+  btn.type      = 'button';
   btn.setAttribute('aria-label', 'Toggle color theme');
   btn.setAttribute('aria-pressed', 'false');
 
-  const icon = document.createElement('span');
+  const icon  = document.createElement('span');
   icon.className = 'icon';
   const label = document.createElement('span');
   label.className = 'label';
-
   btn.appendChild(icon);
   btn.appendChild(label);
   document.body.appendChild(btn);
 
-  const getStored = () => localStorage.getItem(storageKey);
-  const setStored = (v) => localStorage.setItem(storageKey, v);
+  const getStored = () => {
+    try { return localStorage.getItem(storageKey); }
+    catch { return null; }
+  };
+  const setStored = (v) => {
+    try { localStorage.setItem(storageKey, v); }
+    catch { /* The theme still works for this session. */ }
+  };
 
   function apply(mode) {
     root.setAttribute('data-theme', mode);
     const isDark = mode === 'dark';
     btn.setAttribute('aria-pressed', String(isDark));
     icon.textContent = isDark ? '🌙' : '☀️';
-    // label.textContent = isDark ? 'Dark' : 'Light';
     btn.title = isDark ? 'Switch to light theme' : 'Switch to dark theme';
+    themeMeta?.setAttribute('content', isDark ? '#0b1014' : '#f4f6f5');
   }
 
-  // Initialize theme
-  const saved = getStored();
+  const saved   = getStored();
   const initial = saved || (mql.matches ? 'dark' : 'light');
   apply(initial);
 
-  // Update on system change if user hasn't chosen explicitly
-  function handleMqlChange(e) {
-    if (getStored()) return; // user choice takes precedence
+  mql.addEventListener?.('change', (e) => {
+    if (getStored()) return;
     apply(e.matches ? 'dark' : 'light');
-  }
-  mql.addEventListener?.('change', handleMqlChange);
+  });
 
-  // Toggle on click
   btn.addEventListener('click', () => {
     const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     setStored(next);
@@ -262,330 +595,89 @@ function initThemeSwitch() {
 }
 
 // ============================================
-// Scroll Reveal Animations
+// Update Footer Year
 // ============================================
-function initScrollAnimations() {
-  const observerOptions = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.1
-  };
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('revealed');
-        
-        // Handle skill cards
-        if (entry.target.classList.contains('skill-card')) {
-          const progress = entry.target.querySelector('.skill-progress');
-          if (progress) {
-            setTimeout(() => {
-              progress.style.width = progress.style.getPropertyValue('--progress');
-            }, 300);
-          }
-        }
-      }
-    });
-  }, observerOptions);
-  
-  // Observe all reveal elements except hero section (handled separately)
-  document.querySelectorAll('.reveal, .reveal-up, .reveal-scale').forEach(el => {
-    if (!el.closest('.hero')) {
-      observer.observe(el);
-    }
-  });
-  
-  // Also observe skill cards
-  document.querySelectorAll('.skill-card').forEach(el => {
-    observer.observe(el);
-  });
+function updateYear() {
+  const el = document.getElementById('year');
+  if (el) el.textContent = new Date().getFullYear();
 }
 
 // ============================================
-// Particles Background
+// Smooth Scroll for anchor links
 // ============================================
-function initParticles() {
-  const canvas = document.getElementById('particles');
-  if (!canvas) return;
-  
-  const ctx = canvas.getContext('2d');
-  let particles = [];
-  let mouseX = 0;
-  let mouseY = 0;
-  
-  // Resize canvas
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
-  
-  // Track mouse
-  document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  });
-  
-  // Particle class
-  class Particle {
-    constructor() {
-      this.reset();
-    }
-    
-    reset() {
-      this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height;
-      this.size = Math.random() * 2 + 0.5;
-      this.speedX = (Math.random() - 0.5) * 0.5;
-      this.speedY = (Math.random() - 0.5) * 0.5;
-      this.opacity = Math.random() * 0.5 + 0.1;
-    }
-    
-    update() {
-      // Move
-      this.x += this.speedX;
-      this.y += this.speedY;
-      
-      // Mouse interaction
-      const dx = mouseX - this.x;
-      const dy = mouseY - this.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      
-      if (distance < 150) {
-        const force = (150 - distance) / 150;
-        this.x -= dx * force * 0.02;
-        this.y -= dy * force * 0.02;
-      }
-      
-      // Wrap around
-      if (this.x < 0) this.x = canvas.width;
-      if (this.x > canvas.width) this.x = 0;
-      if (this.y < 0) this.y = canvas.height;
-      if (this.y > canvas.height) this.y = 0;
-    }
-    
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(99, 102, 241, ${this.opacity})`;
-      ctx.fill();
-    }
-  }
-  
-  // Create particles
-  const particleCount = Math.min(100, Math.floor(window.innerWidth / 15));
-  for (let i = 0; i < particleCount; i++) {
-    particles.push(new Particle());
-  }
-  
-  // Draw connections
-  function drawConnections() {
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        
-        if (distance < 120) {
-          const opacity = (120 - distance) / 120 * 0.15;
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(99, 102, 241, ${opacity})`;
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
-        }
-      }
-    }
-  }
-  
-  // Animation loop
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    particles.forEach(particle => {
-      particle.update();
-      particle.draw();
-    });
-    
-    drawConnections();
-    requestAnimationFrame(animate);
-  }
-  animate();
-}
-
-// ============================================
-// Counter Animation
-// ============================================
-function initCounterAnimation() {
-  const counters = document.querySelectorAll('.stat-number[data-count]');
-  
-  const observerOptions = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.5
-  };
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
-        entry.target.classList.add('counted');
-        animateCounter(entry.target);
-      }
-    });
-  }, observerOptions);
-  
-  counters.forEach(counter => observer.observe(counter));
-  
-  function animateCounter(element) {
-    const target = parseInt(element.dataset.count);
-    const duration = 2000;
-    const startTime = performance.now();
-    
-    function update(currentTime) {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      
-      // Easing function
-      const easeOutExpo = 1 - Math.pow(2, -10 * progress);
-      const current = Math.floor(target * easeOutExpo);
-      
-      element.textContent = current;
-      
-      if (progress < 1) {
-        requestAnimationFrame(update);
-      } else {
-        element.textContent = target;
-      }
-    }
-    
-    requestAnimationFrame(update);
-  }
-}
-
-// ============================================
-// Smooth Scroll
-// ============================================
-function initSmoothScroll() {
+document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       e.preventDefault();
       const target = document.querySelector(this.getAttribute('href'));
-      
       if (target) {
-        const headerOffset = 100;
-        const elementPosition = target.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-        
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
+        if (target.classList.contains('is-collapsed')) setSectionExpanded(target, true);
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
   });
-}
+});
 
 // ============================================
-// Skill Bars Animation
-// ============================================
-function initSkillBars() {
-  const skillCards = document.querySelectorAll('.skill-card');
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('revealed');
-      }
-    });
-  }, { threshold: 0.2 });
-  
-  skillCards.forEach(card => observer.observe(card));
-}
-
-// ============================================
-// Update Footer Year
-// ============================================
-function updateYear() {
-  const yearEl = document.getElementById('year');
-  if (yearEl) {
-    yearEl.textContent = new Date().getFullYear();
-  }
-}
-
-// ============================================
-// Role Badge Rotator (Freelancer, Researcher, AI engineer)
+// Role Badge Rotator
 // ============================================
 function initRoleCycler() {
   const articleEl = document.getElementById('roleArticle');
-  const roleEl = document.getElementById('changingRole');
-  const badgeEl = document.querySelector('.role-badge--by-photo');
+  const roleEl    = document.getElementById('changingRole');
+  const badgeEl   = document.querySelector('.role-badge--by-photo');
   if (!articleEl || !roleEl) return;
 
   const roles = [
-    { article: 'a', text: 'Freelancer' },
-    { article: 'a', text: 'Researcher' },
+    { article: 'a',  text: 'Freelancer'  },
+    { article: 'a',  text: 'Consultant'  },
+    { article: 'a',  text: 'Researcher'  },
     { article: 'an', text: 'AI engineer' }
   ];
 
-  let idx = 0;
+  let idx           = 0;
   const transitionMs = 500;
-  const displayMs = 2200; // visible time before transitioning
+  const displayMs    = 2200;
 
   function setFixedBadgeWidth() {
     if (!badgeEl) return;
     const probe = document.createElement('span');
     probe.className = 'role-badge role-badge--by-photo';
-    // Copy computed styles so measurement matches the actual badge
-    // (important on mobile where font-size/padding differ via media queries).
     const cs = window.getComputedStyle(badgeEl);
-    // Neutralize absolute positioning for measurement
     Object.assign(probe.style, {
-      position: 'absolute',
-      left: '-99999px',
-      top: '-99999px',
-      transform: 'none',
-      bottom: 'auto',
-      right: 'auto',
+      position:    'absolute',
+      left:        '-99999px',
+      top:         '-99999px',
+      transform:   'none',
+      bottom:      'auto',
+      right:       'auto',
       pointerEvents: 'none',
-      visibility: 'hidden',
-      boxSizing: cs.boxSizing,
-      padding: cs.padding,
-      border: cs.border,
+      visibility:  'hidden',
+      boxSizing:   cs.boxSizing,
+      padding:     cs.padding,
+      border:      cs.border,
       borderRadius: cs.borderRadius,
-      fontFamily: cs.fontFamily,
-      fontSize: cs.fontSize,
-      fontWeight: cs.fontWeight,
+      fontFamily:  cs.fontFamily,
+      fontSize:    cs.fontSize,
+      fontWeight:  cs.fontWeight,
       letterSpacing: cs.letterSpacing,
-      lineHeight: cs.lineHeight,
-      whiteSpace: 'nowrap',
-      display: cs.display
+      lineHeight:  cs.lineHeight,
+      whiteSpace:  'nowrap',
+      display:     cs.display
     });
     const a = document.createElement('span');
     a.className = 'role-article';
     const t = document.createElement('span');
     t.className = 'role-text';
-
-    // Ensure the inner spans also use the real computed typography
     const aCS = window.getComputedStyle(articleEl);
     const tCS = window.getComputedStyle(roleEl);
     Object.assign(a.style, {
-      fontFamily: aCS.fontFamily,
-      fontSize: aCS.fontSize,
-      fontWeight: aCS.fontWeight,
-      letterSpacing: aCS.letterSpacing,
-      lineHeight: aCS.lineHeight
+      fontFamily: aCS.fontFamily, fontSize: aCS.fontSize,
+      fontWeight: aCS.fontWeight, letterSpacing: aCS.letterSpacing, lineHeight: aCS.lineHeight
     });
     Object.assign(t.style, {
-      fontFamily: tCS.fontFamily,
-      fontSize: tCS.fontSize,
-      fontWeight: tCS.fontWeight,
-      letterSpacing: tCS.letterSpacing,
-      lineHeight: tCS.lineHeight
+      fontFamily: tCS.fontFamily, fontSize: tCS.fontSize,
+      fontWeight: tCS.fontWeight, letterSpacing: tCS.letterSpacing, lineHeight: tCS.lineHeight
     });
-
     probe.appendChild(a);
     probe.appendChild(t);
     document.body.appendChild(probe);
@@ -598,47 +690,32 @@ function initRoleCycler() {
       const w = probe.offsetWidth;
       if (w > maxWidth) maxWidth = w;
     });
-
     document.body.removeChild(probe);
-    // Apply width with a tiny buffer
     badgeEl.style.width = `${Math.ceil(maxWidth + 2)}px`;
   }
 
   function cycle() {
-    // Animate out
     roleEl.classList.add('is-changing');
     articleEl.classList.add('is-changing');
-
     setTimeout(() => {
       const { article, text } = roles[idx];
       articleEl.textContent = article;
       roleEl.textContent = text;
-
-      // Animate in
       roleEl.classList.remove('is-changing');
       articleEl.classList.remove('is-changing');
-
       idx = (idx + 1) % roles.length;
     }, transitionMs);
   }
 
-  // Start immediately, then repeat
   setFixedBadgeWidth();
-
-  // On mobile, font loading can finish after DOMContentLoaded,
-  // which changes text metrics. Recompute once fonts are ready.
   if (document.fonts && typeof document.fonts.ready?.then === 'function') {
     document.fonts.ready.then(() => setFixedBadgeWidth());
   }
+  window.addEventListener('orientationchange', () => setTimeout(setFixedBadgeWidth, 250));
 
-  // iOS can change layout on orientation change without a full resize event.
-  window.addEventListener('orientationchange', () => {
-    setTimeout(setFixedBadgeWidth, 250);
-  });
   cycle();
   setInterval(cycle, displayMs + transitionMs);
 
-  // Recompute width on resize (debounced)
   let resizeTO;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTO);
@@ -647,238 +724,12 @@ function initRoleCycler() {
 }
 
 // ============================================
-// Text Scramble Effect (Optional Enhancement)
-// ============================================
-class TextScramble {
-  constructor(el) {
-    this.el = el;
-    this.chars = '!<>-_\\/[]{}—=+*^?#________';
-    this.update = this.update.bind(this);
-  }
-  
-  setText(newText) {
-    const oldText = this.el.innerText;
-    const length = Math.max(oldText.length, newText.length);
-    const promise = new Promise((resolve) => this.resolve = resolve);
-    this.queue = [];
-    
-    for (let i = 0; i < length; i++) {
-      const from = oldText[i] || '';
-      const to = newText[i] || '';
-      const start = Math.floor(Math.random() * 40);
-      const end = start + Math.floor(Math.random() * 40);
-      this.queue.push({ from, to, start, end });
-    }
-    
-    cancelAnimationFrame(this.frameRequest);
-    this.frame = 0;
-    this.update();
-    return promise;
-  }
-  
-  update() {
-    let output = '';
-    let complete = 0;
-    
-    for (let i = 0, n = this.queue.length; i < n; i++) {
-      let { from, to, start, end, char } = this.queue[i];
-      
-      if (this.frame >= end) {
-        complete++;
-        output += to;
-      } else if (this.frame >= start) {
-        if (!char || Math.random() < 0.28) {
-          char = this.randomChar();
-          this.queue[i].char = char;
-        }
-        output += `<span class="scramble-char">${char}</span>`;
-      } else {
-        output += from;
-      }
-    }
-    
-    this.el.innerHTML = output;
-    
-    if (complete === this.queue.length) {
-      this.resolve();
-    } else {
-      this.frameRequest = requestAnimationFrame(this.update);
-      this.frame++;
-    }
-  }
-  
-  randomChar() {
-    return this.chars[Math.floor(Math.random() * this.chars.length)];
-  }
-}
-
-// ============================================
-// Parallax Effect on Scroll
-// ============================================
-function initParallax() {
-  const parallaxElements = document.querySelectorAll('[data-parallax]');
-  
-  window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    
-    parallaxElements.forEach(el => {
-      const speed = el.dataset.parallax || 0.5;
-      const yPos = -(scrolled * speed);
-      el.style.transform = `translateY(${yPos}px)`;
-    });
-  }, { passive: true });
-}
-
-// ============================================
-// Image Lazy Loading with Fade
-// ============================================
-function initLazyImages() {
-  const images = document.querySelectorAll('img[data-src]');
-  
-  const imageObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const img = entry.target;
-        img.src = img.dataset.src;
-        img.classList.add('loaded');
-        imageObserver.unobserve(img);
-      }
-    });
-  });
-  
-  images.forEach(img => imageObserver.observe(img));
-}
-
-// ============================================
-// Tilt Effect for Cards
-// ============================================
-function initTiltEffect() {
-  const tiltElements = document.querySelectorAll('.project-card, .skill-card');
-  
-  tiltElements.forEach(el => {
-    el.addEventListener('mousemove', (e) => {
-      const rect = el.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      
-      const rotateX = (y - centerY) / 20;
-      const rotateY = (centerX - x) / 20;
-      
-      el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
-    });
-    
-    el.addEventListener('mouseleave', () => {
-      el.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
-    });
-  });
-}
-
-// Initialize tilt effect after DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-  const isCoarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-  const smallScreen = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
-  const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!isCoarse && !smallScreen && !reducedMotion) {
-    initTiltEffect();
-    initParallax();
-  }
-});
-
-// ============================================
-// Typing Effect (for hero or other sections)
-// ============================================
-class TypeWriter {
-  constructor(el, words, wait = 3000) {
-    this.el = el;
-    this.words = words;
-    this.wait = parseInt(wait, 10);
-    this.wordIndex = 0;
-    this.txt = '';
-    this.isDeleting = false;
-    this.type();
-  }
-  
-  type() {
-    const current = this.wordIndex % this.words.length;
-    const fullTxt = this.words[current];
-    
-    if (this.isDeleting) {
-      this.txt = fullTxt.substring(0, this.txt.length - 1);
-    } else {
-      this.txt = fullTxt.substring(0, this.txt.length + 1);
-    }
-    
-    this.el.innerHTML = `<span class="txt">${this.txt}</span>`;
-    
-    let typeSpeed = 100;
-    
-    if (this.isDeleting) {
-      typeSpeed /= 2;
-    }
-    
-    if (!this.isDeleting && this.txt === fullTxt) {
-      typeSpeed = this.wait;
-      this.isDeleting = true;
-    } else if (this.isDeleting && this.txt === '') {
-      this.isDeleting = false;
-      this.wordIndex++;
-      typeSpeed = 500;
-    }
-    
-    setTimeout(() => this.type(), typeSpeed);
-  }
-}
-
-// ============================================
-// Scroll Progress Indicator
-// ============================================
-function initScrollProgress() {
-  const progressBar = document.createElement('div');
-  progressBar.className = 'scroll-progress';
-  progressBar.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
-    z-index: 9999;
-    transition: width 0.1s ease;
-  `;
-  document.body.appendChild(progressBar);
-  
-  window.addEventListener('scroll', () => {
-    const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = windowHeight > 0 ? (window.pageYOffset / windowHeight) * 100 : 0;
-    progressBar.style.width = `${progress}%`;
-  }, { passive: true });
-}
-
-// Initialize scroll progress
-document.addEventListener('DOMContentLoaded', initScrollProgress);
-
-// ============================================
-// Prefers Reduced Motion Check
-// ============================================
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-if (prefersReducedMotion.matches) {
-  // Disable animations for users who prefer reduced motion
-  document.documentElement.style.setProperty('--transition-fast', '0ms');
-  document.documentElement.style.setProperty('--transition-base', '0ms');
-  document.documentElement.style.setProperty('--transition-smooth', '0ms');
-  document.documentElement.style.setProperty('--transition-slow', '0ms');
-}
-
-// ============================================
 // Interactive Fake Terminal
 // ============================================
 function initFakeTerminal() {
-  const body = document.querySelector('.terminal-body');
-  const input = document.getElementById('terminalInput');
-  const windowEl = body?.closest('.terminal-window');
+  const body      = document.querySelector('.terminal-body');
+  const input     = document.getElementById('terminalInput');
+  const windowEl  = body?.closest('.terminal-window');
   if (!body || !input || !windowEl) return;
 
   const PROMPT = 'ekansh@portfolio:~$';
@@ -886,48 +737,37 @@ function initFakeTerminal() {
   let historyIndex = -1;
   let acceptingInput = true;
 
-  // Focus behavior
   function focusInput() {
     if (!acceptingInput) return;
-    input.focus();
-    // Move caret to end
+    input.focus({ preventScroll: true });
     const val = input.value;
     input.value = '';
     input.value = val;
   }
+
   const activeLine = document.getElementById('terminalActiveLine');
   if (activeLine) activeLine.addEventListener('click', focusInput);
-
-  // Avoid auto-focusing input on touch/small screens to prevent the
-  // browser from auto-scrolling the page down on load (common on mobile).
-  const isCoarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-  const smallScreen = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
-  if (!(isCoarse || smallScreen)) {
+  windowEl.addEventListener('click', (event) => {
+    if (event.target.closest('a, button')) return;
     focusInput();
-  }
+  });
+  input.addEventListener('focus', () => windowEl.classList.add('is-input-active'));
+  input.addEventListener('blur', () => windowEl.classList.remove('is-input-active'));
 
-  // Allow paste/typing without needing to click to focus first.
-  // If user hits Cmd/Ctrl+V (or starts typing) while focus is elsewhere,
-  // move focus to the terminal input so the action lands there.
   function smartFocusOnKeydown(e) {
     if (!acceptingInput) return;
-    // If another input/textarea is focused and it's not our terminal input, do nothing.
     const ae = document.activeElement;
     if (ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA') && ae !== input) return;
-
-    const key = e.key || '';
+    const key        = e.key || '';
     const pasteCombo = (key.toLowerCase() === 'v') && (e.metaKey || e.ctrlKey);
     const isPrintable = key.length === 1 && !e.metaKey && !e.ctrlKey && !e.altKey;
-    const navOrEdit = ['Backspace', 'Enter', 'Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key);
-
+    const navOrEdit   = ['Backspace','Enter','Tab','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(key);
     if ((pasteCombo || isPrintable || navOrEdit) && document.activeElement !== input) {
       focusInput();
-      // Let default behavior continue so paste/typing lands in input.
     }
   }
   document.addEventListener('keydown', smartFocusOnKeydown, true);
 
-  // Utility helpers
   function appendLine(commandText) {
     const line = document.createElement('div');
     line.className = 'terminal-line';
@@ -944,43 +784,26 @@ function initFakeTerminal() {
   }
 
   function scrollToBottom() {
-    // Ensure the active prompt remains visible like a real terminal
     body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' });
   }
 
   function clearTerminal() {
-    // Remove everything except the active input line
     [...body.children].forEach(ch => {
       if (!ch.id || ch.id !== 'terminalActiveLine') ch.remove();
     });
   }
 
-  function unknown(cmd) {
-    appendOutput(`Command not found. Bold. Incorrect. Iconic.<br><span style="color:#9ca3af">${cmd}</span>`);
+  function appendHelpHint() {
+    appendOutput(`<p class="terminal-help">Type 'help' to see available commands.</p>`);
   }
 
-  function intro(shouldScroll = true) {
-    appendLine('init');
-    const aboutHTML = `<p>${files['about.txt'].replace(/\n/g, '<br>')}</p>`;
-    appendOutput(`
-      <div class="terminal-divider">====================================================</div>
-      <div class="terminal-welcome">
-        <p>Welcome! I'm Ekansh Chauhan.</p>
-        <p>I work at the intersection of AI and cancer research.</p>
-      </div>
-      <div class="terminal-divider">====================================================</div>
-      <br>
-      ${aboutHTML}
-      <br>
-      <p class="terminal-help">Type 'help' to see available commands.</p>
-    `);
-    if (shouldScroll) {
-      scrollToBottom();
-    } else {
-      // Ensure we start at the top of the terminal content
-      body.scrollTop = 0;
-    }
+  function unknown(cmd) {
+    appendOutput(`Command not found. Bold. Incorrect. Iconic.<br><span class="terminal-muted">${cmd}</span>`);
   }
+
+  const files = {
+    'about.txt': `I am currently pursuing a PhD in Cancer Sciences at <span class="terminal-highlight">Cancer Research UK (CRUK) Scotland Institute</span> and the <span class="terminal-highlight">University of Glasgow</span>. My research focuses on combining spatial transcriptomics and histopathology with deep learning. I also take on selected <span class="terminal-highlight">AI consulting and freelance projects</span> in machine learning, computer vision, and research engineering.`
+  };
 
   function helpText() {
     return `
@@ -991,6 +814,8 @@ function initFakeTerminal() {
         <li>- pwd</li>
         <li>- ls</li>
         <li>- cat about.txt</li>
+        <li>- coffee</li>
+        <li>- services</li>
         <li>- whoami</li>
         <li>- echo &lt;text&gt;</li>
         <li>- touch &lt;file&gt;</li>
@@ -1012,9 +837,24 @@ function initFakeTerminal() {
     `;
   }
 
-  const files = {
-    'about.txt': `I am currently pursuing a PhD in Cancer Sciences at <span class="terminal-highlight">Cancer Research UK (CRUK) Scotland Institute</span> and the <span class="terminal-highlight">University of Glasgow</span>. My research focuses on combining spatial transcriptomics and histopathology with deep learning. I’m also part of the <span class="terminal-highlight">PREDICT-Meso</span> consortium.`
-  };
+  function intro(shouldScroll = true) {
+    appendLine('init');
+    const aboutHTML = `<p>${files['about.txt'].replace(/\n/g, '<br>')}</p>`;
+    appendOutput(`
+      <div class="terminal-divider">====================================================</div>
+      <div class="terminal-welcome">
+        <p>Welcome! I'm Ekansh Chauhan.</p>
+        <p>I build research-led AI for health and science.</p>
+      </div>
+      <div class="terminal-divider">====================================================</div>
+      <br>
+      ${aboutHTML}
+      <br>
+      <p class="terminal-help">Type 'help' to see available commands.</p>
+    `);
+    if (shouldScroll) scrollToBottom();
+    else body.scrollTop = 0;
+  }
 
   function handleCommand(raw) {
     const cmd = raw.trim();
@@ -1022,19 +862,28 @@ function initFakeTerminal() {
 
     appendLine(cmd);
 
-    // Commands
     if (cmd === 'help') {
-      appendOutput(`<p>Here’s a totally serious manual:\n</p>` + helpText());
+      appendOutput(`<p>Here's a totally serious manual:\n</p>` + helpText());
     } else if (cmd === 'clear') {
       clearTerminal();
+      appendHelpHint();
     } else if (cmd === 'reset') {
       clearTerminal();
       intro(true);
     } else if (cmd === 'init') {
       const aboutHTML = `<p>${files['about.txt'].replace(/\\n/g, '<br>')}</p>`;
       appendOutput(`
-        <div class=\"terminal-divider\">====================================================</div>
-        <div class=\"terminal-welcome\">\n          <p>Welcome! I'm Ekansh Chauhan.</p>\n          <p>I work at the intersection of AI and cancer research.</p>\n        </div>\n        <div class=\"terminal-divider\">====================================================</div>\n        <br>\n        ${aboutHTML}\n        <br>\n        <p class=\"terminal-help\">Type 'help' to see available commands.</p>\n      `);
+        <div class="terminal-divider">====================================================</div>
+        <div class="terminal-welcome">
+          <p>Welcome! I'm Ekansh Chauhan.</p>
+          <p>I build research-led AI for health and science.</p>
+        </div>
+        <div class="terminal-divider">====================================================</div>
+        <br>
+        ${aboutHTML}
+        <br>
+        <p class="terminal-help">Type 'help' to see available commands.</p>
+      `);
     } else if (cmd === 'pwd') {
       appendOutput('/opt/dreams/unicorn-startup-ideas');
     } else if (cmd === 'ls') {
@@ -1047,9 +896,13 @@ function initFakeTerminal() {
         appendOutput(`cat: ${target}: No such file. It left you on read.`);
       }
     } else if (cmd === 'whoami') {
-      appendOutput("Ekansh Chauhan — definitely human. Allegedly well-rested.");
+      appendOutput('Ekansh Chauhan — definitely human. Allegedly well-rested.');
+    } else if (cmd === 'services') {
+      appendOutput(`<p>Consulting &amp; freelance services:</p><ul class="terminal-list"><li>- AI strategy and rapid prototyping</li><li>- Computer vision and multimodal ML</li><li>- Research engineering and scientific software</li></ul><br><p>Contact: 3068652c@student.gla.ac.uk</p>`);
+    } else if (cmd === 'coffee') {
+      appendOutput(`<p>Brewing one free e-coffee…</p><p>No beans, no bill, and it never goes cold. Perfect for literature ideas, feasibility questions, or an honest career conversation.</p><br><p>Bring curiosity: 3068652c@student.gla.ac.uk</p>`);
     } else if (cmd.startsWith('echo ')) {
-      appendOutput(`Echoing… because silence was too powerful:<br><span style="color:#9ca3af">${cmd.slice(5)}</span>`);
+      appendOutput(`Echoing… because silence was too powerful:<br><span class="terminal-muted">${cmd.slice(5)}</span>`);
     } else if (cmd.startsWith('touch ')) {
       const f = cmd.slice(6).trim();
       if (f) {
@@ -1065,12 +918,13 @@ function initFakeTerminal() {
     } else if (cmd === 'ps aux') {
       appendOutput(`<p>Processes pretending to be busy:</p>USER   PID  %CPU %MEM COMMAND<br>root     1   0.0  0.1 launchd<br>ekansh  42   3.1  1.2 node portfolio.js<br>ekansh 1337  0.5  0.7 python train.py`);
     } else if (cmd === 'vim') {
-      appendOutput("Launching Vim… psych. You don't get to suffer today.");
+      appendOutput('Launching Vim… psych. You don\'t get to suffer today.');
     } else if (cmd.startsWith('sudo rm -rf')) {
-      appendOutput("Nice try. Permission denied. I'm chaotic, not self-destructive.");
+      appendOutput('Nice try. Permission denied. I\'m chaotic, not self-destructive.');
     } else if (cmd === 'exit') {
       appendOutput('Exiting… may your bugs be features.');
       acceptingInput = false;
+      windowEl.classList.remove('is-input-active');
       input.disabled = true;
     } else {
       unknown(cmd);
@@ -1079,7 +933,6 @@ function initFakeTerminal() {
     scrollToBottom();
   }
 
-  // Input behaviors
   input.addEventListener('keydown', (e) => {
     if (!acceptingInput) return;
     if (e.key === 'Enter') {
@@ -1094,25 +947,20 @@ function initFakeTerminal() {
     } else if (e.key === 'ArrowUp') {
       if (history.length) {
         historyIndex = Math.max(0, historyIndex - 1);
-        input.value = history[historyIndex] || '';
-        // place caret at end
+        input.value  = history[historyIndex] || '';
         setTimeout(() => input.setSelectionRange(input.value.length, input.value.length), 0);
       }
       e.preventDefault();
     } else if (e.key === 'ArrowDown') {
       if (history.length) {
         historyIndex = Math.min(history.length, historyIndex + 1);
-        input.value = history[historyIndex] || '';
+        input.value  = history[historyIndex] || '';
         setTimeout(() => input.setSelectionRange(input.value.length, input.value.length), 0);
       }
       e.preventDefault();
     }
   });
 
-
-  // Start with a friendly intro the first time when page loads
-  // but only if the page doesn't already show the about.txt demo
-  // We will append the intro below the pre-seeded content on reset
-  // Initial render: show intro but keep scroll at top like a classic terminal
+  // Show intro on load
   intro(false);
 }
