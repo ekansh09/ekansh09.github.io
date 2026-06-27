@@ -1,0 +1,51 @@
+name: Remove Background
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/uploads/**'
+
+permissions:
+  contents: write
+
+jobs:
+  remove-bg:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install rembg
+        run: pip install "rembg[cpu]" pillow
+
+      - name: Process uploaded images
+        run: |
+          mkdir -p tools/processed
+          shopt -s nullglob
+          files=(tools/uploads/*.png tools/uploads/*.jpg tools/uploads/*.jpeg tools/uploads/*.webp tools/uploads/*.bmp)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No images to process."
+            exit 0
+          fi
+          for f in "${files[@]}"; do
+            name=$(basename "$f")
+            base="${name%.*}"
+            echo "Processing: $name"
+            python scripts/remove_bg.py "$f" "tools/processed/${base}_nobg.png"
+          done
+
+      - name: Commit results and clean uploads
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add tools/processed/
+          git ls-files --error-unmatch tools/uploads/ 2>/dev/null | grep -v '.gitkeep' | xargs git rm --cached 2>/dev/null || true
+          find tools/uploads -type f ! -name '.gitkeep' -delete
+          git add tools/uploads/
+          git diff --cached --quiet || git commit -m "chore: process background removal [skip ci]"
+          git push
