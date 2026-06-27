@@ -977,6 +977,7 @@ function initContactModal() {
   if (!overlay || !trigger || !closeBtn) return;
 
   let captchaAnswer = 0;
+  let lastTrigger = trigger;
 
   function refreshCaptcha() {
     const a = Math.floor(Math.random() * 10) + 1;
@@ -988,7 +989,9 @@ function initContactModal() {
     if (input) input.value = '';
   }
 
-  function open() {
+  function open(e) {
+    lastTrigger = e.currentTarget;
+    history.pushState({ contactModal: true }, '', location.href);
     overlay.classList.add('is-open');
     overlay.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
@@ -1000,19 +1003,27 @@ function initContactModal() {
     overlay.classList.remove('is-open');
     overlay.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
-    trigger.focus();
+    lastTrigger.focus();
   }
+
+  function handleClose() {
+    if (overlay.classList.contains('is-open')) history.back();
+  }
+
+  window.addEventListener('popstate', () => {
+    if (overlay.classList.contains('is-open')) close();
+  });
 
   trigger.addEventListener('click', open);
   document.getElementById('ecoffeeTrigger')?.addEventListener('click', open);
-  closeBtn.addEventListener('click', close);
+  closeBtn.addEventListener('click', handleClose);
 
   overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) close();
+    if (e.target === overlay) handleClose();
   });
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && overlay.classList.contains('is-open')) close();
+    if (e.key === 'Escape' && overlay.classList.contains('is-open')) handleClose();
   });
 
   const submitBtn = form?.querySelector('.contact-submit');
