@@ -964,3 +964,150 @@ function initFakeTerminal() {
   // Show intro on load
   intro(false);
 }
+
+// ============================================
+// Contact Modal
+// ============================================
+function initContactModal() {
+  const overlay  = document.getElementById('contactOverlay');
+  const trigger  = document.getElementById('contactTrigger');
+  const closeBtn = document.getElementById('contactModalClose');
+  const form     = document.getElementById('contactForm');
+  if (!overlay || !trigger || !closeBtn) return;
+
+  let captchaAnswer = 0;
+
+  function refreshCaptcha() {
+    const a = Math.floor(Math.random() * 10) + 1;
+    const b = Math.floor(Math.random() * 10) + 1;
+    captchaAnswer = a + b;
+    const q = document.getElementById('captchaQuestion');
+    if (q) q.textContent = `${a} + ${b}`;
+    const input = document.getElementById('cfCaptcha');
+    if (input) input.value = '';
+  }
+
+  function open() {
+    overlay.classList.add('is-open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    refreshCaptcha();
+    closeBtn.focus();
+  }
+
+  function close() {
+    overlay.classList.remove('is-open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    trigger.focus();
+  }
+
+  trigger.addEventListener('click', open);
+  document.getElementById('ecoffeeTrigger')?.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) close();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('is-open')) close();
+  });
+
+  const submitBtn = form?.querySelector('.contact-submit');
+
+  document.getElementById('cfEmail')?.addEventListener('input', (e) => {
+    e.target.classList.remove('contact-input-error');
+  });
+  document.getElementById('cfCaptcha')?.addEventListener('input', (e) => {
+    e.target.classList.remove('contact-input-error');
+  });
+  document.getElementById('cfMessage')?.addEventListener('input', (e) => {
+    e.target.classList.remove('contact-input-error');
+    const hint = e.target.closest('.contact-field')?.querySelector('.contact-field-hint');
+    if (hint) hint.remove();
+  });
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const first   = document.getElementById('cfFirstName')?.value.trim() || '';
+    const last    = document.getElementById('cfLastName')?.value.trim() || '';
+    const email   = document.getElementById('cfEmail')?.value.trim() || '';
+    const service = document.getElementById('cfService')?.value || '';
+    const message = document.getElementById('cfMessage')?.value.trim() || '';
+    const captchaInput = document.getElementById('cfCaptcha');
+    const captchaVal = parseInt(captchaInput?.value.trim(), 10);
+
+    const messageInput = document.getElementById('cfMessage');
+    if (!message) {
+      messageInput?.classList.add('contact-input-error');
+      messageInput?.focus();
+      const field = messageInput?.closest('.contact-field');
+      if (field && !field.querySelector('.contact-field-hint')) {
+        const hint = document.createElement('p');
+        hint.className = 'contact-field-hint';
+        hint.textContent = "This isn't a therapy session - say something.";
+        field.appendChild(hint);
+      }
+      return;
+    }
+
+    const emailInput = document.getElementById('cfEmail');
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+    if (!emailValid) {
+      emailInput?.classList.add('contact-input-error');
+      emailInput?.focus();
+      return;
+    }
+    emailInput?.classList.remove('contact-input-error');
+
+    if (captchaVal !== captchaAnswer) {
+      captchaInput?.classList.add('contact-input-error');
+      captchaInput?.focus();
+      refreshCaptcha();
+      return;
+    }
+    captchaInput?.classList.remove('contact-input-error');
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+    }
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: '49cf9cbe-505b-4d50-93ee-504200751b08',
+          subject: `[Portfolio] ${service || 'Enquiry'} from ${first} ${last}`.trim(),
+          name: `${first} ${last}`.trim(),
+          email,
+          service,
+          message,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        form.innerHTML = `<div class="contact-success">
+          <p>Message sent — I'll get back to you soon!</p>
+        </div>`;
+      } else {
+        throw new Error(data.message || 'Submission failed');
+      }
+    } catch {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Message';
+      }
+      const err = form.querySelector('.contact-form-error') || document.createElement('p');
+      err.className = 'contact-form-error';
+      err.textContent = 'Something went wrong — please try again or email me directly.';
+      form.appendChild(err);
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initContactModal);
