@@ -699,10 +699,11 @@ function initRoleCycler() {
   if (!articleEl || !roleEl) return;
 
   const roles = [
-    { article: 'a',  text: 'Freelancer'  },
-    { article: 'a',  text: 'Consultant'  },
-    { article: 'a',  text: 'Researcher'  },
-    { article: 'an', text: 'AI engineer' }
+    { article: 'an', text: 'AI engineer'    },
+    { article: 'an', text: 'LLM engineer'   },
+    { article: 'an', text: 'ML consultant'  },
+    { article: 'a',  text: 'Researcher'     },
+    { article: 'a',  text: 'Freelancer'     }
   ];
 
   let idx           = 0;
