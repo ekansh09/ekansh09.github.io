@@ -119,133 +119,6 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <!-- ================= ESSB 2026 TOP BANNER =================
-     Paste this as the FIRST thing inside <body>, before your
-     nav/header. Delete any other essb-banner section elsewhere
-     in the file — only one copy should exist on the page.
-     Hides itself automatically after 15 Oct 2026.
-     ========================================================= -->
-<section id="essb-banner" aria-label="For ESSB 2026 visitors">
-  <div class="essb-spots" aria-hidden="true"><div class="essb-spots-inner"></div></div>
-
-  <div class="essb-inner">
-    <div class="essb-text">
-      <p class="essb-status"><span class="essb-dot" aria-hidden="true"></span><span id="essb-status-text">At ESSB 2026 in Sitges, 28 Sep to 1 Oct</span></p>
-      <p class="essb-title">Here from my ESSB poster? Let's talk.</p>
-      <p class="essb-poster"><span class="essb-pnum">Poster 60 (P060)</span> <cite>Discovering Morpho-Genomic Associations in Spatial Transcriptomics and Histopathology</cite></p>
-      <p class="essb-desc">
-        I'm an AI researcher who likes working with multiple spatial modalities, deep learning, foundation models and AI agents.
-        PhD at CRUK Scotland Institute and the University of Glasgow.
-      </p>
-      <p class="essb-vote-hint" id="essb-vote-hint">Opens the ESSB poster vote form. My poster number is <strong>P060</strong>.</p>
-    </div>
-
-    <div class="essb-actions">
-      <a class="essb-btn essb-btn-primary essb-vote" id="essb-vote" href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=9vN-1t1vWkm_U1P7Ynty0AOMAJS177JPhaZhM6aSHbVUMDE2MldIRkpFUE5XSFI4V0NETDY3MFVDVi4u&origin=QRCode" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-        Vote for poster P060
-      </a>
-      <button type="button" class="essb-btn essb-btn-accent" id="essb-chat">Start a quick chat</button>
-      <a class="essb-btn" href="https://www.linkedin.com/in/ekanshchauhan/" target="_blank" rel="noopener">LinkedIn</a>
-    </div>
-  </div>
-
-  <style>
-    #essb-banner{
-      --essb-bg:#10181d; --essb-line:rgba(242,141,178,.28);
-      --essb-text:#e9eef1; --essb-muted:#98a8b1;
-      --essb-eosin:#f28db2; --essb-hema:#8e7cf0; --essb-magenta:#c2417f; --essb-live:#5ee0a0;
-      position:relative; z-index:5; overflow:hidden; isolation:isolate;
-      width:100%; box-sizing:border-box; margin:0;
-      background:var(--essb-bg); color:var(--essb-text);
-      border-bottom:1px solid var(--essb-line);
-      font-family:inherit; text-align:left;
-    }
-    #essb-banner[hidden]{display:none}
-    #essb-banner *{box-sizing:border-box}
-
-    #essb-banner .essb-inner{
-      position:relative; max-width:1180px; margin:0 auto;
-      padding:clamp(1rem,3vw,1.5rem) clamp(1rem,4vw,2rem);
-      padding-top:max(clamp(1rem,3vw,1.5rem), env(safe-area-inset-top, 0px));
-      display:grid; grid-template-columns:minmax(0,1fr) auto; gap:1.25rem 2.5rem; align-items:center;
-    }
-
-    #essb-banner .essb-spots{
-      position:absolute; top:0; right:0; bottom:0; width:min(48%,560px); z-index:-1; pointer-events:none; opacity:.85;
-      -webkit-mask-image:linear-gradient(to left,#000 25%,transparent);
-              mask-image:linear-gradient(to left,#000 25%,transparent);
-    }
-    #essb-banner .essb-spots-inner{
-      --s:14px; position:absolute; inset:0;
-      background:
-        radial-gradient(40% 60% at 74% 25%,var(--essb-eosin),transparent 70%),
-        radial-gradient(45% 55% at 90% 85%,var(--essb-hema),transparent 72%),
-        radial-gradient(35% 50% at 45% 70%,var(--essb-magenta),transparent 70%),
-        #2b3048;
-      -webkit-mask-image:radial-gradient(circle,#000 3.1px,transparent 3.7px),radial-gradient(circle,#000 3.1px,transparent 3.7px);
-              mask-image:radial-gradient(circle,#000 3.1px,transparent 3.7px),radial-gradient(circle,#000 3.1px,transparent 3.7px);
-      -webkit-mask-size:var(--s) calc(var(--s)*1.732); mask-size:var(--s) calc(var(--s)*1.732);
-      -webkit-mask-position:0 0,calc(var(--s)/2) calc(var(--s)*.866); mask-position:0 0,calc(var(--s)/2) calc(var(--s)*.866);
-    }
-
-    #essb-banner p{margin:0; padding:0; border:0}
-    #essb-banner .essb-status{display:flex; align-items:center; gap:.5rem; font-size:.85rem; color:var(--essb-muted); margin-bottom:.55rem}
-    #essb-banner .essb-dot{flex:none; width:8px; height:8px; border-radius:50%; background:var(--essb-live); animation:essb-pulse 2.2s ease-out infinite}
-    @keyframes essb-pulse{0%{box-shadow:0 0 0 0 rgba(94,224,160,.55)}70%,100%{box-shadow:0 0 0 9px rgba(94,224,160,0)}}
-
-    #essb-banner .essb-title{font-size:clamp(1.25rem,3vw,1.7rem); line-height:1.15; font-weight:700; letter-spacing:-.015em; color:var(--essb-text); margin-bottom:.45rem}
-    #essb-banner .essb-poster{font-size:.9rem; line-height:1.45; color:var(--essb-muted); margin-bottom:.7rem; max-width:62ch}
-    #essb-banner .essb-poster cite{font-style:normal; color:var(--essb-eosin)}
-    #essb-banner .essb-pnum{display:inline-block; margin:0 .4rem .3rem 0; padding:.15rem .55rem; border-radius:999px; font-size:.78rem; font-weight:700; letter-spacing:.02em; color:var(--essb-text); background:rgba(242,141,178,.14); border:1px solid rgba(242,141,178,.4); vertical-align:1px}
-    #essb-banner .essb-desc{font-size:.95rem; line-height:1.6; color:var(--essb-text); opacity:.9; max-width:68ch}
-    #essb-banner .essb-vote-hint{margin-top:.6rem; font-size:.8rem; line-height:1.4; color:var(--essb-muted)}
-    #essb-banner .essb-vote-hint strong{color:var(--essb-text)}
-
-    #essb-banner .essb-actions{display:flex; flex-direction:column; gap:.55rem; min-width:220px}
-    #essb-banner .essb-btn{
-      appearance:none; -webkit-appearance:none; margin:0;
-      display:inline-flex; align-items:center; justify-content:center; min-height:44px;
-      padding:.6rem 1.1rem; border-radius:999px; cursor:pointer; white-space:nowrap;
-      gap:.45rem; font:inherit; font-size:.92rem; font-weight:600; line-height:1; text-decoration:none;
-      color:var(--essb-text); background:rgba(11,16,20,.55); border:1px solid rgba(255,255,255,.18);
-      -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);
-      transition:background .15s,border-color .15s,transform .15s;
-    }
-    #essb-banner .essb-btn:hover{background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.32)}
-    #essb-banner .essb-btn:active{transform:translateY(1px)}
-    #essb-banner .essb-btn-primary{background:var(--essb-eosin); border-color:var(--essb-eosin); color:#23101a}
-    #essb-banner .essb-btn-primary:hover{background:#f6a6c4; border-color:#f6a6c4; color:#23101a}
-    #essb-banner .essb-btn-accent{border-color:rgba(242,141,178,.55); color:var(--essb-eosin)}
-    #essb-banner .essb-btn-accent:hover{border-color:var(--essb-eosin); background:rgba(242,141,178,.1)}
-    #essb-banner .essb-vote svg{flex:none}
-    #essb-banner .essb-btn:focus-visible{outline:2px solid var(--essb-eosin); outline-offset:3px}
-
-    @media (max-width:760px){
-      #essb-banner .essb-inner{grid-template-columns:1fr}
-      #essb-banner .essb-actions{flex-direction:row; flex-wrap:wrap; min-width:0}
-      #essb-banner .essb-actions .essb-vote,
-      #essb-banner .essb-actions #essb-chat{flex:1 1 100%}
-      #essb-banner .essb-actions .essb-btn:not(.essb-vote):not(#essb-chat){flex:1 1 0}
-      #essb-banner .essb-spots{width:80%; bottom:auto; height:50%; opacity:.5;
-        -webkit-mask-image:radial-gradient(ellipse at top right,#000 15%,transparent 70%);
-                mask-image:radial-gradient(ellipse at top right,#000 15%,transparent 70%)}
-    }
-    @media (prefers-reduced-motion:reduce){#essb-banner .essb-dot{animation:none}}
-
-    /* Floating vote pill on phones, shown while the banner is off-screen */
-    #essb-fab{display:none}
-    @media (max-width:768px){
-      #essb-fab{
-        position:fixed; z-index:1000; right:16px; bottom:calc(clamp(12px,3vw,20px) + env(safe-area-inset-bottom));
-        display:inline-flex; align-items:center; gap:.4rem; min-height:44px; padding:.55rem 1rem;
-        border-radius:999px; font:inherit; font-size:.9rem; font-weight:700; line-height:1; text-decoration:none;
-        color:#23101a; background:#f28db2; border:1px solid #f28db2; box-shadow:0 6px 22px rgba(0,0,0,.4);
-        transition:opacity .2s,transform .2s;
-      }
-      #essb-fab.is-hidden{opacity:0; transform:translateY(12px); pointer-events:none}
-    }
-  </style>
 
   <script>
   (function () {
@@ -439,9 +312,9 @@
         <section class="research-hero" id="research-intro" aria-labelledby="researchHeroTitle">
           <h1 id="researchHeroTitle">
             Building ML models, LLM agents,
-            <span>and AI systems across domains.</span>
+            <span>and AI systems for healthcare.</span>
           </h1>
-          <p>I build deep learning models, foundation model applications, and LLM-powered agents for healthcare, product, lifestyle, fintech, and beyond, and partner with teams on applied ML and research engineering.</p>
+          <p>I build deep learning models, foundation model applications, and LLM-powered agents for healthcare, and partner with teams on applied ML and research engineering across domains.</p>
           <button class="contact-trigger" id="contactTrigger" type="button" aria-haspopup="dialog">
             <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
               <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
