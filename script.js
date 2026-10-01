@@ -37,7 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 3D & visual effects — only on capable devices
   if (!reducedMotion) {
-    init3DStarfield();
+    // Background starfield animation disabled per request.
+    // init3DStarfield();
 
     if (!isCoarse && !smallScreen) {
       initCustomCursor();
